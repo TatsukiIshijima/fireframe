@@ -3,7 +3,7 @@
 # https://github.com/takahirom/android-project-template-2022/blob/main/scripts/dependency_diff.sh
 
 # Usage: scripts/dependency_diff.sh from-branch to-branch
-# Example: scripts/dependency_diff.sh main update-compose
+# Example: scripts/dependency_diff.sh main update-compose app releaseRuntimeClasspath
 
 echo "dependency diff"
 echo "branch: $1 -> $2, module: $3, configuration: $4"
