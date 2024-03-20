@@ -14,8 +14,8 @@
 .externalNativeBuild
 .cxx
 local.properties
-
-/keystore
+keystore.properties
+keystore.jks
 
 app/debug
 app/release
