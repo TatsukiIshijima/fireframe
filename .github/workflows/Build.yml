@@ -42,7 +42,7 @@ jobs:
       - name: Set up keystore.properties
         run: |
           echo "storePassword=${{ env.keystore_password }}" >> keystore.properties
-          echo "keyPassword=${{ env.key_password }" >> keystore.properties
+          echo "keyPassword=${{ env.key_password }}" >> keystore.properties
           echo "keyAlias=${{ env.keystore_alias }}" >> keystore.properties  
           echo "storeFile=`pwd`/keystore.jks" >> ./keystore.properties
 
