@@ -71,5 +71,5 @@ jobs:
         with:
           name: APKs and AABs
           path: | 
-            '**/build/outputs/apk/**/*.apk'
-            '**/build/outputs/bundle/**/*.aab'
+            **/build/outputs/apk/**/*.apk
+            **/build/outputs/bundle/**/*.aab
