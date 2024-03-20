@@ -1,0 +1,75 @@
+# https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
+
+name: Build
+
+env:
+  # The name of the main module repository
+  main_project_module: app
+
+  keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
+  keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
+  key_password: ${{ secrets.KEY_PASSWORD }}
+  encoded_keystore: ${{ secrets.KEYSTORE }}
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Allows you to run this workflow on push (merge into main) events
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  test_and_apk:
+    name: "Local tests and APKs"
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      # Decode keystore file encoded by base64
+      - name: Decode Keystore
+        run: |
+          echo ${{ env.encoded_keystore }} | base64 --di > keystore.jks
+
+      # Keystore properties write in keystore.properties
+      - name: Set up keystore.properties
+        run: |
+          echo "storePassword=${{ env.keystore_password }}" >> keystore.properties
+          echo "keyPassword=${{ env.key_password }" >> keystore.properties
+          echo "keyAlias=${{ env.keystore_alias }}" >> keystore.properties  
+          echo "storeFile=`pwd`/keystore.jks" >> ./keystore.properties
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      # Run tests build
+      - name: Run local tests
+        run: ./gradlew test
+
+      # Create APK and AAB
+      - name: Build all build type and flavor permutations
+        run: | 
+          ./gradlew :${{ env.main_project_module }}:assemble
+          ./gradlew :${{ env.main_project_module }}:bundle
+
+      # Upload build outputs (APKs and AABs)
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: APKs and AABs
+          path: | 
+            '**/build/outputs/apk/**/*.apk'
+            '**/build/outputs/bundle/**/*.aab'
