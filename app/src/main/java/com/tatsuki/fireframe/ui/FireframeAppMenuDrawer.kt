@@ -43,5 +43,4 @@ enum class MenuItem(
 ) {
     MENU1(0, R.string.drawer_menu_item1),
     MENU2(1, R.string.drawer_menu_item2),
-    ;
 }
