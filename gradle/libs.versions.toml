@@ -1,13 +1,16 @@
 [versions]
 agp = "8.3.0"
-kotlin = "1.9.0"
+# https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+kotlin = "1.9.23"
+composeCompiler = "1.5.11"
+# https://developer.android.com/jetpack/compose/bom/bom-mapping
+composeBom = "2024.03.00"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
-composeBom = "2023.08.00"
 ktlint = "1.0.1"
 spotless = "6.23.3"
 
