@@ -1,9 +1,5 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import com.android.build.gradle.internal.tasks.BundleToStandaloneApkTask
-import com.android.build.gradle.internal.tasks.FinalizeBundleTask
 import java.io.FileInputStream
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Properties
