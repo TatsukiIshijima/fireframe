@@ -1,4 +1,11 @@
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.android.build.gradle.internal.tasks.BundleToStandaloneApkTask
+import com.android.build.gradle.internal.tasks.FinalizeBundleTask
 import java.io.FileInputStream
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 plugins {
@@ -65,11 +72,26 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    applicationVariants.all {
+        outputs.all {
+            if (this is BaseVariantOutputImpl) {
+                val currentDate = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("MMdd")
+                val formattedDate = currentDate.format(formatter)
+
+                outputFileName =
+                    "fireframe-${name}-${versionName}(${versionCode})-${formattedDate}.${outputFile.extension}"
+            }
+            // FIXME: Apply aab file name.
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
