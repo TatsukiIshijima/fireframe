@@ -18,6 +18,8 @@ on:
   push:
     branches:
       - 'main'
+  # Triggers the workflow when a pull request is created
+  pull_request:
 
 jobs:
   test_and_apk:
@@ -79,3 +81,4 @@ jobs:
           path: | 
             **/build/outputs/apk/**/*.apk
             **/build/outputs/bundle/**/*.aab
+          retention-days: 1
