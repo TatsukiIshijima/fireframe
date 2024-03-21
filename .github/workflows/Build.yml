@@ -21,6 +21,10 @@ on:
   # Triggers the workflow when a pull request is created
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test_and_apk:
     name: "Local tests and APKs"
