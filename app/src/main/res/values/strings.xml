@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Fireframe</string>
+    <string name="drawer_title">設定</string>
+    <string name="drawer_menu_item1">読み込み先変更</string>
+    <string name="drawer_menu_item2">位置情報変更</string>
 </resources>
