@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Fireframe"
 include(":app")
+include(":feature:slideshow")
