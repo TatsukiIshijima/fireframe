@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.gradlePlugin)
     alias(libs.plugins.spotless)
 }
 
