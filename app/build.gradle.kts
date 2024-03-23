@@ -7,6 +7,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.fireframe.android.application.compose)
+    alias(libs.plugins.fireframe.android.hilt)
 }
 
 android {
@@ -79,12 +80,18 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
-    
+
+    ksp(libs.hilt.compiler)
+
+    testImplementation(libs.hilt.android.testing)
     testImplementation(libs.junit)
+
+    kspTest(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
 
     debugImplementation(libs.androidx.ui.test.manifest)
 }

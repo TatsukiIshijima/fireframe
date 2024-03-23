@@ -7,6 +7,7 @@ class AndroidFeatureConventionPlugin: Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("fireframe.android.library")
+                apply("fireframe.android.hilt")
             }
         }
     }
