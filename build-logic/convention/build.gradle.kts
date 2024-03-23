@@ -51,5 +51,9 @@ gradlePlugin {
             id = "fireframe.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidFeature") {
+            id = "fireframe.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }
