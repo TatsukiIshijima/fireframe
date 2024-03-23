@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -20,5 +21,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Fireframe"
+
 include(":app")
 include(":feature:slideshow")

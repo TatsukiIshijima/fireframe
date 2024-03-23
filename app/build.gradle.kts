@@ -6,7 +6,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.gradlePlugin)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.spotless)
 }
 
