@@ -6,27 +6,6 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.fireframe.android.application)
-    alias(libs.plugins.spotless)
-}
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        targetExclude("**/build/**/*.kt")
-        ktlint(libs.versions.ktlint.get()).editorConfigOverride(
-            mapOf(
-                "android" to "true",
-            ),
-        )
-    }
-    format("kts") {
-        target("**/*.kts")
-        targetExclude("**/build/**/*.kts")
-    }
-    format("xml") {
-        target("**/*.xml")
-        targetExclude("**/build/**/*.xml")
-    }
 }
 
 android {
