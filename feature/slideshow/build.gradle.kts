@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.fireframe.android.feature)
+    alias(libs.plugins.fireframe.android.library.compose)
 }
 
 android {

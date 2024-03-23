@@ -51,6 +51,10 @@ gradlePlugin {
             id = "fireframe.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidLibraryCompose") {
+            id = "fireframe.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
         register("androidLibrary") {
             id = "fireframe.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

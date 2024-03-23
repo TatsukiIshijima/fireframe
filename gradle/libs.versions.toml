@@ -41,5 +41,6 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 fireframe-android-application = { id = "fireframe.android.application", version = "unspecified" }
 fireframe-android-application-compose = { id = "fireframe.android.application.compose", version = "unspecified" }
 fireframe-android-library = { id = "fireframe.android.library", version = "unspecified" }
+fireframe-android-library-compose = { id = "fireframe.android.library.compose", version = "unspecified" }
 fireframe-android-feature = { id = "fireframe.android.feature", version = "unspecified" }
 
