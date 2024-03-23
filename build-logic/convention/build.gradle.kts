@@ -43,6 +43,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("androidApplication") {
+            id = "fireframe.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
         register("androidLibrary") {
             id = "fireframe.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

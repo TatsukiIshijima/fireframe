@@ -5,8 +5,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.spotless)
 }
 
@@ -32,12 +31,9 @@ spotless {
 
 android {
     namespace = "com.tatsuki.fireframe"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tatsuki.fireframe"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -88,13 +84,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
     buildFeatures {
         compose = true
     }
