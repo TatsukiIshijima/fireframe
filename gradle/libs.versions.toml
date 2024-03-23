@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0"
+androidGradlePlugin = "8.3.0"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin
 kotlin = "1.9.23"
 composeCompiler = "1.5.11"
@@ -11,8 +11,6 @@ junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
-ktlint = "1.0.1"
-spotless = "6.23.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,8 +28,19 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+# Plugins defined by this project
+fireframe-android-application = { id = "fireframe.android.application", version = "unspecified" }
+fireframe-android-application-compose = { id = "fireframe.android.application.compose", version = "unspecified" }
+fireframe-android-library = { id = "fireframe.android.library", version = "unspecified" }
+fireframe-android-library-compose = { id = "fireframe.android.library.compose", version = "unspecified" }
+fireframe-android-feature = { id = "fireframe.android.feature", version = "unspecified" }
 
