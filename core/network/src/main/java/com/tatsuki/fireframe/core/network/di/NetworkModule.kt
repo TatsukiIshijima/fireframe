@@ -18,20 +18,56 @@
 
 package com.tatsuki.fireframe.core.network.di
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.tatsuki.fireframe.core.network.BuildConfig
+import com.tatsuki.fireframe.core.network.OpenWeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun openWeatherApi(
+        @OpenWeatherRetrofit retrofit: Retrofit,
+    ): OpenWeatherApi {
+        return retrofit.create(OpenWeatherApi::class.java)
+    }
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class OpenWeatherRetrofit
+
+    @Provides
+    @Singleton
+    @OpenWeatherRetrofit
+    fun openWeatherRetrofit(
+        json: Json,
+        okHttpCallFactory: dagger.Lazy<Call.Factory>,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.OPEN_WEATHER_API_BASE_URL)
+            // https://github.com/android/nowinandroid/blob/main/core/network/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/retrofit/RetrofitNiaNetwork.kt
+            // We use callFactory lambda here with dagger.Lazy<Call.Factory>
+            // to prevent initializing OkHttp on the main thread.
+            .callFactory { okHttpCallFactory.get().newCall(it) }
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+    }
 
     @Provides
     @Singleton
