@@ -4,7 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.tatsuki.fireframe.network"
+    buildFeatures {
+        buildConfig = true
+    }
+
+    namespace = "com.tatsuki.fireframe.core.network"
 }
 
 dependencies {
