@@ -8,16 +8,16 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
 
-//@Module
-//@TestInstallIn(
-//    components = [SingletonComponent::class],
-//    replaces = [NetworkModule::class]
-//)
-//object FakeNetworkModule {
-//
-//    @Provides
-//    @Singleton
-//    fun openWeatherApi(): OpenWeatherApi {
-//        return FakeOpenWeatherApi()
-//    }
-//}
+@Module
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [NetworkModule::class],
+)
+object FakeNetworkModule {
+
+    @Provides
+    @Singleton
+    fun openWeatherApi(): OpenWeatherApi {
+        return FakeOpenWeatherApi()
+    }
+}

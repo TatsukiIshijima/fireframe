@@ -3,7 +3,7 @@ package com.tatsuki.fireframe.core.network.fake
 import com.tatsuki.fireframe.core.network.OpenWeatherApi
 import com.tatsuki.fireframe.core.network.model.OneCallResponse
 
-class FakeOpenWeatherApi: OpenWeatherApi {
+class FakeOpenWeatherApi : OpenWeatherApi {
 
     override suspend fun oneCallCurrent(
         latitude: Double,

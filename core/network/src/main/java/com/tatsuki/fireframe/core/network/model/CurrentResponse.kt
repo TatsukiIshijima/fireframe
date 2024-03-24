@@ -12,5 +12,5 @@ data class CurrentResponse(
     val temperature: Double,
 
     @SerialName("weather")
-    val weather: List<WeatherResponse>
+    val weather: List<WeatherResponse>,
 )

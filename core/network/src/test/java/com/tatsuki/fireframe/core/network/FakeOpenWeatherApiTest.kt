@@ -33,7 +33,7 @@ class FakeOpenWeatherApiTest {
     fun testGetWeather() = runTest {
         val response = openWeatherApi.oneCallCurrent(
             latitude = 35.6800897,
-            longitude = 139.7654783
+            longitude = 139.7654783,
         )
         println(response)
     }
