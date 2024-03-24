@@ -1,6 +1,10 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.fireframe.android.library)
     alias(libs.plugins.fireframe.android.hilt)
+    id("kotlinx-serialization")
 }
 
 android {
@@ -9,6 +13,20 @@ android {
     }
 
     namespace = "com.tatsuki.fireframe.core.network"
+
+    defaultConfig {
+        // If local build, create local.properties in the root of the project.
+        // And write openWeatherApiKey value in local.properties file.
+        // TODO:setup for github actions
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            val localProperties = Properties()
+            localProperties.load(FileInputStream(localPropertiesFile))
+            buildConfigField("String", "OPEN_WEATHER_API_KEY", "\"${localProperties["openWeatherApiKey"]}\"")
+        }
+
+        buildConfigField("String", "OPEN_WEATHER_API_BASE_URL", "\"https://api.openweathermap.org/data/3.0/\"")
+    }
 }
 
 dependencies {
