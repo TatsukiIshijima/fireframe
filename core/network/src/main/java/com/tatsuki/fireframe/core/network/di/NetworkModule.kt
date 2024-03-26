@@ -21,6 +21,8 @@ package com.tatsuki.fireframe.core.network.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.tatsuki.fireframe.core.network.BuildConfig
 import com.tatsuki.fireframe.core.network.OpenWeatherApi
+import com.tatsuki.fireframe.core.network.OpenWeatherApiClient
+import com.tatsuki.fireframe.core.network.OpenWeatherApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,11 +42,28 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun openWeatherApi(
-        @OpenWeatherRetrofit retrofit: Retrofit,
-    ): OpenWeatherApi {
-        return retrofit.create(OpenWeatherApi::class.java)
+    fun providesNetworkJson(): Json = Json {
+        ignoreUnknownKeys = true
     }
+
+    @Provides
+    @Singleton
+    fun okHttpCallFactory(): Call.Factory {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                HttpLoggingInterceptor()
+                    .apply {
+                        if (BuildConfig.DEBUG) {
+                            level = HttpLoggingInterceptor.Level.BODY
+                        }
+                    },
+            ).build()
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+internal object OpenWeatherApiModule {
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
@@ -71,21 +90,17 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesNetworkJson(): Json = Json {
-        ignoreUnknownKeys = true
+    fun openWeatherApiService(
+        @OpenWeatherRetrofit retrofit: Retrofit,
+    ): OpenWeatherApiService {
+        return retrofit.create(OpenWeatherApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun okHttpCallFactory(): Call.Factory {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .apply {
-                        if (BuildConfig.DEBUG) {
-                            level = HttpLoggingInterceptor.Level.BODY
-                        }
-                    },
-            ).build()
+    fun openWeatherApi(
+        apiClient: OpenWeatherApiClient
+    ): OpenWeatherApi {
+        return apiClient
     }
 }
