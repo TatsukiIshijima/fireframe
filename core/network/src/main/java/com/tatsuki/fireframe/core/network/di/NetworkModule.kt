@@ -99,7 +99,7 @@ internal object OpenWeatherApiModule {
     @Provides
     @Singleton
     fun openWeatherApi(
-        apiClient: OpenWeatherApiClient
+        apiClient: OpenWeatherApiClient,
     ): OpenWeatherApi {
         return apiClient
     }
