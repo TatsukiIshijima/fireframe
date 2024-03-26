@@ -10,6 +10,7 @@ env:
   keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
   key_password: ${{ secrets.KEY_PASSWORD }}
   encoded_keystore: ${{ secrets.KEYSTORE }}
+  open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -41,6 +42,11 @@ jobs:
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      # Local properties write in local.properties
+      - name: Setup local.properties
+        run: |
+          echo "openWeatherApiKey=${{ env.open_weather_api_key }}" >> local.properties
 
       # Decode keystore file encoded by base64
       - name: Decode Keystore

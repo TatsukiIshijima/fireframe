@@ -25,3 +25,4 @@ rootProject.name = "Fireframe"
 include(":app")
 include(":feature:slideshow")
 include(":core:common")
+include(":core:network")
