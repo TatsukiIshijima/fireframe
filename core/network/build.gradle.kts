@@ -23,7 +23,6 @@ android {
     defaultConfig {
         // If local build, create local.properties in the root of the project.
         // And write openWeatherApiKey value in local.properties file.
-        // TODO:setup for github actions
         val localPropertiesFile = rootProject.file("local.properties")
         if (localPropertiesFile.exists()) {
             val localProperties = Properties()
