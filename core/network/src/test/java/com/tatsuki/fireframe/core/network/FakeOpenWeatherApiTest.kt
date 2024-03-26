@@ -17,7 +17,6 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class FakeOpenWeatherApiTest {
 
-    // FIXME: Apply hiltAndroidAutoInjectRule
     @get:Rule
     val hiltRule: HiltAndroidRule = HiltAndroidRule(this)
 
@@ -30,11 +29,19 @@ class FakeOpenWeatherApiTest {
     }
 
     @Test
-    fun testGetWeather() = runTest {
-        val response = openWeatherApi.oneCallCurrent(
+    fun testFetchCurrentWeather() = runTest {
+        val response = openWeatherApi.fetchCurrentWeather(
             latitude = 35.6800897,
             longitude = 139.7654783,
         )
-        println(response)
+        assert(response.current.weather.isNotEmpty())
+        assert(response.current.weather.first().id == 501)
+        assert(response.current.weather.first().main == "Rain")
+        assert(response.current.weather.first().icon == "10d")
+        assert(response.daily.isNotEmpty())
+        assert(response.daily.first().weather.isNotEmpty())
+        assert(response.daily.first().weather.first().id == 502)
+        assert(response.daily.first().weather.first().main == "Rain")
+        assert(response.daily.first().weather.first().icon == "10d")
     }
 }
