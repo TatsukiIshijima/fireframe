@@ -14,6 +14,7 @@ class OpenWeatherApiClient @Inject constructor(
         return service.oneCallCurrent(
             latitude = latitude,
             longitude = longitude,
+            apiKey = BuildConfig.OPEN_WEATHER_API_KEY,
         )
     }
 }

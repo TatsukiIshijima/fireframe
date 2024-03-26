@@ -13,6 +13,6 @@ interface OpenWeatherApiService {
         @Query("lang") language: String = "ja",
         @Query("exclude") exclude: String = "minutely",
         @Query("units") units: String = "metric",
-        @Query("appid") apiKey: String = BuildConfig.OPEN_WEATHER_API_KEY,
+        @Query("appid") apiKey: String,
     ): OneCallResponse
 }
