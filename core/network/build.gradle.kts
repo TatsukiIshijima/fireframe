@@ -14,6 +14,12 @@ android {
 
     namespace = "com.tatsuki.fireframe.core.network"
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         // If local build, create local.properties in the root of the project.
         // And write openWeatherApiKey value in local.properties file.
