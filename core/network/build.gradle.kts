@@ -42,8 +42,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
 
-    // FIXME: Move test common module
     implementation(libs.hilt.android.testing)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.robolectric)
+
+    testImplementation(project(":core:testing"))
 }
