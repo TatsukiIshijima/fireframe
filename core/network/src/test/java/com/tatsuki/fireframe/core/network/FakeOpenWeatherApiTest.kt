@@ -1,10 +1,9 @@
 package com.tatsuki.fireframe.core.network
 
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.tatsuki.fireframe.core.testing.util.HiltAndroidAutoInjectRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,15 +17,10 @@ import javax.inject.Inject
 class FakeOpenWeatherApiTest {
 
     @get:Rule
-    val hiltRule: HiltAndroidRule = HiltAndroidRule(this)
+    val hiltAndroidAutoInjectRule = HiltAndroidAutoInjectRule(this)
 
     @Inject
     lateinit var openWeatherApi: OpenWeatherApi
-
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-    }
 
     @Test
     fun testFetchCurrentWeather() = runTest {

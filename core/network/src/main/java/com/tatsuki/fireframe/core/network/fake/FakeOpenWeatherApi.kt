@@ -1,5 +1,6 @@
 package com.tatsuki.fireframe.core.network.fake
 
+import JvmUnitTestFakeAssetManager
 import com.tatsuki.fireframe.core.network.OpenWeatherApi
 import com.tatsuki.fireframe.core.network.model.OneCallResponse
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 class FakeOpenWeatherApi @Inject constructor(
     private val networkJson: Json,
-    private val assets: FakeAssetManager,
+    private val assets: FakeAssetManager = JvmUnitTestFakeAssetManager,
 ) : OpenWeatherApi {
 
     @OptIn(ExperimentalSerializationApi::class)
