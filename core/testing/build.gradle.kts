@@ -10,7 +10,9 @@ android {
 dependencies {
     api(kotlin("test"))
 
-    implementation(libs.hilt.android.testing)
-    implementation(libs.kotlinx.coroutines.test)
+    api(libs.hilt.android.testing)
+    api(libs.kotlinx.coroutines.test)
+    api(libs.robolectric)
+
     implementation(project(":core:common"))
 }

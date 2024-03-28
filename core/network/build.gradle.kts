@@ -43,6 +43,6 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
 
     implementation(libs.hilt.android.testing)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.robolectric)
+
+    testImplementation(project(":core:testing"))
 }
