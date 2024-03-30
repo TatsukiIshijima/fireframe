@@ -76,10 +76,11 @@ dependencies {
 
     implementation(project(":feature:slideshow"))
 
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
 
     ksp(libs.hilt.compiler)
 
@@ -88,8 +89,9 @@ dependencies {
 
     kspTest(libs.hilt.compiler)
 
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.navigation.testing)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.hilt.android.testing)
 

@@ -6,7 +6,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.tatsuki.fireframe.Greeting
+import com.tatsuki.fireframe.navigation.FireframeNavHost
 
 @Composable
 fun FireframeApp(appState: FireframeAppState) {
@@ -25,7 +25,7 @@ fun FireframeApp(appState: FireframeAppState) {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            Greeting("Android")
+            FireframeNavHost(appState)
         }
     }
 }
