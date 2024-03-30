@@ -23,7 +23,9 @@ dependencyResolutionManagement {
 rootProject.name = "Fireframe"
 
 include(":app")
-include(":feature:slideshow")
 include(":core:common")
+include(":core:designsystem")
 include(":core:network")
 include(":core:testing")
+include(":core:ui")
+include(":feature:slideshow")
