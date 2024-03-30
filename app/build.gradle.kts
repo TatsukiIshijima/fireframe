@@ -74,26 +74,27 @@ android {
 
 dependencies {
 
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:slideshow"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
 
     ksp(libs.hilt.compiler)
 
-    testImplementation(libs.hilt.android.testing)
+    testImplementation(project(":core:testing"))
     testImplementation(libs.junit)
 
     kspTest(libs.hilt.compiler)
 
+    androidTestImplementation(":core:testing")
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.navigation.testing)
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
 
     debugImplementation(libs.androidx.ui.test.manifest)
 }
