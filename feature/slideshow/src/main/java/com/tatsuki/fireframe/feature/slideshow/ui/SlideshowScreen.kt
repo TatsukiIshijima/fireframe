@@ -22,6 +22,7 @@ internal fun SlideshowScreen(
     Column(modifier = modifier) {
         Text(text = "SlideshowScreen1")
         Text(text = "SlideshowScreen2")
+        Text(text = "SlideshowScreen3")
     }
 }
 
