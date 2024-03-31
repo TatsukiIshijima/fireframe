@@ -75,7 +75,7 @@ jobs:
 
       # Run tests build
       - name: Run local tests
-        run: ./gradlew test
+        run: ./gradlew testDebugUnitTest --stacktrace
 
       # Create APK and AAB
       - name: Build all build type and flavor permutations

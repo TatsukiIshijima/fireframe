@@ -7,6 +7,12 @@ plugins {
 android {
     namespace = "com.tatsuki.fireframe.feature.slideshow"
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
