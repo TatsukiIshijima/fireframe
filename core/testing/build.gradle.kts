@@ -9,10 +9,14 @@ android {
 
 dependencies {
     api(kotlin("test"))
-
+    api(libs.androidx.compose.ui.test)
     api(libs.hilt.android.testing)
     api(libs.kotlinx.coroutines.test)
     api(libs.robolectric)
 
+    debugApi(libs.androidx.ui.test.manifest)
+
     implementation(project(":core:common"))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.roborazzi)
 }

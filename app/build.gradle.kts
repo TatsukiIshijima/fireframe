@@ -8,10 +8,17 @@ plugins {
     alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.fireframe.android.application.compose)
     alias(libs.plugins.fireframe.android.hilt)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
     namespace = "com.tatsuki.fireframe"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 
     defaultConfig {
         applicationId = "com.tatsuki.fireframe"
@@ -87,6 +94,8 @@ dependencies {
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.roborazzi)
 
     kspTest(libs.hilt.compiler)
 

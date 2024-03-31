@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.fireframe.android.library)
     alias(libs.plugins.fireframe.android.library.compose)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -12,6 +13,7 @@ android {
 }
 
 dependencies {
-
     api(libs.androidx.material3)
+
+    testImplementation(libs.robolectric)
 }
