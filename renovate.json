@@ -9,7 +9,7 @@
   "baseBranches": [
     "main"
   ],
-  "dependencyDashboardApproval": true,
+  "dependencyDashboardApproval": false,
   "prConcurrentLimit": 5,
   "automerge": false,
   "major": {
