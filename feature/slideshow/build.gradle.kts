@@ -13,8 +13,8 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
+    testImplementation(project(":core:testing"))
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.roborazzi)
 }

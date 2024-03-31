@@ -51,12 +51,12 @@ internal fun Project.configureAndroidCompose(
             add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())
         }
 
-//        testOptions {
-//            unitTests {
-//                // For Robolectric
-//                isIncludeAndroidResources = true
-//            }
-//        }
+        testOptions {
+            unitTests {
+                // For Robolectric
+                isIncludeAndroidResources = true
+            }
+        }
     }
 
 //    tasks.withType<KotlinCompile>().configureEach {

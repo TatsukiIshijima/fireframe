@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.fireframe.android.application.compose)
     alias(libs.plugins.fireframe.android.hilt)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -87,6 +88,8 @@ dependencies {
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.roborazzi)
 
     kspTest(libs.hilt.compiler)
 
