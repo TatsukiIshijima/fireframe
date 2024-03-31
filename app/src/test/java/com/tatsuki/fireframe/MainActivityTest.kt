@@ -31,6 +31,4 @@ class MainActivityTest {
     }
 }
 
-class MainActivityRobot @Inject constructor() {
-
-}
+class MainActivityRobot @Inject constructor()
