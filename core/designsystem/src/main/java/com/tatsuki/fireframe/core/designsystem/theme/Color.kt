@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.ui.theme
+package com.tatsuki.fireframe.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
