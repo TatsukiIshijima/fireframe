@@ -14,6 +14,12 @@ plugins {
 android {
     namespace = "com.tatsuki.fireframe"
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         applicationId = "com.tatsuki.fireframe"
         versionCode = 1
