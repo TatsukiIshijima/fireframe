@@ -68,5 +68,9 @@ gradlePlugin {
             id = "fireframe.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("jvmLibrary") {
+            id = "fireframe.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
     }
 }
