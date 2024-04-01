@@ -99,7 +99,7 @@ dependencies {
 
     kspTest(libs.hilt.compiler)
 
-    androidTestImplementation(":core:testing")
+    androidTestImplementation(project(":core:testing"))
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.navigation.testing)
