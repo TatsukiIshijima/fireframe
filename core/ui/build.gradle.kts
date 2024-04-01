@@ -12,6 +12,6 @@ android {
 }
 
 dependencies {
-
-    api(libs.androidx.material3)
+    api(project(":core:designsystem"))
+    api(project(":core:model"))
 }
