@@ -19,7 +19,7 @@ fun TextClock(
         factory = { context ->
             TextClock(context).apply {
                 this.timeZone = timeZone.id
-                this.format24Hour = "HH:mm"
+                this.format12Hour = "HH:mm"
             }
         },
     )
