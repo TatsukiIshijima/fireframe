@@ -24,6 +24,7 @@ retrofit = "2.10.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 robolectric = "4.11.1"
 roborazzi = "1.7.0"
+jetbrainsKotlinJvm = "1.9.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -78,4 +79,5 @@ fireframe-android-library = { id = "fireframe.android.library", version = "unspe
 fireframe-android-library-compose = { id = "fireframe.android.library.compose", version = "unspecified" }
 fireframe-android-feature = { id = "fireframe.android.feature", version = "unspecified" }
 fireframe-android-hilt = { id = "fireframe.android.hilt", version = "unspecified" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
