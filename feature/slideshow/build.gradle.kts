@@ -24,4 +24,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.androidx.espresso.core)
     testImplementation(libs.roborazzi)
+
+    androidTestImplementation(project(":core:testing"))
 }

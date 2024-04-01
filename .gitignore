@@ -9,7 +9,6 @@
 /.idea/assetWizardSettings.xml
 /.idea/git_toolbox_prj.xml
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 .cxx
@@ -20,3 +19,8 @@ keystore.jks
 app/debug
 app/release
 
+# generated files
+bin/
+gen/
+out/
+build/
