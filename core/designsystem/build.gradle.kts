@@ -15,5 +15,7 @@ android {
 dependencies {
     api(libs.androidx.material3)
 
+    implementation(libs.coil.kt.compose)
+
     testImplementation(libs.robolectric)
 }
