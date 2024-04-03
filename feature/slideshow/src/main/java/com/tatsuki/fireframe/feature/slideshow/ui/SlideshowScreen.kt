@@ -2,13 +2,14 @@ package com.tatsuki.fireframe.feature.slideshow.ui
 
 import android.graphics.Typeface
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +22,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tatsuki.fireframe.core.ui.WeatherIconAsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.TextClock
-import com.tatsuki.fireframe.feature.slideshow.R
 
 @Composable
 internal fun SlideshowRoute(
@@ -51,7 +52,7 @@ internal fun SlideshowScreen(
         ) {
             BatteryIcon(
                 modifier = Modifier
-                    .size(54.dp)
+                    .size(58.dp)
                     .padding(16.dp),
             )
         }
@@ -86,17 +87,28 @@ private fun DateInfoShortPanel(
     ) {
         Row(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val baseModifier = remember {
                 Modifier.alignByBaseline()
             }
+            WeatherIconAsyncImage(
+                imageUrl = "https://openweathermap.org/img/wn/11d@2x.png",
+                contentDescription = null,
+                placeHolder = {
+                    Text(
+                        text = "ー",
+                        modifier = baseModifier.padding(end = 12.dp),
+                    )
+                },
+                modifier = baseModifier.size(42.dp),
+            )
             Text(
                 text = "13°",
                 modifier = baseModifier,
-                fontSize = 24.sp
+                fontSize = 24.sp,
             )
+            Spacer(modifier = Modifier.width(12.dp))
             DateText(
                 modifier = baseModifier,
                 fontSize = 24.sp,
