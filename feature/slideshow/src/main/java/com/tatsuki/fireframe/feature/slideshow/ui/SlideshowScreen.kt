@@ -31,6 +31,7 @@ import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
+import com.tatsuki.fireframe.feature.slideshow.R
 
 @Composable
 internal fun SlideshowRoute(
@@ -57,34 +58,38 @@ internal fun SlideshowRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
-    photoUrls: List<String>,
+    photoUrls: List<Any?>,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        HorizontalAutoLoopPager(
-            pageCount = 10,
-            modifier = Modifier.fillMaxSize(),
-            beyondBoundsPageCount = 1,
-            delayMills = 3000,
-        ) { page ->
-            AsyncImage(
-                model = photoUrls[page],
-                contentDescription = null,
+        if (photoUrls.isEmpty()) {
+            // TODO: Add error handling
+        } else {
+            HorizontalAutoLoopPager(
+                pageCount = photoUrls.size,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-                filterQuality = FilterQuality.Low,
-                placeHolder = {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                },
-            )
+                beyondBoundsPageCount = 1,
+                delayMills = 3000,
+            ) { page ->
+                AsyncImage(
+                    model = photoUrls[page],
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    filterQuality = FilterQuality.Low,
+                    placeHolder = {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    },
+                )
+            }
         }
         Box(
             modifier = Modifier
@@ -171,7 +176,9 @@ private fun DateInfoShortPanel(
 fun SlideshowScreenTabletPreview() {
     FireframeTheme {
         SlideshowScreen(
-            photoUrls = emptyList(),
+            photoUrls = listOf(
+                R.drawable.dummy_image,
+            ),
         )
     }
 }
@@ -184,7 +191,9 @@ fun SlideshowScreenTabletPreview() {
 fun SlideshowScreenMobilePreview() {
     FireframeTheme {
         SlideshowScreen(
-            photoUrls = emptyList(),
+            photoUrls = listOf(
+                R.drawable.dummy_image,
+            ),
         )
     }
 }

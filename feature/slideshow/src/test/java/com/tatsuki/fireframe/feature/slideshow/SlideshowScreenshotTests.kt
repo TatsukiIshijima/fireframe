@@ -22,7 +22,9 @@ class SlideshowScreenshotTests {
     fun capture_slideshow_screen() {
         composeTestRule.setContent {
             SlideshowScreen(
-                photoUrls = emptyList(),
+                photoUrls = listOf(
+                    R.drawable.dummy_image
+                ),
             )
         }
 
