@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.tatsuki.fireframe.core.ui.WeatherIconAsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.ui.DateText
+import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,38 +54,12 @@ internal fun SlideshowRoute(
 internal fun SlideshowScreen(
     modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState {
-        10
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-    val scrollToPage = { state: PagerState, page: Int ->
-        coroutineScope.launch {
-            if (pagerState.isScrollInProgress) {
-                return@launch
-            }
-            state.animateScrollToPage(page)
-        }
-    }
-
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            delay(1000)
-            scrollToPage(pagerState, page + 1)
-
-            if (page == pagerState.pageCount - 1) {
-                pagerState.animateScrollToPage(0)
-            }
-        }
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        // https://inside.dmm.com/articles/horizontal-infinite-auto-scroll-pager/
-        HorizontalPager(
-            state = pagerState,
+        HorizontalAutoLoopPager(
+            pageCount = 10,
             modifier = Modifier.fillMaxSize(),
         ) { page ->
             Text(
