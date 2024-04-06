@@ -1,23 +1,33 @@
 package com.tatsuki.fireframe.feature.slideshow.ui
 
 import android.graphics.Typeface
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +36,8 @@ import com.tatsuki.fireframe.core.ui.WeatherIconAsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.TextClock
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun SlideshowRoute(
@@ -36,19 +48,55 @@ internal fun SlideshowRoute(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
     modifier: Modifier = Modifier,
-    batteryIconAlignment: Alignment = Alignment.TopEnd,
-    dateInfoShortPanelAlignment: Alignment = Alignment.BottomStart,
 ) {
+    val pagerState = rememberPagerState {
+        10
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    val scrollToPage = { state: PagerState, page: Int ->
+        coroutineScope.launch {
+            if (pagerState.isScrollInProgress) {
+                return@launch
+            }
+            state.animateScrollToPage(page)
+        }
+    }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            delay(1000)
+            scrollToPage(pagerState, page + 1)
+
+            if (page == pagerState.pageCount - 1) {
+                pagerState.animateScrollToPage(0)
+            }
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize(),
     ) {
+        // https://inside.dmm.com/articles/horizontal-infinite-auto-scroll-pager/
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize(),
+        ) { page ->
+            Text(
+                text = "Page: ${page + 1}",
+                modifier = Modifier,
+                fontSize = 48.sp,
+                textAlign = TextAlign.Center,
+            )
+        }
         Box(
             modifier = Modifier
-                .align(batteryIconAlignment),
+                .align(Alignment.TopEnd),
         ) {
             BatteryIcon(
                 modifier = Modifier
@@ -58,7 +106,7 @@ internal fun SlideshowScreen(
         }
         Box(
             modifier = Modifier
-                .align(dateInfoShortPanelAlignment),
+                .align(Alignment.BottomStart),
         ) {
             DateInfoShortPanel()
         }
