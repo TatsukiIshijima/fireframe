@@ -8,43 +8,48 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tatsuki.fireframe.core.ui.WeatherIconAsyncImage
+import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun SlideshowRoute(
     modifier: Modifier = Modifier,
 ) {
+    val photoUrls = listOf(
+        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
+        "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
+        "https://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/rcam/RLB_486265291EDR_F0481570RHAZ00323M_.JPG",
+        "https://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/rcam/RRB_486265291EDR_F0481570RHAZ00323M_.JPG",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631300305227E03_DXXX.jpg",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631290503689E01_DXXX.jpg",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631290305226E03_DXXX.jpg",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631280503688E0B_DXXX.jpg",
+        "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631280305225E03_DXXX.jpg",
+    )
     SlideshowScreen(
+        photoUrls = photoUrls,
         modifier = modifier,
     )
 }
@@ -52,6 +57,7 @@ internal fun SlideshowRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
+    photoUrls: List<String>,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -61,12 +67,23 @@ internal fun SlideshowScreen(
         HorizontalAutoLoopPager(
             pageCount = 10,
             modifier = Modifier.fillMaxSize(),
+            beyondBoundsPageCount = 1,
+            delayMills = 3000,
         ) { page ->
-            Text(
-                text = "Page: ${page + 1}",
-                modifier = Modifier,
-                fontSize = 48.sp,
-                textAlign = TextAlign.Center,
+            AsyncImage(
+                model = photoUrls[page],
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                filterQuality = FilterQuality.Low,
+                placeHolder = {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                },
             )
         }
         Box(
@@ -115,8 +132,8 @@ private fun DateInfoShortPanel(
             val baseModifier = remember {
                 Modifier.alignByBaseline()
             }
-            WeatherIconAsyncImage(
-                imageUrl = "https://openweathermap.org/img/wn/11d@2x.png",
+            AsyncImage(
+                model = "https://openweathermap.org/img/wn/11d@2x.png",
                 contentDescription = null,
                 placeHolder = {
                     Text(
@@ -153,7 +170,9 @@ private fun DateInfoShortPanel(
 @Composable
 fun SlideshowScreenTabletPreview() {
     FireframeTheme {
-        SlideshowScreen()
+        SlideshowScreen(
+            photoUrls = emptyList(),
+        )
     }
 }
 
@@ -164,6 +183,8 @@ fun SlideshowScreenTabletPreview() {
 @Composable
 fun SlideshowScreenMobilePreview() {
     FireframeTheme {
-        SlideshowScreen()
+        SlideshowScreen(
+            photoUrls = emptyList(),
+        )
     }
 }
