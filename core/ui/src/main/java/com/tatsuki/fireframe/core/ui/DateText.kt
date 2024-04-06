@@ -19,7 +19,7 @@ fun DateText(
     color: Color = Color.Unspecified,
     fontSize: TextUnit = 16.sp,
     fontStyle: FontStyle = FontStyle.Normal,
-    fontWeight: FontWeight = FontWeight.Normal
+    fontWeight: FontWeight = FontWeight.Normal,
 ) {
     val date = Date.formattedCurrentLocalDate()
     Text(

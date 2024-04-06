@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
+import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
