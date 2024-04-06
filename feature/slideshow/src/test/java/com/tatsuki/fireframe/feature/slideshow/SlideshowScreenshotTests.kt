@@ -23,7 +23,7 @@ class SlideshowScreenshotTests {
         composeTestRule.setContent {
             SlideshowScreen(
                 photoUrls = listOf(
-                    R.drawable.dummy_image
+                    R.drawable.dummy_image,
                 ),
             )
         }
