@@ -21,7 +21,9 @@ class SlideshowScreenshotTests {
     @Test
     fun capture_slideshow_screen() {
         composeTestRule.setContent {
-            SlideshowScreen()
+            SlideshowScreen(
+                photoUrls = emptyList(),
+            )
         }
 
         composeTestRule
