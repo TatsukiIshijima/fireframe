@@ -14,4 +14,7 @@ android {
 dependencies {
     api(project(":core:designsystem"))
     api(project(":core:model"))
+
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
 }

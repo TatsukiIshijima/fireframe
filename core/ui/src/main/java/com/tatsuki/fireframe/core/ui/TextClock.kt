@@ -1,5 +1,7 @@
 package com.tatsuki.fireframe.core.ui
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.widget.TextClock
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,6 +14,9 @@ import kotlinx.datetime.TimeZone
 @Composable
 fun TextClock(
     modifier: Modifier = Modifier,
+    textColorResource: Int = Color.BLACK,
+    textSize: Float = 16f,
+    typefaceStyle: Typeface = Typeface.DEFAULT,
     timeZone: TimeZone = TimeZone.currentSystemDefault(),
 ) {
     AndroidView(
@@ -19,7 +24,10 @@ fun TextClock(
         factory = { context ->
             TextClock(context).apply {
                 this.timeZone = timeZone.id
-                this.format12Hour = "HH:mm"
+                format12Hour = "HH:mm"
+                setTextColor(textColorResource)
+                this.textSize = textSize
+                setTypeface(this.typeface, typefaceStyle.style)
             }
         },
     )
