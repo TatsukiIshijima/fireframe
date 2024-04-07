@@ -1,5 +1,6 @@
 package com.tatsuki.fireframe.core.network.model
 
+import com.tatsuki.fireframe.core.model.CurrentWeather
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,3 +15,10 @@ data class CurrentResponse(
     @SerialName("weather")
     val weather: List<WeatherResponse>,
 )
+
+internal fun CurrentResponse.toCurrentWeather(): CurrentWeather {
+    return CurrentWeather(
+        temperature = temperature,
+        weatherDatas = weather.map { it.toWeatherData() },
+    )
+}
