@@ -15,6 +15,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,16 +29,20 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
+import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
 import com.tatsuki.fireframe.feature.slideshow.R
+import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
 
 @Composable
 internal fun SlideshowRoute(
     modifier: Modifier = Modifier,
+    slideshowViewModel: SlideshowViewModel = hiltViewModel(),
 ) {
     val photoUrls = listOf(
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
@@ -49,16 +56,24 @@ internal fun SlideshowRoute(
         "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631280503688E0B_DXXX.jpg",
         "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631280305225E03_DXXX.jpg",
     )
+    val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsState()
+
     SlideshowScreen(
         photoUrls = photoUrls,
+        currentAndForecastWeather = currentAndForecastWeather,
         modifier = modifier,
     )
+
+    LaunchedEffect(key1 = Unit) {
+        slideshowViewModel.fetchCurrentAndForecastWeather()
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
     photoUrls: List<Any?>,
+    currentAndForecastWeather: CurrentAndForecastWeather?,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -105,7 +120,9 @@ internal fun SlideshowScreen(
             modifier = Modifier
                 .align(Alignment.BottomStart),
         ) {
-            DateInfoShortPanel()
+            DateInfoShortPanel(
+                currentAndForecastWeather = currentAndForecastWeather,
+            )
         }
     }
 }
@@ -123,6 +140,7 @@ private fun BatteryIcon(
 
 @Composable
 private fun DateInfoShortPanel(
+    currentAndForecastWeather: CurrentAndForecastWeather?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -137,19 +155,31 @@ private fun DateInfoShortPanel(
             val baseModifier = remember {
                 Modifier.alignByBaseline()
             }
-            AsyncImage(
-                model = "https://openweathermap.org/img/wn/11d@2x.png",
-                contentDescription = null,
-                placeHolder = {
-                    Text(
-                        text = "ー",
-                        modifier = baseModifier.padding(end = 12.dp),
-                    )
-                },
-                modifier = baseModifier.size(42.dp),
-            )
+
+            if (currentAndForecastWeather == null) {
+                Text(
+                    text = "ー",
+                    modifier = baseModifier.padding(end = 12.dp),
+                )
+            } else {
+                AsyncImage(
+                    model = currentAndForecastWeather.currentWeather.weatherDatas.first().iconUrl,
+                    contentDescription = null,
+                    placeHolder = {
+                        Text(
+                            text = "ー",
+                            modifier = baseModifier.padding(end = 12.dp),
+                        )
+                    },
+                    modifier = baseModifier.size(42.dp),
+                )
+            }
+
+            val temperature =
+                currentAndForecastWeather?.currentWeather?.temperature?.toString() ?: "ー"
+
             Text(
-                text = "13°",
+                text = temperature,
                 modifier = baseModifier,
                 fontSize = 24.sp,
             )
@@ -179,6 +209,7 @@ fun SlideshowScreenTabletPreview() {
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
+            currentAndForecastWeather = null,
         )
     }
 }
@@ -194,6 +225,7 @@ fun SlideshowScreenMobilePreview() {
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
+            currentAndForecastWeather = null,
         )
     }
 }
