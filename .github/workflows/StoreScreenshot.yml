@@ -28,7 +28,7 @@ jobs:
       # Local properties write in local.properties
       - name: Setup local.properties
         run: |
-          bash ./check_api_key.sh
+          bash ./scripts/check_api_key.sh
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4

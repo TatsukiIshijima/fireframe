@@ -46,7 +46,7 @@ jobs:
       # Local properties write in local.properties
       - name: Setup local.properties
         run: |
-          bash ./check_api_key.sh
+          bash ./scripts/check_api_key.sh
 
       # Decode keystore file encoded by base64
       - name: Decode Keystore
