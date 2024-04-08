@@ -36,6 +36,7 @@ android {
 
 dependencies {
     api(project(":core:common"))
+    api(project(":core:model"))
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging)

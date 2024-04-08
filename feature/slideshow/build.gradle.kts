@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:data"))
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.junit)

@@ -1,5 +1,6 @@
 package com.tatsuki.fireframe.core.network.model
 
+import com.tatsuki.fireframe.core.model.DailyWeather
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,3 +15,11 @@ data class DailyResponse(
     @SerialName("weather")
     val weather: List<WeatherResponse>,
 )
+
+internal fun DailyResponse.toDailyWeather(): DailyWeather {
+    return DailyWeather(
+        time = time,
+        temperature = temperature.day,
+        weatherDataList = weather.map { it.toWeatherData() },
+    )
+}
