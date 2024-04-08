@@ -28,11 +28,11 @@ class FakeOpenWeatherApiTest {
             latitude = 35.6800897,
             longitude = 139.7654783,
         )
-        assert(result.currentWeather.weatherDatas.isNotEmpty())
-        assert(result.currentWeather.weatherDatas.first().id == 501)
-        assert(result.currentWeather.weatherDatas.first().group == "Rain")
+        assert(result.currentWeather.weatherDataList.isNotEmpty())
+        assert(result.currentWeather.weatherDataList.first().id == 501)
+        assert(result.currentWeather.weatherDataList.first().group == "Rain")
         assert(
-            result.currentWeather.weatherDatas.first().iconUrl ==
+            result.currentWeather.weatherDataList.first().iconUrl ==
                 "https://openweathermap.org/img/wn/10d@2x.png",
         )
         assert(result.dailyWeathers.isNotEmpty())
