@@ -1,6 +1,6 @@
 package com.tatsuki.fireframe.core.network
 
-import com.tatsuki.fireframe.core.network.model.OneCallResponse
+import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 
 interface OpenWeatherApi {
 
@@ -11,8 +11,8 @@ interface OpenWeatherApi {
      * @param longitude The longitude of the location.
      * @return The current weather data.
      */
-    suspend fun fetchCurrentWeather(
+    suspend fun fetchCurrentAndForecastWeather(
         latitude: Double,
         longitude: Double,
-    ): OneCallResponse
+    ): CurrentAndForecastWeather
 }

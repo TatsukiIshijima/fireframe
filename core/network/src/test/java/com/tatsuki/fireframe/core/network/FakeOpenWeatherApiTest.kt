@@ -24,18 +24,24 @@ class FakeOpenWeatherApiTest {
 
     @Test
     fun testFetchCurrentWeather() = runTest {
-        val response = openWeatherApi.fetchCurrentWeather(
+        val result = openWeatherApi.fetchCurrentAndForecastWeather(
             latitude = 35.6800897,
             longitude = 139.7654783,
         )
-        assert(response.current.weather.isNotEmpty())
-        assert(response.current.weather.first().id == 501)
-        assert(response.current.weather.first().main == "Rain")
-        assert(response.current.weather.first().icon == "10d")
-        assert(response.daily.isNotEmpty())
-        assert(response.daily.first().weather.isNotEmpty())
-        assert(response.daily.first().weather.first().id == 502)
-        assert(response.daily.first().weather.first().main == "Rain")
-        assert(response.daily.first().weather.first().icon == "10d")
+        assert(result.currentWeather.weatherDataList.isNotEmpty())
+        assert(result.currentWeather.weatherDataList.first().id == 501)
+        assert(result.currentWeather.weatherDataList.first().group == "Rain")
+        assert(
+            result.currentWeather.weatherDataList.first().iconUrl ==
+                "https://openweathermap.org/img/wn/10d@2x.png",
+        )
+        assert(result.dailyWeathers.isNotEmpty())
+        assert(result.dailyWeathers.first().weatherDataList.isNotEmpty())
+        assert(result.dailyWeathers.first().weatherDataList.first().id == 502)
+        assert(result.dailyWeathers.first().weatherDataList.first().group == "Rain")
+        assert(
+            result.dailyWeathers.first().weatherDataList.first().iconUrl ==
+                "https://openweathermap.org/img/wn/10d@2x.png",
+        )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.feature.slideshow.ui.SlideshowScreen
 import org.junit.Rule
 import org.junit.Test
@@ -25,6 +26,7 @@ class SlideshowScreenshotTests {
                 photoUrls = listOf(
                     R.drawable.dummy_image,
                 ),
+                currentAndForecastWeather = CurrentAndForecastWeather.fake(),
             )
         }
 
