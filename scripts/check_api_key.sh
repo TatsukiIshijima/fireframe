@@ -3,6 +3,11 @@
 file_path="local.properties"
 api_key="$open_weather_api_key"
 
+if [ -z "$open_weather_api_key" ]; then
+  echo "ERROR: open_weather_api_key environment variable is not set."
+  exit 1
+fi
+
 if [ ! -f "$file_path" ]; then
   echo "Creating $file_path..."
   echo "openWeatherApiKey=$api_key" > "$file_path"
