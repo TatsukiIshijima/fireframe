@@ -163,7 +163,7 @@ private fun DateInfoShortPanel(
                 )
             } else {
                 AsyncImage(
-                    model = currentAndForecastWeather.currentWeather.weatherDatas.first().iconUrl,
+                    model = currentAndForecastWeather.currentWeather.weatherDataList.first().iconUrl,
                     contentDescription = null,
                     placeHolder = {
                         Text(

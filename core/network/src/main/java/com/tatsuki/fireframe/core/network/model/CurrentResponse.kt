@@ -19,6 +19,6 @@ data class CurrentResponse(
 internal fun CurrentResponse.toCurrentWeather(): CurrentWeather {
     return CurrentWeather(
         temperature = temperature,
-        weatherDatas = weather.map { it.toWeatherData() },
+        weatherDataList = weather.map { it.toWeatherData() },
     )
 }
