@@ -1,10 +1,7 @@
 package com.tatsuki.fireframe.feature.slideshow.ui
 
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LevelListDrawable
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,46 +21,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.AsyncImage
+import com.tatsuki.fireframe.core.ui.BatteryIcon
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
 import com.tatsuki.fireframe.feature.slideshow.R
 import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
-import com.tatsuki.fireframe.core.ui.R as designSystemR
 
 @Composable
 internal fun SlideshowRoute(
     modifier: Modifier = Modifier,
     slideshowViewModel: SlideshowViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
-
-    val batteryIcons = LevelListDrawable().apply {
-        addLevel(0, 1, context.getDrawable(designSystemR.drawable.outline_battery_horiz_000_24))
-        addLevel(1, 10, context.getDrawable(designSystemR.drawable.outline_battery_very_low_24))
-        addLevel(10, 25, context.getDrawable(designSystemR.drawable.outline_battery_low_24))
-        addLevel(25, 50, context.getDrawable(designSystemR.drawable.outline_battery_horiz_050_24))
-        addLevel(50, 99, context.getDrawable(designSystemR.drawable.outline_battery_horiz_075_24))
-        addLevel(99, 100, context.getDrawable(designSystemR.drawable.outline_battery_full_alt_24))
-    }
-
-    batteryIcons.level = 50
-
     val photoUrls = listOf(
         "https://pelipecky.sk/wp-content/uploads/2020/03/cesta-domov-400x240.jpg",
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
@@ -80,7 +59,7 @@ internal fun SlideshowRoute(
     val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsState()
 
     SlideshowScreen(
-        batteryIcon = batteryIcons.current,
+        batteryLevel = 50,
         photoUrls = photoUrls,
         currentAndForecastWeather = currentAndForecastWeather,
         modifier = modifier,
@@ -94,7 +73,7 @@ internal fun SlideshowRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
-    batteryIcon: Drawable,
+    batteryLevel: Int,
     photoUrls: List<Any?>,
     currentAndForecastWeather: CurrentAndForecastWeather?,
     modifier: Modifier = Modifier,
@@ -134,7 +113,7 @@ internal fun SlideshowScreen(
                 .align(Alignment.TopEnd),
         ) {
             BatteryIcon(
-                icon = batteryIcon,
+                level = batteryLevel,
                 modifier = Modifier
                     .size(58.dp)
                     .padding(16.dp),
@@ -149,19 +128,6 @@ internal fun SlideshowScreen(
             )
         }
     }
-}
-
-@Composable
-private fun BatteryIcon(
-    icon: Drawable,
-    modifier: Modifier = Modifier,
-) {
-    val bitmap = icon.toBitmap().asImageBitmap()
-    Image(
-        bitmap = bitmap,
-        contentDescription = null,
-        modifier = modifier,
-    )
 }
 
 @Composable
@@ -230,11 +196,9 @@ private fun DateInfoShortPanel(
 )
 @Composable
 fun SlideshowScreenTabletPreview() {
-    val context = LocalContext.current
-    val iconDrawable = context.getDrawable(designSystemR.drawable.outline_battery_full_alt_24)
     FireframeTheme {
         SlideshowScreen(
-            batteryIcon = iconDrawable!!,
+            batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
@@ -249,11 +213,9 @@ fun SlideshowScreenTabletPreview() {
 )
 @Composable
 fun SlideshowScreenMobilePreview() {
-    val context = LocalContext.current
-    val iconDrawable = context.getDrawable(designSystemR.drawable.outline_battery_full_alt_24)
     FireframeTheme {
         SlideshowScreen(
-            batteryIcon = iconDrawable!!,
+            batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),

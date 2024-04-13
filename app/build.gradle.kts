@@ -86,7 +86,6 @@ dependencies {
     implementation(project(":feature:slideshow"))
 
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.kt)
