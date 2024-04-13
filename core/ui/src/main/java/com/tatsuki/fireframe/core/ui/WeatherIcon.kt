@@ -10,6 +10,7 @@ fun WeatherIcon(
     weatherId: Int,
     modifier: Modifier = Modifier,
 ) {
+    // https://erikflowers.github.io/weather-icons/api-list.html
     val iconResId = when (weatherId) {
         in 200..202, in 230..232 -> R.drawable.wi_thunderstorm
         in 210..221 -> R.drawable.wi_lightning

@@ -8,5 +8,6 @@ android {
 }
 
 dependencies {
+    api(project(":core:datastore"))
     api(project(":core:network"))
 }

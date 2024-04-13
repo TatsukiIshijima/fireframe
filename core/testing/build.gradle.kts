@@ -13,6 +13,7 @@ dependencies {
     api(libs.hilt.android.testing)
     api(libs.kotlinx.coroutines.test)
     api(libs.robolectric)
+    api(libs.turbine)
 
     debugApi(libs.androidx.ui.test.manifest)
 
