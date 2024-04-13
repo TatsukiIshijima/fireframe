@@ -35,7 +35,7 @@ class SettingPreferencesImpl @Inject constructor(
     }
 
     companion object {
-        private const val FILE_NAME = "user_preferences"
+        private const val FILE_NAME = "setting_preferences"
         private const val KEY_LOCATION = "location"
     }
 }
