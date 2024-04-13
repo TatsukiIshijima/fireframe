@@ -18,6 +18,7 @@
 
 package com.tatsuki.fireframe.core.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -56,6 +57,9 @@ fun AsyncImage(
     ) {
         val state = painter.state
         if (isLocalInspection || state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+            if (state is AsyncImagePainter.State.Error) {
+                Log.e("AsyncImage", "model: $model, error: ${state.result.throwable.message}")
+            }
             placeHolder()
         } else {
             Image(

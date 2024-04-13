@@ -23,6 +23,7 @@ class SlideshowScreenshotTests {
     fun capture_slideshow_screen() {
         composeTestRule.setContent {
             SlideshowScreen(
+                batteryLevel = 50,
                 photoUrls = listOf(
                     R.drawable.dummy_image,
                 ),

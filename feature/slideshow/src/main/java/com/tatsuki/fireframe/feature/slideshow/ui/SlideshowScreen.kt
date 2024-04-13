@@ -2,7 +2,6 @@ package com.tatsuki.fireframe.feature.slideshow.ui
 
 import android.graphics.Typeface
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,9 +31,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.AsyncImage
+import com.tatsuki.fireframe.core.ui.BatteryIcon
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
+import com.tatsuki.fireframe.core.ui.WeatherIcon
 import com.tatsuki.fireframe.feature.slideshow.R
 import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
 
@@ -45,6 +45,7 @@ internal fun SlideshowRoute(
     slideshowViewModel: SlideshowViewModel = hiltViewModel(),
 ) {
     val photoUrls = listOf(
+        "https://pelipecky.sk/wp-content/uploads/2020/03/cesta-domov-400x240.jpg",
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
         "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
         "https://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/rcam/RLB_486265291EDR_F0481570RHAZ00323M_.JPG",
@@ -59,6 +60,7 @@ internal fun SlideshowRoute(
     val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsState()
 
     SlideshowScreen(
+        batteryLevel = 50,
         photoUrls = photoUrls,
         currentAndForecastWeather = currentAndForecastWeather,
         modifier = modifier,
@@ -72,6 +74,7 @@ internal fun SlideshowRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
+    batteryLevel: Int,
     photoUrls: List<Any?>,
     currentAndForecastWeather: CurrentAndForecastWeather?,
     modifier: Modifier = Modifier,
@@ -87,7 +90,7 @@ internal fun SlideshowScreen(
                 pageCount = photoUrls.size,
                 modifier = Modifier.fillMaxSize(),
                 beyondBoundsPageCount = 1,
-                delayMills = 3000,
+                delayMills = 5000,
             ) { page ->
                 AsyncImage(
                     model = photoUrls[page],
@@ -111,6 +114,7 @@ internal fun SlideshowScreen(
                 .align(Alignment.TopEnd),
         ) {
             BatteryIcon(
+                level = batteryLevel,
                 modifier = Modifier
                     .size(58.dp)
                     .padding(16.dp),
@@ -125,17 +129,6 @@ internal fun SlideshowScreen(
             )
         }
     }
-}
-
-@Composable
-private fun BatteryIcon(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        painter = painterResource(id = android.R.drawable.ic_lock_idle_low_battery),
-        contentDescription = null,
-        modifier = modifier,
-    )
 }
 
 @Composable
@@ -162,15 +155,8 @@ private fun DateInfoShortPanel(
                     modifier = baseModifier.padding(end = 12.dp),
                 )
             } else {
-                AsyncImage(
-                    model = currentAndForecastWeather.currentWeather.weatherDataList.first().iconUrl,
-                    contentDescription = null,
-                    placeHolder = {
-                        Text(
-                            text = "ー",
-                            modifier = baseModifier.padding(end = 12.dp),
-                        )
-                    },
+                WeatherIcon(
+                    weatherId = currentAndForecastWeather.currentWeather.weatherDataList.first().id,
                     modifier = baseModifier.size(42.dp),
                 )
             }
@@ -206,10 +192,11 @@ private fun DateInfoShortPanel(
 fun SlideshowScreenTabletPreview() {
     FireframeTheme {
         SlideshowScreen(
+            batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
-            currentAndForecastWeather = null,
+            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
         )
     }
 }
@@ -222,10 +209,11 @@ fun SlideshowScreenTabletPreview() {
 fun SlideshowScreenMobilePreview() {
     FireframeTheme {
         SlideshowScreen(
+            batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
-            currentAndForecastWeather = null,
+            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
         )
     }
 }
