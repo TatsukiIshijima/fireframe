@@ -35,7 +35,9 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/datastore" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/onboarding" />
             <option value="$PROJECT_DIR$/feature/slideshow" />
+            <option value="$PROJECT_DIR$/onboarding" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
