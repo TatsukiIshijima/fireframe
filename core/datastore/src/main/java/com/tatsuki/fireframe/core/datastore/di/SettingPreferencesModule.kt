@@ -1,7 +1,7 @@
 package com.tatsuki.fireframe.core.datastore.di
 
-import com.tatsuki.fireframe.core.datastore.UserPreferences
-import com.tatsuki.fireframe.core.datastore.UserPreferencesImpl
+import com.tatsuki.fireframe.core.datastore.SettingPreferences
+import com.tatsuki.fireframe.core.datastore.SettingPreferencesImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface UserPreferencesModule {
+interface SettingPreferencesModule {
 
     @Binds
     @Singleton
-    fun bindUserPreference(
-        userPreferencesImpl: UserPreferencesImpl,
-    ): UserPreferences
+    fun bind(
+        settingPreferencesImpl: SettingPreferencesImpl,
+    ): SettingPreferences
 }

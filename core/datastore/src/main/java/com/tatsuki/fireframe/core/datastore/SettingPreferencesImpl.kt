@@ -13,9 +13,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class UserPreferencesImpl @Inject constructor(
+class SettingPreferencesImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-) : UserPreferences {
+) : SettingPreferences {
 
     private val Context.dataStore by preferencesDataStore(FILE_NAME)
     private val locationPreferencesKey = stringPreferencesKey(KEY_LOCATION)

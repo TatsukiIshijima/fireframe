@@ -17,18 +17,18 @@ import kotlin.test.assertEquals
 @HiltAndroidTest
 @Config(application = HiltTestApplication::class)
 @RunWith(AndroidJUnit4::class)
-class UserPreferencesTest {
+class SettingPreferencesTest {
 
     @get:Rule
     val hiltAndroidAutoInjectRule = HiltAndroidAutoInjectRule(this)
 
     @Inject
-    lateinit var userPreferences: UserPreferences
+    lateinit var settingPreferences: SettingPreferences
 
     @Test
     fun flowCurrentLocationWhenUpdateLocation() = runTest {
-        userPreferences.locationFlow.test {
-            userPreferences.updateLocation(
+        settingPreferences.locationFlow.test {
+            settingPreferences.updateLocation(
                 Location(
                     latitude = 35.6800897,
                     longitude = 139.7654783,
