@@ -35,6 +35,7 @@ import com.tatsuki.fireframe.core.ui.BatteryIcon
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
+import com.tatsuki.fireframe.core.ui.WeatherIcon
 import com.tatsuki.fireframe.feature.slideshow.R
 import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
 
@@ -154,15 +155,8 @@ private fun DateInfoShortPanel(
                     modifier = baseModifier.padding(end = 12.dp),
                 )
             } else {
-                AsyncImage(
-                    model = currentAndForecastWeather.currentWeather.weatherDataList.first().iconUrl,
-                    contentDescription = null,
-                    placeHolder = {
-                        Text(
-                            text = "ー",
-                            modifier = baseModifier.padding(end = 12.dp),
-                        )
-                    },
+                WeatherIcon(
+                    weatherId = currentAndForecastWeather.currentWeather.weatherDataList.first().id,
                     modifier = baseModifier.size(42.dp),
                 )
             }
@@ -202,7 +196,7 @@ fun SlideshowScreenTabletPreview() {
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
-            currentAndForecastWeather = null,
+            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
         )
     }
 }
@@ -219,7 +213,7 @@ fun SlideshowScreenMobilePreview() {
             photoUrls = listOf(
                 R.drawable.dummy_image,
             ),
-            currentAndForecastWeather = null,
+            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
         )
     }
 }

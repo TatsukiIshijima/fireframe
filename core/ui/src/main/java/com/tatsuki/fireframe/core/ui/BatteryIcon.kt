@@ -26,7 +26,7 @@ fun BatteryIcon(
 
     Image(
         bitmap = batteryIcons.current.toBitmap().asImageBitmap(),
-        contentDescription = null,
+        contentDescription = "Battery icon",
         modifier = modifier,
     )
 }
