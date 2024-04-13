@@ -12,5 +12,9 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.dataStore.preferences)
     api(project(":core:model"))
+
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(project(":core:testing"))
 }
