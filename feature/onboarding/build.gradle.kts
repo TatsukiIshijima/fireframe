@@ -20,6 +20,7 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(libs.google.accompanist.permissions)
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.junit)
