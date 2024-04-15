@@ -1,18 +1,24 @@
 package com.tatsuki.fireframe.feature.onboarding.ui
 
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.util.Size
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
+import com.tatsuki.fireframe.core.common.network.toContentUri
+import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.feature.onboarding.MediaPickerViewModel
 
 @Composable
@@ -20,7 +26,12 @@ internal fun MediaPickerRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaPickerViewModel = hiltViewModel(),
 ) {
+
+    val imageUris = mediaPickerViewModel.images.collectAsState()
+
     MediaPickerScreen(
+        onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
+        imageUris = imageUris.value.map { it.id.toContentUri() },
         modifier = modifier,
     )
 }
@@ -28,6 +39,8 @@ internal fun MediaPickerRoute(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun MediaPickerScreen(
+    onGrantedAllPermissions: () -> Unit,
+    imageUris: List<Uri>,
     modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
@@ -43,7 +56,37 @@ internal fun MediaPickerScreen(
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
 
     if (multiplePermissionState.allPermissionsGranted) {
-        Text("Read media permission Granted")
+
+        onGrantedAllPermissions()
+
+        if (imageUris.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                imageUris.forEach { uri ->
+                    val thumbnail = if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+                        LocalContext.current.contentResolver.loadThumbnail(
+                            uri,
+                            Size(320, 240),
+                            null,
+                        )
+                    } else {
+                        uri
+                    }
+                    AsyncImage(
+                        model = thumbnail,
+                        contentDescription = null,
+                        modifier = Modifier.size(
+                            width = 320.dp,
+                            height = 240.dp,
+                        ),
+                    )
+                }
+            }
+        } else {
+            Text("No images found")
+        }
     } else {
         Column {
             val textToShow = if (multiplePermissionState.shouldShowRationale) {

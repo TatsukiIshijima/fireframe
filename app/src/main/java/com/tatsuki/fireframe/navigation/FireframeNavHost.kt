@@ -3,6 +3,7 @@ package com.tatsuki.fireframe.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.tatsuki.fireframe.feature.onboarding.navigation.mediaPickerScreen
 import com.tatsuki.fireframe.feature.slideshow.navigation.slideshowScreen
 import com.tatsuki.fireframe.ui.FireframeAppState
 
@@ -10,7 +11,7 @@ import com.tatsuki.fireframe.ui.FireframeAppState
 fun FireframeNavHost(
     appState: FireframeAppState,
     modifier: Modifier = Modifier,
-    startDestination: Destination = Destination.Slideshow(),
+    startDestination: Destination = Destination.MediaPicker(),
 ) {
     val navController = appState.navController
     NavHost(
@@ -18,6 +19,6 @@ fun FireframeNavHost(
         startDestination = startDestination.routeName,
         modifier = modifier,
     ) {
-        slideshowScreen()
+        mediaPickerScreen()
     }
 }
