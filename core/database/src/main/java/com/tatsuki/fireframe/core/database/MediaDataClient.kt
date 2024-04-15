@@ -1,11 +1,11 @@
 package com.tatsuki.fireframe.core.database
 
-import com.tatsuki.fireframe.core.database.model.ImageDirectoryEntity
-import com.tatsuki.fireframe.core.database.model.ImageEntity
+import com.tatsuki.fireframe.core.model.MediaImageDirectory
+import com.tatsuki.fireframe.core.model.MediaImage
 
 interface MediaDataClient {
 
-    fun queryAllImageDirectories(): List<ImageDirectoryEntity>
+    suspend fun queryAllImageDirectories(): List<MediaImageDirectory>
 
-    fun queryImagesFromDirectory(name: String): List<ImageEntity>
+    suspend fun queryImagesFromDirectory(name: String): List<MediaImage>
 }

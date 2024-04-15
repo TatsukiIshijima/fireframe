@@ -1,10 +1,9 @@
 package com.tatsuki.fireframe.core.database
 
-import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
-import com.tatsuki.fireframe.core.database.model.ImageDirectoryEntity
-import com.tatsuki.fireframe.core.database.model.ImageEntity
+import com.tatsuki.fireframe.core.model.MediaImageDirectory
+import com.tatsuki.fireframe.core.model.MediaImage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -12,8 +11,8 @@ class MediaDataClientImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : MediaDataClient {
 
-    override fun queryAllImageDirectories(): List<ImageDirectoryEntity> {
-        val directories = mutableListOf<ImageDirectoryEntity>()
+    override suspend fun queryAllImageDirectories(): List<MediaImageDirectory> {
+        val directories = mutableListOf<MediaImageDirectory>()
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media.BUCKET_ID,
@@ -34,7 +33,7 @@ class MediaDataClientImpl @Inject constructor(
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
                 val name = cursor.getString(nameColumn)
-                val directory = ImageDirectoryEntity(
+                val directory = MediaImageDirectory(
                     id = id,
                     name = name,
                 )
@@ -47,12 +46,12 @@ class MediaDataClientImpl @Inject constructor(
         return directories
     }
 
-    override fun queryImagesFromDirectory(name: String): List<ImageEntity> {
-        val images = mutableListOf<ImageEntity>()
+    override suspend fun queryImagesFromDirectory(name: String): List<MediaImage> {
+        val images = mutableListOf<MediaImage>()
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DATA,
+//            MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATE_TAKEN,
         )
@@ -68,21 +67,18 @@ class MediaDataClientImpl @Inject constructor(
         )
         query?.use { cursor ->
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+//            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             val fileNameColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
-                val data = cursor.getString(dataColumn)
                 val fileName = cursor.getString(fileNameColumn)
-                val contentUri = ContentUris.withAppendedId(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    id,
-                )
-                val image = ImageEntity(
+//                val contentUri = ContentUris.withAppendedId(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                    id,
+//                )
+                val image = MediaImage(
                     id = id,
-                    path = data,
-                    uri = contentUri,
                     name = fileName,
                 )
                 images.add(image)
