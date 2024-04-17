@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaPickerViewModel @Inject constructor(
+class MediaSelectorViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
 ) : ViewModel() {
 

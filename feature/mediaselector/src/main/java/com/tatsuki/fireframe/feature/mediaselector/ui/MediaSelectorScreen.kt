@@ -1,6 +1,5 @@
 package com.tatsuki.fireframe.feature.mediaselector.ui
 
-import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.provider.MediaStore
@@ -21,17 +20,17 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.common.network.toContentUri
 import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.core.ui.AsyncImage
-import com.tatsuki.fireframe.feature.mediaselector.MediaPickerViewModel
+import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 
 @Composable
-internal fun MediaPickerRoute(
+internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
-    mediaPickerViewModel: MediaPickerViewModel = hiltViewModel(),
+    mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
 
     val images = mediaPickerViewModel.images.collectAsState()
 
-    MediaPickerScreen(
+    MediaSelectorScreen(
         onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
         images = images.value,
         modifier = modifier,
@@ -40,7 +39,7 @@ internal fun MediaPickerRoute(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-internal fun MediaPickerScreen(
+internal fun MediaSelectorScreen(
     onGrantedAllPermissions: () -> Unit,
     images: List<MediaImage>,
     modifier: Modifier = Modifier,

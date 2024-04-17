@@ -1,6 +1,6 @@
 package com.tatsuki.fireframe.navigation
 
-import com.tatsuki.fireframe.feature.mediaselector.navigation.MEDIA_PICKER_ROUTE
+import com.tatsuki.fireframe.feature.mediaselector.navigation.MEDIA_SELECTOR_ROUTE
 import com.tatsuki.fireframe.feature.slideshow.navigation.SLIDESHOW_ROUTE
 
 sealed interface Destination {
@@ -11,7 +11,7 @@ sealed interface Destination {
         override val routeName: String = SLIDESHOW_ROUTE,
     ) : Destination
 
-    data class MediaPicker(
-        override val routeName: String = MEDIA_PICKER_ROUTE,
+    data class MediaSelector(
+        override val routeName: String = MEDIA_SELECTOR_ROUTE,
     ) : Destination
 }
