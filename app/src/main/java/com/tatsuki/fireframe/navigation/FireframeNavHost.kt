@@ -3,8 +3,7 @@ package com.tatsuki.fireframe.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.tatsuki.fireframe.feature.onboarding.navigation.mediaPickerScreen
-import com.tatsuki.fireframe.feature.slideshow.navigation.slideshowScreen
+import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaPickerScreen
 import com.tatsuki.fireframe.ui.FireframeAppState
 
 @Composable

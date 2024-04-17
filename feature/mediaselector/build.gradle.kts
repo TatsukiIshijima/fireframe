@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tatsuki.fireframe.feature.onboarding"
+    namespace = "com.tatsuki.fireframe.feature.mediaselector"
 
     testOptions {
         unitTests {
