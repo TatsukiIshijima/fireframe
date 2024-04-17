@@ -1,8 +1,9 @@
-package com.tatsuki.fireframe.feature.onboarding.ui
+package com.tatsuki.fireframe.feature.mediaselector.ui
 
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.provider.MediaStore
 import android.util.Size
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,8 +19,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.common.network.toContentUri
+import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.core.ui.AsyncImage
-import com.tatsuki.fireframe.feature.onboarding.MediaPickerViewModel
+import com.tatsuki.fireframe.feature.mediaselector.MediaPickerViewModel
 
 @Composable
 internal fun MediaPickerRoute(
@@ -27,11 +29,11 @@ internal fun MediaPickerRoute(
     mediaPickerViewModel: MediaPickerViewModel = hiltViewModel(),
 ) {
 
-    val imageUris = mediaPickerViewModel.images.collectAsState()
+    val images = mediaPickerViewModel.images.collectAsState()
 
     MediaPickerScreen(
         onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
-        imageUris = imageUris.value.map { it.id.toContentUri() },
+        images = images.value,
         modifier = modifier,
     )
 }
@@ -40,7 +42,7 @@ internal fun MediaPickerRoute(
 @Composable
 internal fun MediaPickerScreen(
     onGrantedAllPermissions: () -> Unit,
-    imageUris: List<Uri>,
+    images: List<MediaImage>,
     modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
@@ -59,20 +61,25 @@ internal fun MediaPickerScreen(
 
         onGrantedAllPermissions()
 
-        if (imageUris.isNotEmpty()) {
+        if (images.isNotEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
-                imageUris.forEach { uri ->
+                images.forEach { image ->
                     val thumbnail = if (VERSION.SDK_INT >= VERSION_CODES.Q) {
                         LocalContext.current.contentResolver.loadThumbnail(
-                            uri,
+                            image.id.toContentUri(),
                             Size(320, 240),
                             null,
                         )
                     } else {
-                        uri
+                        MediaStore.Images.Thumbnails.getThumbnail(
+                            LocalContext.current.contentResolver,
+                            image.id,
+                            MediaStore.Images.Thumbnails.MINI_KIND,
+                            null,
+                        )
                     }
                     AsyncImage(
                         model = thumbnail,

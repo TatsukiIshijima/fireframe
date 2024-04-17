@@ -1,9 +1,8 @@
-package com.tatsuki.fireframe.feature.onboarding
+package com.tatsuki.fireframe.feature.mediaselector
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tatsuki.fireframe.core.common.network.toContentUri
 import com.tatsuki.fireframe.core.data.repository.MediaRepository
 import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.core.model.MediaImageDirectory
