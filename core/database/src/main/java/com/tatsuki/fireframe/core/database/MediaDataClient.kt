@@ -1,7 +1,7 @@
 package com.tatsuki.fireframe.core.database
 
-import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.core.model.MediaImage
+import com.tatsuki.fireframe.core.model.MediaImageDirectory
 
 interface MediaDataClient {
 

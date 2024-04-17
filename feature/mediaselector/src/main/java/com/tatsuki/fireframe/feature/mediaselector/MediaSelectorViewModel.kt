@@ -32,7 +32,7 @@ class MediaSelectorViewModel @Inject constructor(
     private fun loadImageDirectories() {
         viewModelScope.launch {
             try {
-                val directories =mediaRepository.getAllImageDirectories()
+                val directories = mediaRepository.getAllImageDirectories()
                 mutableDirectories.value = directories
             } catch (e: Exception) {
                 Log.e("MediaPickerViewModel", "Failed to load directories", e)
@@ -44,7 +44,7 @@ class MediaSelectorViewModel @Inject constructor(
     private fun loadImageUrisFrom(directory: String) {
         viewModelScope.launch {
             try {
-               val images = mediaRepository.getImagesFromDirectory(directory)
+                val images = mediaRepository.getImagesFromDirectory(directory)
                 mutableImages.value = images
             } catch (e: Exception) {
                 Log.e("MediaPickerViewModel", "Failed to load image urls", e)

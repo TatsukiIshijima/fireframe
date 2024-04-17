@@ -27,7 +27,6 @@ internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
-
     val images = mediaPickerViewModel.images.collectAsState()
 
     MediaSelectorScreen(
@@ -57,7 +56,6 @@ internal fun MediaSelectorScreen(
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
 
     if (multiplePermissionState.allPermissionsGranted) {
-
         onGrantedAllPermissions()
 
         if (images.isNotEmpty()) {
