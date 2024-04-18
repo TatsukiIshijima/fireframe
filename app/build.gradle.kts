@@ -83,6 +83,7 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
+    implementation(project(":feature:mediaselector"))
     implementation(project(":feature:slideshow"))
 
     implementation(libs.androidx.activity.compose)
