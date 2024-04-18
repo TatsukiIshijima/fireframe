@@ -16,11 +16,11 @@
 
 // https://github.com/android/nowinandroid/blob/main/core/common/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/di/DispatchersModule.kt
 
-package com.tatsuki.fireframe.core.common.network.di
+package com.tatsuki.fireframe.core.common.di
 
-import com.tatsuki.fireframe.core.common.network.Dispatcher
-import com.tatsuki.fireframe.core.common.network.FireframeDispatchers.Default
-import com.tatsuki.fireframe.core.common.network.FireframeDispatchers.IO
+import com.tatsuki.fireframe.core.common.Dispatcher
+import com.tatsuki.fireframe.core.common.FireframeDispatchers.Default
+import com.tatsuki.fireframe.core.common.FireframeDispatchers.IO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
