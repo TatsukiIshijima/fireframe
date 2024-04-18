@@ -1,8 +1,8 @@
 package com.tatsuki.fireframe.core.network.di
 
 import android.content.Context
-import com.tatsuki.fireframe.core.common.network.Dispatcher
-import com.tatsuki.fireframe.core.common.network.FireframeDispatchers.IO
+import com.tatsuki.fireframe.core.common.Dispatcher
+import com.tatsuki.fireframe.core.common.FireframeDispatchers.IO
 import com.tatsuki.fireframe.core.network.OpenWeatherApi
 import com.tatsuki.fireframe.core.network.fake.FakeAssetManager
 import com.tatsuki.fireframe.core.network.fake.FakeOpenWeatherApi

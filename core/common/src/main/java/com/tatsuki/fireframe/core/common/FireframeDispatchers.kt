@@ -16,7 +16,7 @@
 
 // https://github.com/android/nowinandroid/blob/main/core/common/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/NiaDispatchers.kt
 
-package com.tatsuki.fireframe.core.common.network
+package com.tatsuki.fireframe.core.common
 
 import javax.inject.Qualifier
 

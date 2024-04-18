@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.core.common.network
+package com.tatsuki.fireframe.core.common
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,8 +8,6 @@ import android.os.Build.VERSION_CODES
 import android.os.CancellationSignal
 import android.provider.MediaStore
 import android.util.Size
-
-// TODO: rename package
 
 fun Context.toThumbnail(
     imageId: Long,

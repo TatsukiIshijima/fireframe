@@ -18,10 +18,10 @@
 
 package com.tatsuki.fireframe.core.testing.di
 
-import com.tatsuki.fireframe.core.common.network.Dispatcher
-import com.tatsuki.fireframe.core.common.network.FireframeDispatchers.Default
-import com.tatsuki.fireframe.core.common.network.FireframeDispatchers.IO
-import com.tatsuki.fireframe.core.common.network.di.DispatcherModule
+import com.tatsuki.fireframe.core.common.Dispatcher
+import com.tatsuki.fireframe.core.common.FireframeDispatchers.Default
+import com.tatsuki.fireframe.core.common.FireframeDispatchers.IO
+import com.tatsuki.fireframe.core.common.di.DispatcherModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

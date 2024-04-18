@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.core.common.network
+package com.tatsuki.fireframe.core.common
 
 import android.content.ContentUris
 import android.net.Uri
