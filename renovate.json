@@ -41,11 +41,17 @@
     },
     {
       "groupName": "Androidx Lifecycle",
-      "matchPackagePatterns": ["androidx.lifecycle", "androidx.navigation:navigation-compose"]
+      "matchPackagePatterns": [
+        "androidx.lifecycle",
+        "androidx.navigation:navigation-compose"
+      ]
     },
     {
       "groupName": "Jetpack Compose",
-      "matchPackagePatterns": "^androidx\\..*compose\\."
+      "matchPackagePatterns": [
+        "^androidx\\..*compose\\.",
+        "com.google.accompanist:accompanist*"
+      ]
     }
   ]
 }
