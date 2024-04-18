@@ -16,7 +16,7 @@
 
 // https://github.com/android/nowinandroid/blob/main/core/designsystem/src/main/kotlin/com/google/samples/apps/nowinandroid/core/designsystem/component/DynamicAsyncImage.kt
 
-package com.tatsuki.fireframe.core.ui
+package com.tatsuki.fireframe.core.designsystem.component
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 
-// TODO: move design system module
 @Composable
 fun AsyncImage(
     model: Any?,

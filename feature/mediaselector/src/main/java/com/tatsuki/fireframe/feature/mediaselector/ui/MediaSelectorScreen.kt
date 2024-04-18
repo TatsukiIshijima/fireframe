@@ -34,10 +34,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.common.network.toThumbnail
+import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.MediaImage
-import com.tatsuki.fireframe.core.ui.AsyncImage
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import kotlinx.coroutines.launch
 
