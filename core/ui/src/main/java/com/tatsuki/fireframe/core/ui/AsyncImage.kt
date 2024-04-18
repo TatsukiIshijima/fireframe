@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 
+// TODO: move design system module
 @Composable
 fun AsyncImage(
     model: Any?,
