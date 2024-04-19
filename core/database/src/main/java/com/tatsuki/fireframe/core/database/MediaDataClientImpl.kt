@@ -41,14 +41,16 @@ class MediaDataClientImpl @Inject constructor(
                     if (displayName.isEmpty()) {
                         continue
                     }
-                    val directory = MediaImageDirectory(
-                        id = id,
-                        name = displayName,
-                    )
-                    if (directories.any { it.name == directory.name }) {
+                    if (directories.any { it.name == displayName }) {
                         continue
                     }
                     Log.d("MediaDataClientImpl", "id: $id, displayName: $displayName")
+                    val images = queryImagesFromDirectory(displayName)
+                    val directory = MediaImageDirectory(
+                        id = id,
+                        name = displayName,
+                        images = images,
+                    )
                     directories.add(directory)
                 }
             }
@@ -60,7 +62,7 @@ class MediaDataClientImpl @Inject constructor(
         }
     }
 
-    override suspend fun queryImagesFromDirectory(name: String): List<MediaImage> {
+    private suspend fun queryImagesFromDirectory(name: String): List<MediaImage> {
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media._ID,

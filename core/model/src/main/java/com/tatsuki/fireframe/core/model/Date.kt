@@ -14,7 +14,7 @@ object Date {
     }
 
     fun formattedCurrentLocalDate(): String {
-        val formatter = DateTimeFormatter.ofPattern("M月d日（E）")
+        val formatter = DateTimeFormatter.ofPattern("M月d日(E)")
         return formatter.format(currentLocalDateTime().toJavaLocalDateTime())
     }
 }

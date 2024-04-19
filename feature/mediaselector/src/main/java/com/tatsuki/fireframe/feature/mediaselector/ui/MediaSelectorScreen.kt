@@ -5,28 +5,33 @@ import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,19 +43,21 @@ import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.MediaImage
+import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import kotlinx.coroutines.launch
+import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 
 @Composable
 internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
-    val images = mediaPickerViewModel.images.collectAsState()
+    val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
 
     MediaSelectorScreen(
         onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
-        images = images.value,
+        directories = directoriesState.value,
         modifier = modifier,
     )
 }
@@ -59,7 +66,7 @@ internal fun MediaSelectorRoute(
 @Composable
 internal fun MediaSelectorScreen(
     onGrantedAllPermissions: () -> Unit,
-    images: List<MediaImage>,
+    directories: List<MediaImageDirectory>,
     modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
@@ -75,34 +82,35 @@ internal fun MediaSelectorScreen(
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
 
     if (multiplePermissionState.allPermissionsGranted) {
-        onGrantedAllPermissions()
-
-        if (images.isNotEmpty()) {
-            MediaSelectorTabPager(
-                tabNames = listOf("Camera", "Screenshot"),
-                pageContent = { pageIndex ->
-                    MediaGallery(mediaImages = images)
-                },
-            )
-        } else {
-            Text("No images found")
+        LaunchedEffect(Unit) {
+            onGrantedAllPermissions()
         }
+        // FIXME: change not recomposition
+        MediaSelectorTabPager(
+            tabNames = directories.map { it.name },
+            modifier = modifier,
+            pageContent = { pageIndex ->
+                val images = directories[pageIndex].images
+                if (images.isNotEmpty()) {
+                    MediaGallery(mediaImages = images)
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text("No images found")
+                    }
+                }
+            },
+        )
     } else {
-        Column {
-            val textToShow = if (multiplePermissionState.shouldShowRationale) {
-                // If the user has denied the permission but the rationale can be shown,
-                // then gently explain why the app requires this permission
-                "The read media is important for this app. Please grant the permission."
-            } else {
-                // If it's the first time the user lands on this feature, or the user
-                // doesn't want to be asked again for this permission, explain that the
-                // permission is required
-                "Read media permission required for this feature to be available. " +
-                    "Please grant the permission"
+        if (multiplePermissionState.shouldShowRationale) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text("The read media is important for this app. Please grant the permission.")
             }
-            Text(textToShow)
-            Button(onClick = { multiplePermissionState.launchMultiplePermissionRequest() }) {
-                Text("Request permission")
+        } else {
+            LaunchedEffect(Unit) {
+                multiplePermissionState.launchMultiplePermissionRequest()
             }
         }
     }
@@ -170,36 +178,33 @@ private fun MediaSelectorTab(
 private fun MediaGallery(
     mediaImages: List<MediaImage>,
     modifier: Modifier = Modifier,
+    state: LazyGridState = rememberLazyGridState(),
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(128.dp),
         modifier = modifier.fillMaxSize(),
+        state = state,
         verticalArrangement = Arrangement.spacedBy(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         items(mediaImages.size) {
+            val image = mediaImages[it]
             val isLocalInspection = LocalInspectionMode.current
             if (isLocalInspection) {
                 Placeholder(
                     text = "Image$it",
                 )
-                return@items
+            } else {
+                val thumbnail = LocalContext.current.toThumbnail(image.id)
+                AsyncImage(
+                    model = thumbnail,
+                    contentDescription = null,
+                    modifier = Modifier.aspectRatio(1f),
+                    placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
+                    contentScale = ContentScale.Crop,
+                    filterQuality = FilterQuality.Low,
+                )
             }
-
-            val image = mediaImages[it]
-            val thumbnail = LocalContext.current.toThumbnail(image.id)
-            AsyncImage(
-                model = thumbnail,
-                contentDescription = null,
-                modifier = Modifier.aspectRatio(1f),
-                contentScale = ContentScale.Crop,
-                filterQuality = FilterQuality.Low,
-                placeHolder = {
-                    Placeholder(
-                        text = "Image$it",
-                    )
-                },
-            )
         }
     }
 }
