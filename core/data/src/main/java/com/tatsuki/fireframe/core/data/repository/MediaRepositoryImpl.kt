@@ -1,7 +1,6 @@
 package com.tatsuki.fireframe.core.data.repository
 
 import com.tatsuki.fireframe.core.database.MediaDataClient
-import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import javax.inject.Inject
 
