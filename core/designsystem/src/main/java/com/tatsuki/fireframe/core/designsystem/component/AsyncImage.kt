@@ -18,55 +18,38 @@
 
 package com.tatsuki.fireframe.core.designsystem.component
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalInspectionMode
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
 
 @Composable
 fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
+    placeholder: Painter? = null,
+    error: Painter? = null,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DrawScope.DefaultFilterQuality,
     clipToBounds: Boolean = true,
-    placeHolder: @Composable () -> Unit = {},
 ) {
-    // Determine if the composable is being used in preview etc.
-    val isLocalInspection = LocalInspectionMode.current
-
-    SubcomposeAsyncImage(
+    coil.compose.AsyncImage(
         model = model,
         contentDescription = contentDescription,
+        modifier = modifier,
+        placeholder = placeholder,
+        error = error,
         contentScale = contentScale,
         alpha = alpha,
         colorFilter = colorFilter,
         filterQuality = filterQuality,
         clipToBounds = clipToBounds,
-    ) {
-        val state = painter.state
-        if (isLocalInspection || state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
-            if (state is AsyncImagePainter.State.Error) {
-                Log.e("AsyncImage", "model: $model, error: ${state.result.throwable.message}")
-            }
-            placeHolder()
-        } else {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = modifier,
-            )
-        }
-    }
+    )
 }

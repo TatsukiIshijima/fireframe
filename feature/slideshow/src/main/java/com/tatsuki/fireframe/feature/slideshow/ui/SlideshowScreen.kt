@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -96,16 +95,11 @@ internal fun SlideshowScreen(
                     model = photoUrls[page],
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
+                    // TODO: set placeholder and error resources
+                    placeholder = null,
+                    error = null,
                     contentScale = ContentScale.Crop,
                     filterQuality = FilterQuality.Low,
-                    placeHolder = {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    },
                 )
             }
         }

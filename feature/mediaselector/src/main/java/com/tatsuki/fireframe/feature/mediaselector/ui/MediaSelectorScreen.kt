@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import kotlinx.coroutines.launch
+import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 
 @Composable
 internal fun MediaSelectorRoute(
@@ -186,28 +188,23 @@ private fun MediaGallery(
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         items(mediaImages.size) {
+            val image = mediaImages[it]
             val isLocalInspection = LocalInspectionMode.current
             if (isLocalInspection) {
                 Placeholder(
                     text = "Image$it",
                 )
-                return@items
+            } else {
+                val thumbnail = LocalContext.current.toThumbnail(image.id)
+                AsyncImage(
+                    model = thumbnail,
+                    contentDescription = null,
+                    modifier = Modifier.aspectRatio(1f),
+                    placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
+                    contentScale = ContentScale.Crop,
+                    filterQuality = FilterQuality.Low,
+                )
             }
-
-            val image = mediaImages[it]
-            val thumbnail = LocalContext.current.toThumbnail(image.id)
-            AsyncImage(
-                model = thumbnail,
-                contentDescription = null,
-                modifier = Modifier.aspectRatio(1f),
-                contentScale = ContentScale.Crop,
-                filterQuality = FilterQuality.Low,
-                placeHolder = {
-                    Placeholder(
-                        text = "Image$it",
-                    )
-                },
-            )
         }
     }
 }
