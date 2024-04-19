@@ -18,7 +18,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -26,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
@@ -44,6 +42,7 @@ import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.MediaImage
+import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import kotlinx.coroutines.launch
 
@@ -52,11 +51,11 @@ internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
-    val images = mediaPickerViewModel.images.collectAsState()
+    val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
 
     MediaSelectorScreen(
         onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
-        images = images.value,
+        directories = directoriesState.value,
         modifier = modifier,
     )
 }
@@ -65,7 +64,7 @@ internal fun MediaSelectorRoute(
 @Composable
 internal fun MediaSelectorScreen(
     onGrantedAllPermissions: () -> Unit,
-    images: List<MediaImage>,
+    directories: List<MediaImageDirectory>,
     modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
@@ -86,9 +85,10 @@ internal fun MediaSelectorScreen(
         }
         // FIXME: change not recomposition
         MediaSelectorTabPager(
-            tabNames = listOf("Camera", "Screenshot"),
+            tabNames = directories.map { it.name },
             modifier = modifier,
             pageContent = { pageIndex ->
+                val images = directories[pageIndex].images
                 if (images.isNotEmpty()) {
                     MediaGallery(mediaImages = images)
                 } else {

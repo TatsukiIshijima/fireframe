@@ -12,8 +12,4 @@ class MediaRepositoryImpl @Inject constructor(
     override suspend fun getAllImageDirectories(): List<MediaImageDirectory> {
         return mediaDataClient.queryAllImageDirectories()
     }
-
-    override suspend fun getImagesFromDirectory(name: String): List<MediaImage> {
-        return mediaDataClient.queryImagesFromDirectory(name)
-    }
 }
