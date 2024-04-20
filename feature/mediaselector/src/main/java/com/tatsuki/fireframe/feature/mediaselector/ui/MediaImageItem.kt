@@ -9,11 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
@@ -25,16 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
-import com.tatsuki.fireframe.core.model.MediaImage
 import com.tatsuki.fireframe.feature.mediaselector.R
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
 
 @Composable
 private fun MediaImageItem(
-    mediaImage: MediaImage,
-    model: Any?,
+    mediaImage: SelectableMediaImage,
     contentDescription: String?,
     isSelected: Boolean,
-    onSelect: (MediaImage) -> Unit,
+    onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: Painter? = null,
     error: Painter? = null,
@@ -52,17 +46,12 @@ private fun MediaImageItem(
             )
         } else {
             AsyncImage(
-                model = model,
+                model = mediaImage.uri,
                 contentDescription = contentDescription,
                 modifier = Modifier
                     .fillMaxSize()
                     .aspectRatio(1f)
-                    .clickable {
-                        if (model == null) {
-                            return@clickable
-                        }
-                        onSelect(mediaImage)
-                    },
+                    .clickable { onSelect(mediaImage) },
                 placeholder = placeholder,
                 error = error,
                 contentScale = contentScale,
@@ -87,11 +76,7 @@ private fun MediaImageItem(
 @Composable
 private fun MediaImageItemPreview() {
     MediaImageItem(
-        mediaImage = MediaImage(
-            id = 0,
-            name = "Image",
-        ),
-        model = "",
+        mediaImage = SelectableMediaImage.fake(),
         contentDescription = "Image",
         modifier = Modifier.size(128.dp),
         isSelected = true,
@@ -101,27 +86,20 @@ private fun MediaImageItemPreview() {
 
 @Composable
 internal fun MediaImageItem(
-    mediaImage: MediaImage,
-    model: Any?,
+    mediaImage: SelectableMediaImage,
     contentDescription: String?,
-    onSelect: (MediaImage) -> Unit,
+    onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: Painter? = null,
     error: Painter? = null,
     contentScale: ContentScale = ContentScale.Crop,
     filterQuality: FilterQuality = FilterQuality.High,
 ) {
-    var isSelected by rememberSaveable { mutableStateOf(false) }
-
     MediaImageItem(
         mediaImage = mediaImage,
-        model = model,
         contentDescription = contentDescription,
-        isSelected = isSelected,
-        onSelect = {
-            isSelected = !isSelected
-            onSelect(it)
-        },
+        isSelected = mediaImage.isSelected.value,
+        onSelect = { image -> onSelect(image) },
         modifier = modifier,
         placeholder = placeholder,
         error = error,
