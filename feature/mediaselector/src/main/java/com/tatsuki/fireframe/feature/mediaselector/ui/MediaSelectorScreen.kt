@@ -39,7 +39,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.common.toThumbnail
-import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.MediaImage
@@ -196,9 +195,10 @@ private fun MediaGallery(
                 )
             } else {
                 val thumbnail = LocalContext.current.toThumbnail(image.id)
-                AsyncImage(
+                MediaImageItem(
                     model = thumbnail,
                     contentDescription = null,
+                    isSelected = true,
                     modifier = Modifier.aspectRatio(1f),
                     placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
                     contentScale = ContentScale.Crop,
