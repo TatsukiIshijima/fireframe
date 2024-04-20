@@ -8,7 +8,6 @@ import com.tatsuki.fireframe.core.model.MediaImage
 
 data class SelectableMediaImage(
     val id: Long,
-    val name: String,
     val uri: Uri,
     val isSelected: MutableState<Boolean> = mutableStateOf(false),
 ) {
@@ -16,7 +15,6 @@ data class SelectableMediaImage(
         fun from(mediaImage: MediaImage): SelectableMediaImage {
             return SelectableMediaImage(
                 id = mediaImage.id,
-                name = mediaImage.name,
                 uri = mediaImage.id.toContentUri(),
                 isSelected = mutableStateOf(false),
             )
@@ -24,13 +22,11 @@ data class SelectableMediaImage(
 
         fun fake(
             id: Long = 0,
-            name: String = "FakeImage",
             uri: Uri = Uri.EMPTY,
             isSelected: MutableState<Boolean> = mutableStateOf(false),
         ): SelectableMediaImage {
             return SelectableMediaImage(
                 id = id,
-                name = name,
                 uri = uri,
                 isSelected = isSelected,
             )
