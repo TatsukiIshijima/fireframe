@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.fireframe.android.library)
     alias(libs.plugins.fireframe.android.hilt)
+    alias(libs.plugins.fireframe.android.room)
 }
 
 android {
