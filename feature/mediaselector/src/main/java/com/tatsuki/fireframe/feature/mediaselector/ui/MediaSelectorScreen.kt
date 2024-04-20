@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -38,36 +37,19 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.tatsuki.fireframe.core.common.toThumbnail
-import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
-import com.tatsuki.fireframe.core.model.MediaImage
-import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
 import kotlinx.coroutines.launch
 import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
-) {
-    val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
-
-    MediaSelectorScreen(
-        onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
-        directories = directoriesState.value,
-        modifier = modifier,
-    )
-}
-
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
-@Composable
-internal fun MediaSelectorScreen(
-    onGrantedAllPermissions: () -> Unit,
-    directories: List<MediaImageDirectory>,
-    modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
         listOf(
@@ -80,24 +62,17 @@ internal fun MediaSelectorScreen(
         )
     }
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
-
     if (multiplePermissionState.allPermissionsGranted) {
         LaunchedEffect(Unit) {
-            onGrantedAllPermissions()
+            mediaPickerViewModel.onGrantedReadExternalStoragePermission()
         }
-        // FIXME: change not recomposition
-        MediaSelectorTabPager(
-            tabNames = directories.map { it.name },
+        val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
+        MediaSelectorScreen(
+            directories = directoriesState.value,
             modifier = modifier,
-            pageContent = { pageIndex ->
-                val images = directories[pageIndex].images
-                if (images.isNotEmpty()) {
-                    MediaGallery(mediaImages = images)
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text("No images found")
-                    }
-                }
+            onSelect = { selectedImage ->
+                Log.d("MediaSelectorScreen", "onSelect: $selectedImage")
+                mediaPickerViewModel.onSelect(selectedImage)
             },
         )
     } else {
@@ -118,6 +93,33 @@ internal fun MediaSelectorScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+internal fun MediaSelectorScreen(
+    directories: List<SelectableMediaImageDirectory>,
+    modifier: Modifier = Modifier,
+    onSelect: (SelectableMediaImage) -> Unit = {},
+) {
+    // FIXME: change not recomposition
+    MediaSelectorTabPager(
+        tabNames = directories.map { it.name },
+        modifier = modifier,
+        pageContent = { pageIndex ->
+            val images = directories[pageIndex].selectableMediaImages
+            if (images.isNotEmpty()) {
+                MediaGallery(
+                    mediaImages = images,
+                    onSelect = { mediaImage -> onSelect(mediaImage) },
+                )
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text("No images found")
+                }
+            }
+        },
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
 private fun MediaSelectorTabPager(
     tabNames: List<String>,
     modifier: Modifier = Modifier,
@@ -134,7 +136,7 @@ private fun MediaSelectorTabPager(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier.fillMaxWidth(),
             onTabClick = { index ->
-                Log.d("MediaSelectorTabPager", "onTabClick: $index")
+                Log.d("MediaSelectorScreen", "onTabClick: $index")
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(index)
                 }
@@ -176,8 +178,9 @@ private fun MediaSelectorTab(
 
 @Composable
 private fun MediaGallery(
-    mediaImages: List<MediaImage>,
+    mediaImages: List<SelectableMediaImage>,
     modifier: Modifier = Modifier,
+    onSelect: (SelectableMediaImage) -> Unit = {},
     state: LazyGridState = rememberLazyGridState(),
 ) {
     LazyVerticalGrid(
@@ -195,10 +198,10 @@ private fun MediaGallery(
                     text = "Image$it",
                 )
             } else {
-                val thumbnail = LocalContext.current.toThumbnail(image.id)
-                AsyncImage(
-                    model = thumbnail,
+                MediaImageItem(
+                    mediaImage = image,
                     contentDescription = null,
+                    onSelect = { mediaImage -> onSelect(mediaImage) },
                     modifier = Modifier.aspectRatio(1f),
                     placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
                     contentScale = ContentScale.Crop,
@@ -209,30 +212,22 @@ private fun MediaGallery(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview(
     showBackground = true,
     device = Devices.PIXEL_TABLET,
 )
 @Composable
-private fun MediaSelectorTabPagerTabletPreview() {
+private fun MediaSelectorScreenTabletPreview() {
     FireframeTheme {
-        MediaSelectorTabPager(
-            tabNames = listOf(
-                "Tab1",
-                "Tab2",
+        MediaSelectorScreen(
+            directories = listOf(
+                SelectableMediaImageDirectory.fake(
+                    name = "Camera",
+                ),
+                SelectableMediaImageDirectory.fake(
+                    name = "Screenshots",
+                ),
             ),
-            pageContent = {
-                val images = (0..10).map {
-                    MediaImage(
-                        id = it.toLong(),
-                        name = "image$it",
-                    )
-                }
-                MediaGallery(
-                    mediaImages = images,
-                )
-            },
         )
     }
 }
@@ -243,24 +238,17 @@ private fun MediaSelectorTabPagerTabletPreview() {
     device = Devices.PIXEL_7,
 )
 @Composable
-private fun MediaSelectorTabPagerMobilePreview() {
+private fun MediaSelectorScreenMobilePreview() {
     FireframeTheme {
-        MediaSelectorTabPager(
-            tabNames = listOf(
-                "Tab1",
-                "Tab2",
+        MediaSelectorScreen(
+            directories = listOf(
+                SelectableMediaImageDirectory.fake(
+                    name = "Camera",
+                ),
+                SelectableMediaImageDirectory.fake(
+                    name = "Screenshots",
+                ),
             ),
-            pageContent = {
-                val images = (0..10).map {
-                    MediaImage(
-                        id = it.toLong(),
-                        name = "image$it",
-                    )
-                }
-                MediaGallery(
-                    mediaImages = images,
-                )
-            },
         )
     }
 }
