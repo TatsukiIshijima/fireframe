@@ -15,3 +15,7 @@ data class LocalMediaImageEntity(
 fun LocalMediaImageEntity.asExternalModel() = MediaImage(
     id = id,
 )
+
+fun MediaImage.toEntity() = LocalMediaImageEntity(
+    id = id,
+)
