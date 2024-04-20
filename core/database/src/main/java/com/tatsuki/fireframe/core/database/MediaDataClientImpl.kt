@@ -88,10 +88,7 @@ class MediaDataClientImpl @Inject constructor(
                 while (cursor.moveToNext()) {
                     val id = cursor.getLong(idColumn)
                     val fileName = cursor.getString(fileNameColumn)
-                    val image = MediaImage(
-                        id = id,
-                        name = fileName,
-                    )
+                    val image = MediaImage(id)
                     Log.d("MediaDataClientImpl", "id: $id, fileName: $fileName")
                     images.add(image)
                 }
