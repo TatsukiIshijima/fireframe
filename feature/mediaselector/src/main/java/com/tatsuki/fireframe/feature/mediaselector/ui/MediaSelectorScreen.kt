@@ -47,26 +47,11 @@ import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import kotlinx.coroutines.launch
 import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
     mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
-) {
-    val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
-
-    MediaSelectorScreen(
-        onGrantedAllPermissions = mediaPickerViewModel::onGrantedReadExternalStoragePermission,
-        directories = directoriesState.value,
-        modifier = modifier,
-    )
-}
-
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
-@Composable
-internal fun MediaSelectorScreen(
-    onGrantedAllPermissions: () -> Unit,
-    directories: List<MediaImageDirectory>,
-    modifier: Modifier = Modifier,
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
         listOf(
@@ -79,24 +64,16 @@ internal fun MediaSelectorScreen(
         )
     }
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
-
     if (multiplePermissionState.allPermissionsGranted) {
         LaunchedEffect(Unit) {
-            onGrantedAllPermissions()
+            mediaPickerViewModel.onGrantedReadExternalStoragePermission()
         }
-        // FIXME: change not recomposition
-        MediaSelectorTabPager(
-            tabNames = directories.map { it.name },
+        val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
+        MediaSelectorScreen(
+            directories = directoriesState.value,
             modifier = modifier,
-            pageContent = { pageIndex ->
-                val images = directories[pageIndex].images
-                if (images.isNotEmpty()) {
-                    MediaGallery(mediaImages = images)
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text("No images found")
-                    }
-                }
+            onSelect = { selectedImage ->
+                Log.d("MediaSelectorScreen", "onSelect: $selectedImage")
             },
         )
     } else {
@@ -117,6 +94,33 @@ internal fun MediaSelectorScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+internal fun MediaSelectorScreen(
+    directories: List<MediaImageDirectory>,
+    modifier: Modifier = Modifier,
+    onSelect: (MediaImage) -> Unit = {},
+) {
+    // FIXME: change not recomposition
+    MediaSelectorTabPager(
+        tabNames = directories.map { it.name },
+        modifier = modifier,
+        pageContent = { pageIndex ->
+            val images = directories[pageIndex].images
+            if (images.isNotEmpty()) {
+                MediaGallery(
+                    mediaImages = images,
+                    onSelect = { selectedImage -> onSelect(selectedImage) },
+                )
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text("No images found")
+                }
+            }
+        },
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
 private fun MediaSelectorTabPager(
     tabNames: List<String>,
     modifier: Modifier = Modifier,
@@ -133,7 +137,7 @@ private fun MediaSelectorTabPager(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier.fillMaxWidth(),
             onTabClick = { index ->
-                Log.d("MediaSelectorTabPager", "onTabClick: $index")
+                Log.d("MediaSelectorScreen", "onTabClick: $index")
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(index)
                 }
@@ -177,6 +181,7 @@ private fun MediaSelectorTab(
 private fun MediaGallery(
     mediaImages: List<MediaImage>,
     modifier: Modifier = Modifier,
+    onSelect: (MediaImage) -> Unit = {},
     state: LazyGridState = rememberLazyGridState(),
 ) {
     LazyVerticalGrid(
@@ -199,7 +204,7 @@ private fun MediaGallery(
                     mediaImage = image,
                     model = thumbnail,
                     contentDescription = null,
-                    onSelect = { selectedImage -> },
+                    onSelect = { selectedImage -> onSelect(selectedImage) },
                     modifier = Modifier.aspectRatio(1f),
                     placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
                     contentScale = ContentScale.Crop,
