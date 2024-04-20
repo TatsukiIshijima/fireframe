@@ -196,9 +196,10 @@ private fun MediaGallery(
             } else {
                 val thumbnail = LocalContext.current.toThumbnail(image.id)
                 MediaImageItem(
+                    mediaImage = image,
                     model = thumbnail,
                     contentDescription = null,
-                    isSelected = true,
+                    onSelect = { selectedImage -> },
                     modifier = Modifier.aspectRatio(1f),
                     placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
                     contentScale = ContentScale.Crop,
