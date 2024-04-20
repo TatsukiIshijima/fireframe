@@ -33,8 +33,6 @@ internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
         buildFeatures {
             compose = true
         }
