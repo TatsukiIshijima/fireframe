@@ -38,12 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.tatsuki.fireframe.core.common.toThumbnail
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
-import com.tatsuki.fireframe.core.model.MediaImage
-import com.tatsuki.fireframe.core.model.MediaImageDirectory
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
 import kotlinx.coroutines.launch
 import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 
@@ -74,6 +73,7 @@ internal fun MediaSelectorRoute(
             modifier = modifier,
             onSelect = { selectedImage ->
                 Log.d("MediaSelectorScreen", "onSelect: $selectedImage")
+                mediaPickerViewModel.onSelect(selectedImage)
             },
         )
     } else {
@@ -95,20 +95,20 @@ internal fun MediaSelectorRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun MediaSelectorScreen(
-    directories: List<MediaImageDirectory>,
+    directories: List<SelectableMediaImageDirectory>,
     modifier: Modifier = Modifier,
-    onSelect: (MediaImage) -> Unit = {},
+    onSelect: (SelectableMediaImage) -> Unit = {},
 ) {
     // FIXME: change not recomposition
     MediaSelectorTabPager(
         tabNames = directories.map { it.name },
         modifier = modifier,
         pageContent = { pageIndex ->
-            val images = directories[pageIndex].images
+            val images = directories[pageIndex].selectableMediaImages
             if (images.isNotEmpty()) {
                 MediaGallery(
                     mediaImages = images,
-                    onSelect = { selectedImage -> onSelect(selectedImage) },
+                    onSelect = { mediaImage -> onSelect(mediaImage) },
                 )
             } else {
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -179,9 +179,9 @@ private fun MediaSelectorTab(
 
 @Composable
 private fun MediaGallery(
-    mediaImages: List<MediaImage>,
+    mediaImages: List<SelectableMediaImage>,
     modifier: Modifier = Modifier,
-    onSelect: (MediaImage) -> Unit = {},
+    onSelect: (SelectableMediaImage) -> Unit = {},
     state: LazyGridState = rememberLazyGridState(),
 ) {
     LazyVerticalGrid(
@@ -199,12 +199,10 @@ private fun MediaGallery(
                     text = "Image$it",
                 )
             } else {
-                val thumbnail = LocalContext.current.toThumbnail(image.id)
                 MediaImageItem(
                     mediaImage = image,
-                    model = thumbnail,
                     contentDescription = null,
-                    onSelect = { selectedImage -> onSelect(selectedImage) },
+                    onSelect = { mediaImage -> onSelect(mediaImage) },
                     modifier = Modifier.aspectRatio(1f),
                     placeholder = painterResource(id = designSystemR.drawable.outline_image_24),
                     contentScale = ContentScale.Crop,
@@ -215,30 +213,22 @@ private fun MediaGallery(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview(
     showBackground = true,
     device = Devices.PIXEL_TABLET,
 )
 @Composable
-private fun MediaSelectorTabPagerTabletPreview() {
+private fun MediaSelectorScreenTabletPreview() {
     FireframeTheme {
-        MediaSelectorTabPager(
-            tabNames = listOf(
-                "Tab1",
-                "Tab2",
+        MediaSelectorScreen(
+            directories = listOf(
+                SelectableMediaImageDirectory.fake(
+                    name = "Camera",
+                ),
+                SelectableMediaImageDirectory.fake(
+                    name = "Screenshots",
+                ),
             ),
-            pageContent = {
-                val images = (0..10).map {
-                    MediaImage(
-                        id = it.toLong(),
-                        name = "image$it",
-                    )
-                }
-                MediaGallery(
-                    mediaImages = images,
-                )
-            },
         )
     }
 }
@@ -249,24 +239,17 @@ private fun MediaSelectorTabPagerTabletPreview() {
     device = Devices.PIXEL_7,
 )
 @Composable
-private fun MediaSelectorTabPagerMobilePreview() {
+private fun MediaSelectorScreenMobilePreview() {
     FireframeTheme {
-        MediaSelectorTabPager(
-            tabNames = listOf(
-                "Tab1",
-                "Tab2",
+        MediaSelectorScreen(
+            directories = listOf(
+                SelectableMediaImageDirectory.fake(
+                    name = "Camera",
+                ),
+                SelectableMediaImageDirectory.fake(
+                    name = "Screenshots",
+                ),
             ),
-            pageContent = {
-                val images = (0..10).map {
-                    MediaImage(
-                        id = it.toLong(),
-                        name = "image$it",
-                    )
-                }
-                MediaGallery(
-                    mediaImages = images,
-                )
-            },
         )
     }
 }

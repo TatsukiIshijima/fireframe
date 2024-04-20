@@ -14,10 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tatsuki.fireframe.core.common.toThumbnail
 import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.feature.mediaselector.R
@@ -36,7 +38,8 @@ private fun MediaImageItem(
     filterQuality: FilterQuality = FilterQuality.High,
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier
+            .clickable { onSelect(mediaImage) },
     ) {
         val isLocalInspection = LocalInspectionMode.current
         if (isLocalInspection) {
@@ -45,13 +48,13 @@ private fun MediaImageItem(
                 text = "Image",
             )
         } else {
+            val thumbnail = LocalContext.current.toThumbnail(mediaImage.id)
             AsyncImage(
-                model = mediaImage.uri,
+                model = thumbnail,
                 contentDescription = contentDescription,
                 modifier = Modifier
                     .fillMaxSize()
-                    .aspectRatio(1f)
-                    .clickable { onSelect(mediaImage) },
+                    .aspectRatio(1f),
                 placeholder = placeholder,
                 error = error,
                 contentScale = contentScale,
