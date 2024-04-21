@@ -23,6 +23,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,11 +45,13 @@ internal fun HomeRoute(
     val sourceTypes = listOf<SourceType>(
         SourceType.LocalStorage(),
     )
-    val slideGroups = listOf<String>(
-        "SlideGroup1",
-        "SlideGroup2",
-        "SlideGroup3",
-    )
+    val slideGroups = remember {
+        mutableStateListOf<String>(
+            "SlideGroup1",
+            "SlideGroup2",
+            "SlideGroup3",
+        )
+    }
 
     HomeScreen(
         sourceTypes = sourceTypes,
@@ -68,6 +72,10 @@ internal fun HomeRoute(
         onDeleteSlideGroup = { slideGroup ->
             // TODO : Handle delete slide group
         },
+        onClickAddButton = {
+            // TODO : Handle add button click
+            slideGroups.add("SlideGroup${slideGroups.size + 1}")
+        },
         onClickStartButton = {
             // TODO : Handle start button click
         },
@@ -85,6 +93,7 @@ internal fun HomeScreen(
     onSelectSlideGroup: (String) -> Unit = {},
     onOpenSlideGroup: (String) -> Unit = {},
     onDeleteSlideGroup: (String) -> Unit = {},
+    onClickAddButton: () -> Unit = {},
     onClickStartButton: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
@@ -100,6 +109,7 @@ internal fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
             ) {
+                // TODO:　スライドセットをFloatingActionボタンから作成するようにする
                 item {
                     Text(
                         text = "画像選択",
@@ -136,7 +146,7 @@ internal fun HomeScreen(
                 }
                 item {
                     Text(
-                        text = "スライドセット",
+                        text = stringResource(id = R.string.slideshow_group_label),
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 18.sp,
                     )
@@ -159,8 +169,18 @@ internal fun HomeScreen(
                             onDeleteSlideGroup(it)
                         },
                     )
-                    if (it != 9) {
+                    if (it != MAX_SLIDE_GROUP_COUNT) {
                         Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+                if (slideGroups.size < MAX_SLIDE_GROUP_COUNT) {
+                    item {
+                        SlideGroupAddButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                onClickAddButton()
+                            },
+                        )
                     }
                 }
                 item {
@@ -252,3 +272,5 @@ private fun HomeScreenMobilePreview() {
         )
     }
 }
+
+private const val MAX_SLIDE_GROUP_COUNT = 10
