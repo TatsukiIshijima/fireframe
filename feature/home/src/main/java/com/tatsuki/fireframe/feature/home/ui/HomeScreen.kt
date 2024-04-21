@@ -13,6 +13,15 @@ import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.home.R
 
+@Composable
+internal fun HomeRoute(
+    modifier: Modifier = Modifier,
+) {
+    HomeScreen(
+        modifier = modifier,
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
