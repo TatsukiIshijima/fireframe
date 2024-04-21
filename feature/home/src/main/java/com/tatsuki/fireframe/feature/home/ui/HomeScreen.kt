@@ -43,10 +43,34 @@ internal fun HomeRoute(
     val sourceTypes = listOf<SourceType>(
         SourceType.LocalStorage(),
     )
+    val slideGroups = listOf<String>(
+        "SlideGroup1",
+        "SlideGroup2",
+        "SlideGroup3",
+    )
 
     HomeScreen(
         sourceTypes = sourceTypes,
+        slideGroups = slideGroups,
         modifier = modifier,
+        onActionClick = {
+            // TODO : Handle action click
+        },
+        onClickSource = { sourceType ->
+            // TODO : Handle source type click
+        },
+        onSelectSlideGroup = { slideGroup ->
+            // TODO : Handle select slide group
+        },
+        onOpenSlideGroup = { slideGroup ->
+            // TODO : Handle click slide group
+        },
+        onDeleteSlideGroup = { slideGroup ->
+            // TODO : Handle delete slide group
+        },
+        onClickStartButton = {
+            // TODO : Handle start button click
+        },
     )
 }
 
@@ -54,8 +78,14 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     sourceTypes: List<SourceType>,
+    slideGroups: List<String>,
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit = {},
+    onClickSource: (SourceType) -> Unit = {},
+    onSelectSlideGroup: (String) -> Unit = {},
+    onOpenSlideGroup: (String) -> Unit = {},
+    onDeleteSlideGroup: (String) -> Unit = {},
+    onClickStartButton: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -94,8 +124,8 @@ internal fun HomeScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f),
-                                onClick = {
-                                    // TODO : Handle category click
+                                onClick = { sourceType ->
+                                    onClickSource(sourceType)
                                 },
                             )
                         }
@@ -114,18 +144,19 @@ internal fun HomeScreen(
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                items((0..9).count()) {
+                items(slideGroups.size) {
+                    val slideGroup = slideGroups[it]
                     SlideGroupItem(
-                        name = "SlideGroup$it",
-                        isSelected = false,
-                        onSelect = {
-                            // TODO : Handle select slide group
+                        name = slideGroup,
+                        isSelected = it == 0,
+                        onSelectGroup = {
+                            onSelectSlideGroup(it)
                         },
-                        onClick = {
-                            // TODO : Handle click slide group
+                        onOpenGroup = {
+                            onOpenSlideGroup(it)
                         },
-                        onDelete = {
-                            // TODO : Handle delete slide group
+                        onDeleteGroup = {
+                            onDeleteSlideGroup(it)
                         },
                     )
                     if (it != 9) {
@@ -139,7 +170,7 @@ internal fun HomeScreen(
         }
         StartSlideshowButton(
             onClick = {
-                // TODO : Handle start slideshow button click
+                onClickStartButton()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
             enable = true,
@@ -186,10 +217,16 @@ private fun HomeScreenTabletPreview() {
         SourceType.LocalStorage(),
         SourceType.LocalStorage(),
     )
+    val slideGroups = listOf<String>(
+        "SlideGroup1",
+        "SlideGroup2",
+        "SlideGroup3",
+    )
 
     FireframeTheme {
         HomeScreen(
             sourceTypes = sourceTypes,
+            slideGroups = slideGroups,
         )
     }
 }
@@ -202,10 +239,16 @@ private fun HomeScreenMobilePreview() {
         SourceType.LocalStorage(),
         SourceType.LocalStorage(),
     )
+    val slideGroups = listOf<String>(
+        "SlideGroup1",
+        "SlideGroup2",
+        "SlideGroup3",
+    )
 
     FireframeTheme {
         HomeScreen(
             sourceTypes = sourceTypes,
+            slideGroups = slideGroups,
         )
     }
 }

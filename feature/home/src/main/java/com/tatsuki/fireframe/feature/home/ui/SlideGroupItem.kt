@@ -25,9 +25,9 @@ internal fun SlideGroupItem(
     name: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onSelect: (String) -> Unit = {},
-    onClick: (String) -> Unit = {},
-    onDelete: (String) -> Unit = {},
+    onSelectGroup: (String) -> Unit = {},
+    onOpenGroup: (String) -> Unit = {},
+    onDeleteGroup: (String) -> Unit = {},
 ) {
     Card(
         modifier = modifier,
@@ -35,7 +35,7 @@ internal fun SlideGroupItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClick(name) }
+                .clickable { onSelectGroup(name) }
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -56,13 +56,13 @@ internal fun SlideGroupItem(
             Text(
                 text = "確認",
                 modifier = Modifier
-                    .clickable { onSelect(name) }
+                    .clickable { onOpenGroup(name) }
                     .padding(4.dp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
-                onClick = { onDelete(name) },
+                onClick = { onDeleteGroup(name) },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
