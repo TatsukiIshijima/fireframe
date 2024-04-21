@@ -9,6 +9,7 @@ import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class MediaSelectorViewModel @Inject constructor(
 
     private val mutableImageDirectories =
         MutableStateFlow(emptyList<SelectableMediaImageDirectory>())
-    val imageDirectories = mutableImageDirectories
+    val imageDirectories = mutableImageDirectories.asStateFlow()
 
     fun onGrantedReadExternalStoragePermission() {
         loadImageDirectories()
@@ -29,23 +30,33 @@ class MediaSelectorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val directories = mediaRepository.getAllImageDirectories()
-                    .map { directory ->
-                        SelectableMediaImageDirectory.from(directory)
-                    }
+                    .map { directory -> SelectableMediaImageDirectory.from(directory) }
                 mutableImageDirectories.value = directories
             } catch (e: Exception) {
-                Log.e("MediaPickerViewModel", "Failed to load directories", e)
+                Log.e("MediaSelectorViewModel", "Failed to load directories", e)
                 coroutineContext.ensureActive()
             }
         }
     }
 
     fun onSelect(selectableMediaImage: SelectableMediaImage) {
-        imageDirectories.value
+        mutableImageDirectories.value
             .flatMap { directory -> directory.selectableMediaImages }
             .find { image -> image.id == selectableMediaImage.id }
             ?.let { image ->
                 image.isSelected.value = !image.isSelected.value
+                Log.d("MediaSelectorViewModel", "onSelect: $image")
             }
+    }
+
+    fun onFinish() {
+        viewModelScope.launch {
+            val selectedMediaImage = imageDirectories.value
+                .flatMap { directory -> directory.selectableMediaImages }
+                .filter { image -> image.isSelected.value }
+                .map { image -> image.toMediaImage() }
+            Log.d("MediaSelectorViewModel", "onFinish: $selectedMediaImage")
+            mediaRepository.updateSelectedLocalMediaImages(selectedMediaImage)
+        }
     }
 }
