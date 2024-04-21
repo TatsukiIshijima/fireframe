@@ -15,14 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,12 +34,18 @@ import androidx.compose.ui.unit.sp
 import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.home.R
+import com.tatsuki.fireframe.feature.home.model.SourceType
 
 @Composable
 internal fun HomeRoute(
     modifier: Modifier = Modifier,
 ) {
+    val sourceTypes = listOf<SourceType>(
+        SourceType.LocalStorage(),
+    )
+
     HomeScreen(
+        sourceTypes = sourceTypes,
         modifier = modifier,
     )
 }
@@ -52,7 +53,9 @@ internal fun HomeRoute(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun HomeScreen(
+    sourceTypes: List<SourceType>,
     modifier: Modifier = Modifier,
+    onActionClick: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -62,9 +65,7 @@ internal fun HomeScreen(
                 titleRes = R.string.app_name,
                 actionIcon = Icons.Default.Settings,
                 actionIconDescription = "Settings",
-                onActionClick = {
-                    // TODO : Handle action click
-                },
+                onActionClick = onActionClick,
             )
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
@@ -86,10 +87,9 @@ internal fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         maxItemsInEachRow = 2,
                     ) {
-                        (0..2).forEach {
-                            SourceCategoryItem(
-                                name = "Category$it",
-                                imageVector = Icons.Default.Star,
+                        sourceTypes.forEach {
+                            SourceTypeItem(
+                                sourceType = it,
                                 contentDescription = "SourceCategory",
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -148,56 +148,6 @@ internal fun HomeScreen(
 }
 
 @Composable
-private fun SourceCategoryGallery(
-    categories: List<String>,
-    modifier: Modifier = Modifier,
-    onClick: (String) -> Unit = {},
-    state: LazyGridState = rememberLazyGridState(),
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier.fillMaxWidth(),
-        state = state,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        items(categories.size) {
-            SourceCategoryItem(
-                name = categories[it],
-                imageVector = Icons.Default.Star,
-                contentDescription = "SourceCategory",
-                onClick = onClick,
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun SlideGroupList(
-    slideGroups: List<String>,
-    modifier: Modifier = Modifier,
-    onSelect: (String) -> Unit = {},
-    onClick: (String) -> Unit = {},
-    onDelete: (String) -> Unit = {},
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(slideGroups.size) {
-            SlideGroupItem(
-                name = slideGroups[it],
-                isSelected = false,
-                onSelect = onSelect,
-                onClick = onClick,
-                onDelete = onDelete,
-            )
-        }
-    }
-}
-
-@Composable
 private fun StartSlideshowButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -220,7 +170,7 @@ private fun StartSlideshowButton(
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
-            text = stringResource(id = R.string.home_start_slideshow_button),
+            text = stringResource(id = R.string.start_slideshow_button),
             color = MaterialTheme.colorScheme.onPrimary,
         )
     }
@@ -232,15 +182,30 @@ private fun StartSlideshowButton(
 )
 @Composable
 private fun HomeScreenTabletPreview() {
+    val sourceTypes = listOf<SourceType>(
+        SourceType.LocalStorage(),
+        SourceType.LocalStorage(),
+    )
+
     FireframeTheme {
-        HomeScreen()
+        HomeScreen(
+            sourceTypes = sourceTypes,
+        )
     }
 }
 
 @Preview
 @Composable
 private fun HomeScreenMobilePreview() {
+    val sourceTypes = listOf<SourceType>(
+        SourceType.LocalStorage(),
+        SourceType.LocalStorage(),
+        SourceType.LocalStorage(),
+    )
+
     FireframeTheme {
-        HomeScreen()
+        HomeScreen(
+            sourceTypes = sourceTypes,
+        )
     }
 }
