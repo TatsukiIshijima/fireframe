@@ -109,7 +109,7 @@ internal fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
             ) {
-                // TODO:　スライドセットをFloatingActionボタンから作成するようにする
+                // TODO:　スライドセットを追加ボタンから作成するようにする&Dialogからセレクター表示
                 item {
                     Text(
                         text = "画像選択",
