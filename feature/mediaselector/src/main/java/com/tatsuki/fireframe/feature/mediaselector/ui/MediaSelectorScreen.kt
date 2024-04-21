@@ -30,7 +30,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
@@ -75,9 +76,9 @@ internal fun MediaSelectorRoute(
         LaunchedEffect(Unit) {
             mediaSelectorViewModel.onGrantedReadExternalStoragePermission()
         }
-        val directoriesState = mediaSelectorViewModel.imageDirectories.collectAsState()
+        val directoriesState by mediaSelectorViewModel.imageDirectories.collectAsStateWithLifecycle()
         MediaSelectorScreen(
-            directories = directoriesState.value,
+            directories = directoriesState,
             modifier = modifier,
             onSelect = mediaSelectorViewModel::onSelect,
             onCancel = {

@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
@@ -58,7 +59,7 @@ internal fun SlideshowRoute(
         "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631280503688E0B_DXXX.jpg",
         "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631280305225E03_DXXX.jpg",
     )
-    val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsState()
+    val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsStateWithLifecycle()
 
     SlideshowScreen(
         batteryLevel = 50,
