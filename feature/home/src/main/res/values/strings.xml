@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fireframe</string>
+    <string name="home_start_slideshow_button">スライドショー開始</string>
 </resources>
