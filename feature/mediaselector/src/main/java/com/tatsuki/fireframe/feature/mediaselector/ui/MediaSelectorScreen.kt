@@ -4,12 +4,17 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -18,6 +23,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -31,6 +38,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +48,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
+import com.tatsuki.fireframe.feature.mediaselector.R
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
 import kotlinx.coroutines.launch
@@ -49,7 +58,7 @@ import com.tatsuki.fireframe.core.designsystem.R as designSystemR
 @Composable
 internal fun MediaSelectorRoute(
     modifier: Modifier = Modifier,
-    mediaPickerViewModel: MediaSelectorViewModel = hiltViewModel(),
+    mediaSelectorViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
     val needPermissions = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
         listOf(
@@ -64,16 +73,17 @@ internal fun MediaSelectorRoute(
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
     if (multiplePermissionState.allPermissionsGranted) {
         LaunchedEffect(Unit) {
-            mediaPickerViewModel.onGrantedReadExternalStoragePermission()
+            mediaSelectorViewModel.onGrantedReadExternalStoragePermission()
         }
-        val directoriesState = mediaPickerViewModel.imageDirectories.collectAsState()
+        val directoriesState = mediaSelectorViewModel.imageDirectories.collectAsState()
         MediaSelectorScreen(
             directories = directoriesState.value,
             modifier = modifier,
-            onSelect = { selectedImage ->
-                Log.d("MediaSelectorScreen", "onSelect: $selectedImage")
-                mediaPickerViewModel.onSelect(selectedImage)
+            onSelect = mediaSelectorViewModel::onSelect,
+            onCancel = {
+                // TODO: Implement onCancel
             },
+            onFinish = mediaSelectorViewModel::onFinish,
         )
     } else {
         if (multiplePermissionState.shouldShowRationale) {
@@ -97,25 +107,55 @@ internal fun MediaSelectorScreen(
     directories: List<SelectableMediaImageDirectory>,
     modifier: Modifier = Modifier,
     onSelect: (SelectableMediaImage) -> Unit = {},
+    onCancel: () -> Unit = {},
+    onFinish: () -> Unit = {},
 ) {
-    // FIXME: change not recomposition
-    MediaSelectorTabPager(
-        tabNames = directories.map { it.name },
-        modifier = modifier,
-        pageContent = { pageIndex ->
-            val images = directories[pageIndex].selectableMediaImages
-            if (images.isNotEmpty()) {
-                MediaGallery(
-                    mediaImages = images,
-                    onSelect = { mediaImage -> onSelect(mediaImage) },
-                )
-            } else {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text("No images found")
+    Box(modifier = modifier.fillMaxSize()) {
+        // FIXME: change not recomposition
+        MediaSelectorTabPager(
+            tabNames = directories.map { it.name },
+            modifier = Modifier.fillMaxSize(),
+            pageContent = { pageIndex ->
+                val images = directories[pageIndex].selectableMediaImages
+                if (images.isNotEmpty()) {
+                    MediaGallery(
+                        mediaImages = images,
+                        onSelect = { mediaImage -> onSelect(mediaImage) },
+                    )
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text("No images found")
+                    }
                 }
+            },
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                .padding(16.dp)
+                .align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = onCancel,
+            ) {
+                Text(text = stringResource(id = R.string.media_selector_cancel_button))
             }
-        },
-    )
+            Spacer(
+                modifier = Modifier
+                    .width(16.dp),
+            )
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = onFinish,
+            ) {
+                Text(text = stringResource(id = R.string.media_selector_ok_button))
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

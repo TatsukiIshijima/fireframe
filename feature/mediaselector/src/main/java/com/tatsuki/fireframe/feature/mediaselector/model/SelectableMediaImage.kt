@@ -11,6 +11,13 @@ data class SelectableMediaImage(
     val uri: Uri,
     val isSelected: MutableState<Boolean> = mutableStateOf(false),
 ) {
+
+    fun toMediaImage(): MediaImage {
+        return MediaImage(
+            id = id,
+        )
+    }
+
     companion object {
         fun from(mediaImage: MediaImage): SelectableMediaImage {
             return SelectableMediaImage(
