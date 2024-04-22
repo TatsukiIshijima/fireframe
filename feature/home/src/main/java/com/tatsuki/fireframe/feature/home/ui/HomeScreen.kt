@@ -40,6 +40,9 @@ import com.tatsuki.fireframe.feature.home.model.SourceType
 
 @Composable
 internal fun HomeRoute(
+    onClickSource: (SourceType) -> Unit,
+    onOpenSlideGroup: (String) -> Unit,
+    onClickSlideStart: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val sourceTypes = listOf<SourceType>(
@@ -61,20 +64,18 @@ internal fun HomeRoute(
             // TODO : Handle action click
         },
         onClickSource = { sourceType ->
-            // TODO : Handle source type click
+            onClickSource(sourceType)
         },
         onSelectSlideGroup = { slideGroup ->
             // TODO : Handle select slide group
         },
         onOpenSlideGroup = { slideGroup ->
-            // TODO : Handle click slide group
+           onOpenSlideGroup(slideGroup)
         },
         onDeleteSlideGroup = { slideGroup ->
             // TODO : Handle delete slide group
         },
-        onClickStartButton = {
-            // TODO : Handle start button click
-        },
+        onClickStartButton = onClickSlideStart,
     )
 }
 
