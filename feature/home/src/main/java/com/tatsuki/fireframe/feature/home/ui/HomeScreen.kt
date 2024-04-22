@@ -72,10 +72,6 @@ internal fun HomeRoute(
         onDeleteSlideGroup = { slideGroup ->
             // TODO : Handle delete slide group
         },
-        onClickAddButton = {
-            // TODO : Handle add button click
-            slideGroups.add("SlideGroup${slideGroups.size + 1}")
-        },
         onClickStartButton = {
             // TODO : Handle start button click
         },
@@ -93,7 +89,6 @@ internal fun HomeScreen(
     onSelectSlideGroup: (String) -> Unit = {},
     onOpenSlideGroup: (String) -> Unit = {},
     onDeleteSlideGroup: (String) -> Unit = {},
-    onClickAddButton: () -> Unit = {},
     onClickStartButton: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
@@ -170,16 +165,6 @@ internal fun HomeScreen(
                     )
                     if (it != MAX_SLIDE_GROUP_COUNT) {
                         Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-                if (slideGroups.size < MAX_SLIDE_GROUP_COUNT) {
-                    item {
-                        SlideGroupAddButton(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                onClickAddButton()
-                            },
-                        )
                     }
                 }
                 item {
