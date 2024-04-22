@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Fireframe</string>
     <string name="start_slideshow_button">スライドショー開始</string>
+    <string name="select_image_label">画像選択</string>
     <string name="slideshow_group_label">スライドセット</string>
     <string name="local_storage_name">内部ストレージ</string>
     <string name="slide_group_add_button_label">追加</string>

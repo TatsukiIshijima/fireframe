@@ -109,10 +109,9 @@ internal fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
             ) {
-                // TODO:　スライドセットを追加ボタンから作成するようにする&Dialogからセレクター表示
                 item {
                     Text(
-                        text = "画像選択",
+                        text = stringResource(id = R.string.select_image_label),
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 18.sp,
                     )
