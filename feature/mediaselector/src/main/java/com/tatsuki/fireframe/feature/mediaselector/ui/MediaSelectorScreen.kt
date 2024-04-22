@@ -228,8 +228,8 @@ private fun MediaGallery(
         columns = GridCells.Adaptive(128.dp),
         modifier = modifier.fillMaxSize(),
         state = state,
-        verticalArrangement = Arrangement.spacedBy(3.dp),
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(mediaImages.size) {
             val image = mediaImages[it]
