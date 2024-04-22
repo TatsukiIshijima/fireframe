@@ -70,7 +70,7 @@ internal fun HomeRoute(
             // TODO : Handle select slide group
         },
         onOpenSlideGroup = { slideGroup ->
-           onOpenSlideGroup(slideGroup)
+            onOpenSlideGroup(slideGroup)
         },
         onDeleteSlideGroup = { slideGroup ->
             // TODO : Handle delete slide group

@@ -22,7 +22,7 @@ fun NavGraphBuilder.homeScreen(
         HomeRoute(
             onClickSource = onClickSource,
             onOpenSlideGroup = onOpenSlideGroup,
-            onClickSlideStart = onClickSlideStart
+            onClickSlideStart = onClickSlideStart,
         )
     }
 }
