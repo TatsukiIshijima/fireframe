@@ -6,13 +6,18 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import com.tatsuki.fireframe.feature.mediaselector.R
@@ -81,7 +87,7 @@ internal fun MediaSelectorRoute(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun MediaSelectorScreen(
     directories: List<SelectableMediaImageDirectory>,
@@ -91,48 +97,43 @@ internal fun MediaSelectorScreen(
     onFinish: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
-        // FIXME: change not recomposition
-        MediaSelectorTabPager(
-            tabNames = directories.map { it.name },
-            modifier = Modifier.fillMaxSize(),
-            pageContent = { pageIndex ->
-                val images = directories[pageIndex].selectableMediaImages
-                if (images.isNotEmpty()) {
-                    MediaGallery(
-                        mediaImages = images,
-                        onSelect = { mediaImage -> onSelect(mediaImage) },
-                    )
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text("No images found")
-                    }
-                }
-            },
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
-                .padding(16.dp)
-                .align(Alignment.BottomCenter),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Button(
-                modifier = Modifier.weight(1f),
-                onClick = onCancel,
-            ) {
-                Text(text = stringResource(id = R.string.media_selector_cancel_button))
-            }
-            Spacer(
-                modifier = Modifier
-                    .width(16.dp),
+        Column(modifier = Modifier.fillMaxSize()) {
+            TopAppBar(
+                titleRes = R.string.media_selector_title,
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationIconDescription = "Back",
+                onNavigationClick = onCancel,
             )
-            Button(
+            // FIXME: change not recomposition
+            MediaSelectorTabPager(
+                tabNames = directories.map { it.name },
                 modifier = Modifier.weight(1f),
-                onClick = onFinish,
+                pageContent = { pageIndex ->
+                    val images = directories[pageIndex].selectableMediaImages
+                    if (images.isNotEmpty()) {
+                        MediaGallery(
+                            mediaImages = images,
+                            onSelect = { mediaImage -> onSelect(mediaImage) },
+                        )
+                    } else {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Text("No images found")
+                        }
+                    }
+                },
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                    .padding(16.dp),
             ) {
-                Text(text = stringResource(id = R.string.media_selector_ok_button))
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = onFinish,
+                ) {
+                    Text(text = stringResource(id = R.string.media_selector_ok_button))
+                }
             }
         }
     }

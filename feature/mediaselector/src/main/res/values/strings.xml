@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="media_selector_title">画像選択</string>
     <string name="media_selector_ok_button">OK</string>
     <string name="media_selector_cancel_button">キャンセル</string>
 </resources>

@@ -2,6 +2,8 @@ package com.tatsuki.fireframe.core.designsystem.component
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,22 +22,37 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun TopAppBar(
     @StringRes titleRes: Int,
-    actionIcon: ImageVector,
-    actionIconDescription: String,
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    actionIcon: ImageVector? = null,
+    actionIconDescription: String = "",
+    navigationIcon: ImageVector? = null,
+    navigationIconDescription: String = "",
+    onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(text = stringResource(id = titleRes))
         },
+        navigationIcon = {
+            if (navigationIcon != null && navigationIconDescription.isNotEmpty()) {
+                IconButton(onClick = onNavigationClick) {
+                    Icon(
+                        imageVector = navigationIcon,
+                        contentDescription = navigationIconDescription,
+                    )
+                }
+            }
+        },
         actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = actionIconDescription,
-                )
+            if (actionIcon != null && actionIconDescription.isNotEmpty()) {
+                IconButton(onClick = onActionClick) {
+                    Icon(
+                        imageVector = actionIcon,
+                        contentDescription = actionIconDescription,
+                    )
+                }
             }
         },
         colors = colors,
@@ -49,6 +66,8 @@ fun TopAppBar(
 private fun TopAppBarPreview() {
     TopAppBar(
         titleRes = android.R.string.untitled,
+        navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+        navigationIconDescription = "Back",
         actionIcon = Icons.Default.Settings,
         actionIconDescription = "Settings",
     )
