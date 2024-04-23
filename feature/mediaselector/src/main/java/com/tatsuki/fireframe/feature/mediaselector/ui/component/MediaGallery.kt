@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.feature.mediaselector.ui
+package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.feature.mediaselector.ui
+package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

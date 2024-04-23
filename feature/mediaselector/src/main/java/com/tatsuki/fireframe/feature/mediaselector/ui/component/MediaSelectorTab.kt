@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.feature.mediaselector.ui
+package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow

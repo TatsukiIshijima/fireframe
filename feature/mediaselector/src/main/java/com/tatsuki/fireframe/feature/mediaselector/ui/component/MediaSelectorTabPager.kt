@@ -1,4 +1,4 @@
-package com.tatsuki.fireframe.feature.mediaselector.ui
+package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
