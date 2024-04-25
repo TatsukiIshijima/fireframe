@@ -11,8 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -32,10 +30,9 @@ private fun MediaImageItem(
     isSelected: Boolean,
     onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: Painter? = null,
-    error: Painter? = null,
+    placeholder: @Composable () -> Unit = {},
+    error: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.Crop,
-    filterQuality: FilterQuality = FilterQuality.High,
 ) {
     Box(
         modifier = modifier
@@ -58,7 +55,6 @@ private fun MediaImageItem(
                 placeholder = placeholder,
                 error = error,
                 contentScale = contentScale,
-                filterQuality = filterQuality,
             )
         }
 
@@ -93,10 +89,9 @@ internal fun MediaImageItem(
     contentDescription: String?,
     onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: Painter? = null,
-    error: Painter? = null,
+    placeholder: @Composable () -> Unit = {},
+    error: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.Crop,
-    filterQuality: FilterQuality = FilterQuality.High,
 ) {
     MediaImageItem(
         mediaImage = mediaImage,
@@ -107,6 +102,5 @@ internal fun MediaImageItem(
         placeholder = placeholder,
         error = error,
         contentScale = contentScale,
-        filterQuality = filterQuality,
     )
 }

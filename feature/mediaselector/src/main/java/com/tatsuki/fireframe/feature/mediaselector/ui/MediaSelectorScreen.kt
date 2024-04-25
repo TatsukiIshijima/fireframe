@@ -4,18 +4,13 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +34,8 @@ import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import com.tatsuki.fireframe.feature.mediaselector.R
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
+import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
+import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaSelectorTabPager
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -96,44 +93,42 @@ internal fun MediaSelectorScreen(
     onCancel: () -> Unit = {},
     onFinish: () -> Unit = {},
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar(
-                titleRes = R.string.media_selector_title,
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationIconDescription = "Back",
-                onNavigationClick = onCancel,
-            )
-            // FIXME: change not recomposition
-            MediaSelectorTabPager(
-                tabNames = directories.map { it.name },
-                modifier = Modifier.weight(1f),
-                pageContent = { pageIndex ->
-                    val images = directories[pageIndex].selectableMediaImages
-                    if (images.isNotEmpty()) {
-                        MediaGallery(
-                            mediaImages = images,
-                            onSelect = { mediaImage -> onSelect(mediaImage) },
-                        )
-                    } else {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Text("No images found")
-                        }
+    Column(modifier = modifier.fillMaxSize()) {
+        TopAppBar(
+            titleRes = R.string.media_selector_title,
+            navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            navigationIconDescription = "Back",
+            onNavigationClick = onCancel,
+        )
+        // FIXME: change not recomposition
+        MediaSelectorTabPager(
+            tabNames = directories.map { it.name },
+            modifier = Modifier.weight(1f),
+            pageContent = { pageIndex ->
+                val images = directories[pageIndex].selectableMediaImages
+                if (images.isNotEmpty()) {
+                    MediaGallery(
+                        mediaImages = images,
+                        onSelect = { mediaImage -> onSelect(mediaImage) },
+                    )
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text("No images found")
                     }
-                },
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
-                    .padding(16.dp),
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onFinish,
-                ) {
-                    Text(text = stringResource(id = R.string.media_selector_ok_button))
                 }
+            },
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                .padding(16.dp),
+        ) {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onFinish,
+            ) {
+                Text(text = stringResource(id = R.string.media_selector_ok_button))
             }
         }
     }
