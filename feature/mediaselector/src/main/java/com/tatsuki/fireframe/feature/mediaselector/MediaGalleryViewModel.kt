@@ -29,7 +29,7 @@ class MediaGalleryViewModel @Inject constructor(
                     SelectableMediaImage.from(image)
                 }
             } catch (e: Exception) {
-                Log.d("MediaGalleryViewModel", "Failed to load selected images", e)
+                Log.e("MediaGalleryViewModel", "Failed to load selected images", e)
                 coroutineContext.ensureActive()
             }
         }
