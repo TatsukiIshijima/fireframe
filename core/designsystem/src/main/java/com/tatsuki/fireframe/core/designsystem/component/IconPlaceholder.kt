@@ -18,7 +18,7 @@ import com.tatsuki.fireframe.core.designsystem.R
 fun IconPlaceholder(
     modifier: Modifier = Modifier,
     @DrawableRes resourceId: Int = R.drawable.outline_image_24,
-    size: Dp = 24.dp
+    size: Dp = 24.dp,
 ) {
     Box(modifier.fillMaxSize()) {
         Icon(
