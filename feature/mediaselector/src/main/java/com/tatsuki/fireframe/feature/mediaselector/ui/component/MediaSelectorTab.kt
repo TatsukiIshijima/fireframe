@@ -1,21 +1,27 @@
 package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun MediaSelectorTab(
     tabNames: List<String>,
-    selectedTabIndex: Int,
+    pagerState: PagerState,
     modifier: Modifier = Modifier,
-    onTabClick: (Int) -> Unit = {},
 ) {
+    val coroutineScope = rememberCoroutineScope()
     TabRow(
-        selectedTabIndex = selectedTabIndex,
+        selectedTabIndex = pagerState.currentPage,
         modifier = modifier,
     ) {
         tabNames.forEachIndexed { index, name ->
@@ -23,20 +29,26 @@ internal fun MediaSelectorTab(
                 text = {
                     Text(name)
                 },
-                selected = selectedTabIndex == index,
+                selected = pagerState.currentPage == index,
                 onClick = {
-                    onTabClick(index)
+                    coroutineScope.launch {
+                        // animateScrollToPage call on a parent component causes recomposition.
+                        // Therefore, by calling animateScrollToPage on the Tab component, other components will not be recomposition.
+                        pagerState.animateScrollToPage(index)
+                    }
                 },
             )
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 private fun MediaSelectorTabPreview() {
+    val tabs = listOf("Tab1", "Tab2", "Tab3")
     MediaSelectorTab(
-        tabNames = listOf("Tab1", "Tab2", "Tab3"),
-        selectedTabIndex = 0,
+        tabNames = tabs,
+        pagerState = rememberPagerState { tabs.size },
     )
 }
