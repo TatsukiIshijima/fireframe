@@ -24,14 +24,12 @@ import com.tatsuki.fireframe.feature.mediaselector.R
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
 
 @Composable
-private fun MediaImageItem(
+internal fun MediaImageItem(
     mediaImage: SelectableMediaImage,
     contentDescription: String?,
     isSelected: Boolean,
     onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = {},
-    error: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.Crop,
 ) {
     Box(
@@ -52,8 +50,6 @@ private fun MediaImageItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .aspectRatio(1f),
-                placeholder = placeholder,
-                error = error,
                 contentScale = contentScale,
             )
         }
@@ -80,27 +76,5 @@ private fun MediaImageItemPreview() {
         modifier = Modifier.size(128.dp),
         isSelected = true,
         onSelect = {},
-    )
-}
-
-@Composable
-internal fun MediaImageItem(
-    mediaImage: SelectableMediaImage,
-    contentDescription: String?,
-    onSelect: (SelectableMediaImage) -> Unit,
-    modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = {},
-    error: @Composable () -> Unit = {},
-    contentScale: ContentScale = ContentScale.Crop,
-) {
-    MediaImageItem(
-        mediaImage = mediaImage,
-        contentDescription = contentDescription,
-        isSelected = mediaImage.isSelected.value,
-        onSelect = { image -> onSelect(image) },
-        modifier = modifier,
-        placeholder = placeholder,
-        error = error,
-        contentScale = contentScale,
     )
 }

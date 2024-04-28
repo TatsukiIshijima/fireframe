@@ -18,59 +18,47 @@
 
 package com.tatsuki.fireframe.core.designsystem.component
 
-import androidx.compose.foundation.Image
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImagePainter.State.Empty
-import coil.compose.AsyncImagePainter.State.Error
-import coil.compose.AsyncImagePainter.State.Loading
-import coil.compose.AsyncImagePainter.State.Success
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tatsuki.fireframe.core.designsystem.R
 
 @Composable
 fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = {},
-    error: @Composable () -> Unit = {},
+    @DrawableRes placeholder: Int? = R.drawable.outline_image_24,
+    @DrawableRes error: Int? = R.drawable.outline_error_outline_24,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
 ) {
-    val imageRequest = ImageRequest.Builder(LocalContext.current)
+    val imageRequestParams = ImageRequest.Builder(LocalContext.current)
         .data(model)
         .size(Size.ORIGINAL)
-        .build()
-    val painter = rememberAsyncImagePainter(
-        model = imageRequest,
-    )
 
-    when (painter.state) {
-        Empty -> {}
-        is Error -> {
-            error()
-        }
-
-        is Loading -> {
-            placeholder()
-        }
-
-        is Success -> {
-            Image(
-                painter = painter,
-                contentDescription = contentDescription,
-                modifier = modifier,
-                contentScale = contentScale,
-                alpha = alpha,
-                colorFilter = colorFilter,
-            )
-        }
+    if (placeholder != null) {
+        imageRequestParams.placeholder(placeholder)
     }
+    if (error != null) {
+        imageRequestParams.error(error)
+    }
+
+    val imageRequest = imageRequestParams.build()
+
+    coil.compose.AsyncImage(
+        model = imageRequest.data,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        contentScale = contentScale,
+        alpha = alpha,
+        colorFilter = colorFilter,
+    )
 }
