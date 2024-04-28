@@ -100,7 +100,6 @@ internal fun MediaSelectorScreen(
             navigationIconDescription = "Back",
             onNavigationClick = onCancel,
         )
-        // FIXME: change not recomposition
         MediaSelectorTabPager(
             tabNames = directories.map { it.name },
             modifier = Modifier.weight(1f),

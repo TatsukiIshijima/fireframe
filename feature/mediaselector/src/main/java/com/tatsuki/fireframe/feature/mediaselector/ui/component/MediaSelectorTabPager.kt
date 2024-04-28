@@ -1,6 +1,5 @@
 package com.tatsuki.fireframe.feature.mediaselector.ui.component
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,11 +11,9 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,21 +23,13 @@ internal fun MediaSelectorTabPager(
     pagerState: PagerState = rememberPagerState { tabNames.size },
     pageContent: @Composable PagerScope.(page: Int) -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         MediaSelectorTab(
             tabNames = tabNames,
-            selectedTabIndex = pagerState.currentPage,
+            pagerState = pagerState,
             modifier = Modifier.fillMaxWidth(),
-            onTabClick = { index ->
-                Log.d("MediaSelectorScreen", "onTabClick: $index")
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(index)
-                }
-            },
         )
         HorizontalPager(
             state = pagerState,
