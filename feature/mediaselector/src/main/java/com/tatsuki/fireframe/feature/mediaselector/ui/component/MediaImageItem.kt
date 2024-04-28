@@ -30,8 +30,6 @@ private fun MediaImageItem(
     isSelected: Boolean,
     onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = {},
-    error: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.Crop,
 ) {
     Box(
@@ -52,8 +50,6 @@ private fun MediaImageItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .aspectRatio(1f),
-                placeholder = placeholder,
-                error = error,
                 contentScale = contentScale,
             )
         }
@@ -99,8 +95,6 @@ internal fun MediaImageItem(
         isSelected = mediaImage.isSelected.value,
         onSelect = { image -> onSelect(image) },
         modifier = modifier,
-        placeholder = placeholder,
-        error = error,
         contentScale = contentScale,
     )
 }
