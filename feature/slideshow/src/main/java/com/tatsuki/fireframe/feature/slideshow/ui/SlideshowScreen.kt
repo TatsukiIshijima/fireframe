@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
+import com.tatsuki.fireframe.core.designsystem.component.FireframeAsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.BatteryIcon
@@ -94,13 +94,10 @@ internal fun SlideshowScreen(
                 beyondBoundsPageCount = 1,
                 delayMills = 5000,
             ) { page ->
-                AsyncImage(
+                FireframeAsyncImage(
                     model = photoUrls[page],
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
-                    // TODO: set placeholder and error resources
-                    placeholder = null,
-                    error = null,
                     contentScale = ContentScale.Crop,
                 )
             }

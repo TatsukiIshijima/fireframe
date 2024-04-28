@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tatsuki.fireframe.core.common.toThumbnail
-import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
+import com.tatsuki.fireframe.core.designsystem.component.FireframeAsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.feature.mediaselector.R
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
@@ -44,7 +44,7 @@ internal fun MediaImageItem(
             )
         } else {
             val thumbnail = LocalContext.current.toThumbnail(mediaImage.id)
-            AsyncImage(
+            FireframeAsyncImage(
                 model = thumbnail,
                 contentDescription = contentDescription,
                 modifier = Modifier

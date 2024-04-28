@@ -30,25 +30,25 @@ import coil.size.Size
 import com.tatsuki.fireframe.core.designsystem.R
 
 @Composable
-fun AsyncImage(
+fun FireframeAsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    @DrawableRes placeholder: Int? = R.drawable.outline_image_24,
-    @DrawableRes error: Int? = R.drawable.outline_error_outline_24,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
+    @DrawableRes placeholderResource: Int? = R.drawable.outline_image_24,
+    @DrawableRes errorResource: Int? = R.drawable.outline_error_outline_24,
 ) {
     val imageRequestParams = ImageRequest.Builder(LocalContext.current)
         .data(model)
         .size(Size.ORIGINAL)
 
-    if (placeholder != null) {
-        imageRequestParams.placeholder(placeholder)
+    if (placeholderResource != null) {
+        imageRequestParams.placeholder(placeholderResource)
     }
-    if (error != null) {
-        imageRequestParams.error(error)
+    if (errorResource != null) {
+        imageRequestParams.error(errorResource)
     }
 
     val imageRequest = imageRequestParams.build()
