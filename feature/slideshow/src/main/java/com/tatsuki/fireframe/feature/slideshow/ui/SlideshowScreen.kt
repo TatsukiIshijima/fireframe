@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.AsyncImage
+import com.tatsuki.fireframe.core.designsystem.component.IconPlaceholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.BatteryIcon
@@ -100,10 +100,11 @@ internal fun SlideshowScreen(
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     // TODO: set placeholder and error resources
-                    placeholder = null,
-                    error = null,
+                    placeholder = {
+                        IconPlaceholder()
+                    },
+                    error = {},
                     contentScale = ContentScale.Crop,
-                    filterQuality = FilterQuality.Low,
                 )
             }
         }

@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.tatsuki.fireframe.feature.home.navigation.homeScreen
+import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaGalleryScreen
 import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaSelectorScreen
+import com.tatsuki.fireframe.feature.mediaselector.navigation.navigateToMediaGallery
 import com.tatsuki.fireframe.feature.mediaselector.navigation.navigateToMediaSelector
 import com.tatsuki.fireframe.feature.slideshow.navigation.navigateToSlideshow
 import com.tatsuki.fireframe.feature.slideshow.navigation.slideshowScreen
@@ -29,10 +31,11 @@ fun FireframeNavHost(
             },
             onOpenSlideGroup = { slideGroup ->
                 // TODO : Handle open slide group
-                navController.navigateToMediaSelector()
+                navController.navigateToMediaGallery()
             },
             onClickSlideStart = navController::navigateToSlideshow,
         )
+        mediaGalleryScreen()
         mediaSelectorScreen()
         slideshowScreen()
     }
