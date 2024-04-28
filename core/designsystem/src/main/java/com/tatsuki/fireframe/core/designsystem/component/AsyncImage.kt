@@ -18,28 +18,22 @@
 
 package com.tatsuki.fireframe.core.designsystem.component
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImagePainter.State.Empty
-import coil.compose.AsyncImagePainter.State.Error
-import coil.compose.AsyncImagePainter.State.Loading
-import coil.compose.AsyncImagePainter.State.Success
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tatsuki.fireframe.core.designsystem.R
 
 @Composable
 fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    placeholder: Int? = null,
+    placeholder: Int? = R.drawable.outline_image_24,
     error: Int? = null,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,

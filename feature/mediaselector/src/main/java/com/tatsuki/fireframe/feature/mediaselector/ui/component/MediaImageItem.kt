@@ -85,8 +85,6 @@ internal fun MediaImageItem(
     contentDescription: String?,
     onSelect: (SelectableMediaImage) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = {},
-    error: @Composable () -> Unit = {},
     contentScale: ContentScale = ContentScale.Crop,
 ) {
     MediaImageItem(
