@@ -42,12 +42,14 @@ fun AsyncImage(
     val imageRequestParams = ImageRequest.Builder(LocalContext.current)
         .data(model)
         .size(Size.ORIGINAL)
+
     if (placeholder != null) {
         imageRequestParams.placeholder(placeholder)
     }
     if (error != null) {
         imageRequestParams.error(error)
     }
+
     val imageRequest = imageRequestParams.build()
 
     coil.compose.AsyncImage(
