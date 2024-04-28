@@ -99,8 +99,6 @@ internal fun SlideshowScreen(
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     // TODO: set placeholder and error resources
-                    placeholder = null,
-                    error = null,
                     contentScale = ContentScale.Crop,
                 )
             }

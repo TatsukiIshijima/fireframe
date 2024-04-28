@@ -18,7 +18,6 @@
 
 package com.tatsuki.fireframe.core.designsystem.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -34,8 +33,8 @@ fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    @DrawableRes placeholder: Int? = R.drawable.outline_image_24,
-    @DrawableRes error: Int? = R.drawable.outline_error_outline_24,
+    placeholder: Int? = R.drawable.outline_image_24,
+    error: Int? = R.drawable.outline_error_outline_24,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
@@ -43,14 +42,12 @@ fun AsyncImage(
     val imageRequestParams = ImageRequest.Builder(LocalContext.current)
         .data(model)
         .size(Size.ORIGINAL)
-
     if (placeholder != null) {
         imageRequestParams.placeholder(placeholder)
     }
     if (error != null) {
         imageRequestParams.error(error)
     }
-
     val imageRequest = imageRequestParams.build()
 
     coil.compose.AsyncImage(
