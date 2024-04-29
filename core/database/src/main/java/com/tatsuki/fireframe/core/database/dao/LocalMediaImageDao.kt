@@ -8,20 +8,21 @@ import com.tatsuki.fireframe.core.database.model.LocalMediaImageEntity
 
 @Dao
 interface LocalMediaImageDao {
+
     @Query(
         value = """
-            SELECT * FROM local_media_image
+            SELECT * FROM local_media_image WHERE group_id = :groupId
         """,
     )
-    suspend fun getLocalMediaImages(): List<LocalMediaImageEntity>
+    suspend fun getLocalMediaImagesByGroupId(groupId: Long): List<LocalMediaImageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLocalMediaImage(vararg localMediaImage: LocalMediaImageEntity)
+    suspend fun insertLocalMediaImages(localMediaImages: List<LocalMediaImageEntity>)
 
     @Query(
         value = """
-            DELETE FROM local_media_image
+            DELETE FROM local_media_image WHERE group_id = :groupId
         """,
     )
-    suspend fun deleteLocalMediaImages()
+    suspend fun deleteLocalMediaImagesByGroupId(groupId: Long)
 }
