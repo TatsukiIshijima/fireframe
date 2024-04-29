@@ -4,8 +4,8 @@ import android.content.Context
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.database.getStringOrNull
-import com.tatsuki.fireframe.core.model.MediaImage
-import com.tatsuki.fireframe.core.model.MediaImageDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaImage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class MediaDataClientImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : MediaDataClient {
 
-    override suspend fun queryAllImageDirectories(): List<MediaImageDirectory> {
+    override suspend fun queryAllLocalMediaDirectories(): List<LocalMediaDirectory> {
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media.BUCKET_ID,
@@ -30,7 +30,7 @@ class MediaDataClientImpl @Inject constructor(
             sortOrder,
         )
         try {
-            val directories = mutableListOf<MediaImageDirectory>()
+            val directories = mutableListOf<LocalMediaDirectory>()
             query?.use { cursor ->
                 val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
                 val displayNameColumn =
@@ -46,7 +46,7 @@ class MediaDataClientImpl @Inject constructor(
                     }
                     Log.d("MediaDataClientImpl", "id: $id, displayName: $displayName")
                     val images = queryImagesFromDirectory(displayName)
-                    val directory = MediaImageDirectory(
+                    val directory = LocalMediaDirectory(
                         id = id,
                         name = displayName,
                         images = images,
@@ -62,7 +62,7 @@ class MediaDataClientImpl @Inject constructor(
         }
     }
 
-    private suspend fun queryImagesFromDirectory(name: String): List<MediaImage> {
+    private suspend fun queryImagesFromDirectory(name: String): List<LocalMediaImage> {
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
@@ -80,7 +80,7 @@ class MediaDataClientImpl @Inject constructor(
             sortOrder,
         )
         try {
-            val images = mutableListOf<MediaImage>()
+            val images = mutableListOf<LocalMediaImage>()
             query?.use { cursor ->
                 val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
                 val fileNameColumn =
@@ -88,7 +88,7 @@ class MediaDataClientImpl @Inject constructor(
                 while (cursor.moveToNext()) {
                     val id = cursor.getLong(idColumn)
                     val fileName = cursor.getString(fileNameColumn)
-                    val image = MediaImage(id)
+                    val image = LocalMediaImage(id)
                     Log.d("MediaDataClientImpl", "id: $id, fileName: $fileName")
                     images.add(image)
                 }

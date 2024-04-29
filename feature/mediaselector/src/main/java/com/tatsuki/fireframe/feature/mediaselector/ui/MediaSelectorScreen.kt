@@ -32,8 +32,8 @@ import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import com.tatsuki.fireframe.feature.mediaselector.R
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaDirectory
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
 import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaSelectorTabPager
 
@@ -87,9 +87,9 @@ internal fun MediaSelectorRoute(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun MediaSelectorScreen(
-    directories: List<SelectableMediaImageDirectory>,
+    directories: List<SelectableLocalMediaDirectory>,
     modifier: Modifier = Modifier,
-    onSelect: (SelectableMediaImage) -> Unit = {},
+    onSelect: (SelectableLocalMediaImage) -> Unit = {},
     onCancel: () -> Unit = {},
     onFinish: () -> Unit = {},
 ) {
@@ -142,10 +142,10 @@ private fun MediaSelectorScreenTabletPreview() {
     FireframeTheme {
         MediaSelectorScreen(
             directories = listOf(
-                SelectableMediaImageDirectory.fake(
+                SelectableLocalMediaDirectory.fake(
                     name = "Camera",
                 ),
-                SelectableMediaImageDirectory.fake(
+                SelectableLocalMediaDirectory.fake(
                     name = "Screenshots",
                 ),
             ),
@@ -162,10 +162,10 @@ private fun MediaSelectorScreenMobilePreview() {
     FireframeTheme {
         MediaSelectorScreen(
             directories = listOf(
-                SelectableMediaImageDirectory.fake(
+                SelectableLocalMediaDirectory.fake(
                     name = "Camera",
                 ),
-                SelectableMediaImageDirectory.fake(
+                SelectableLocalMediaDirectory.fake(
                     name = "Screenshots",
                 ),
             ),

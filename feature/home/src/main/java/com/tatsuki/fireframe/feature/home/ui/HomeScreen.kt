@@ -23,8 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,32 +32,31 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
+import com.tatsuki.fireframe.core.model.SlideGroup
+import com.tatsuki.fireframe.feature.home.HomeViewModel
 import com.tatsuki.fireframe.feature.home.R
 import com.tatsuki.fireframe.feature.home.model.SourceType
 
 @Composable
 internal fun HomeRoute(
     onClickSource: (SourceType) -> Unit,
-    onOpenSlideGroup: (String) -> Unit,
+    onOpenSlideGroup: (SlideGroup) -> Unit,
     onClickSlideStart: () -> Unit,
     modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val sourceTypes = listOf<SourceType>(
         SourceType.LocalStorage(),
     )
-    val slideGroups = remember {
-        mutableStateListOf<String>(
-            "SlideGroup1",
-            "SlideGroup2",
-            "SlideGroup3",
-        )
-    }
+    val slideGroupsState = homeViewModel.slideGroups.collectAsStateWithLifecycle()
 
     HomeScreen(
         sourceTypes = sourceTypes,
-        slideGroups = slideGroups,
+        slideGroups = slideGroupsState.value,
         modifier = modifier,
         onActionClick = {
             // TODO : Handle action click
@@ -72,24 +70,26 @@ internal fun HomeRoute(
         onOpenSlideGroup = { slideGroup ->
             onOpenSlideGroup(slideGroup)
         },
-        onDeleteSlideGroup = { slideGroup ->
-            // TODO : Handle delete slide group
-        },
+        onDeleteSlideGroup = homeViewModel::onDeleteSlideGroup,
         onClickStartButton = onClickSlideStart,
     )
+
+    LaunchedEffect(Unit) {
+        homeViewModel.onCreate()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun HomeScreen(
     sourceTypes: List<SourceType>,
-    slideGroups: List<String>,
+    slideGroups: List<SlideGroup>,
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit = {},
     onClickSource: (SourceType) -> Unit = {},
-    onSelectSlideGroup: (String) -> Unit = {},
-    onOpenSlideGroup: (String) -> Unit = {},
-    onDeleteSlideGroup: (String) -> Unit = {},
+    onSelectSlideGroup: (SlideGroup) -> Unit = {},
+    onOpenSlideGroup: (SlideGroup) -> Unit = {},
+    onDeleteSlideGroup: (SlideGroup) -> Unit = {},
     onClickStartButton: () -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
@@ -152,7 +152,7 @@ internal fun HomeScreen(
                 items(slideGroups.size) {
                     val slideGroup = slideGroups[it]
                     SlideGroupItem(
-                        name = slideGroup,
+                        slideGroup = slideGroup,
                         isSelected = it == 0,
                         onSelectGroup = {
                             onSelectSlideGroup(it)
@@ -222,10 +222,19 @@ private fun HomeScreenTabletPreview() {
         SourceType.LocalStorage(),
         SourceType.LocalStorage(),
     )
-    val slideGroups = listOf<String>(
-        "SlideGroup1",
-        "SlideGroup2",
-        "SlideGroup3",
+    val slideGroups = listOf<SlideGroup>(
+        SlideGroup.fake(
+            id = 1,
+            groupName = "SlideGroup1",
+        ),
+        SlideGroup.fake(
+            id = 2,
+            groupName = "SlideGroup2",
+        ),
+        SlideGroup.fake(
+            id = 3,
+            groupName = "SlideGroup3",
+        ),
     )
 
     FireframeTheme {
@@ -244,10 +253,19 @@ private fun HomeScreenMobilePreview() {
         SourceType.LocalStorage(),
         SourceType.LocalStorage(),
     )
-    val slideGroups = listOf<String>(
-        "SlideGroup1",
-        "SlideGroup2",
-        "SlideGroup3",
+    val slideGroups = listOf<SlideGroup>(
+        SlideGroup.fake(
+            id = 1,
+            groupName = "SlideGroup1",
+        ),
+        SlideGroup.fake(
+            id = 2,
+            groupName = "SlideGroup2",
+        ),
+        SlideGroup.fake(
+            id = 3,
+            groupName = "SlideGroup3",
+        ),
     )
 
     FireframeTheme {

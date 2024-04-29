@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tatsuki.fireframe.core.data.repository.MediaRepository
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImageDirectory
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaDirectory
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,18 +19,18 @@ class MediaSelectorViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val mutableImageDirectories =
-        MutableStateFlow(emptyList<SelectableMediaImageDirectory>())
+        MutableStateFlow(emptyList<SelectableLocalMediaDirectory>())
     val imageDirectories = mutableImageDirectories.asStateFlow()
 
     fun onGrantedReadExternalStoragePermission() {
-        loadImageDirectories()
+        loadLocalMediaDirectories()
     }
 
-    private fun loadImageDirectories() {
+    private fun loadLocalMediaDirectories() {
         viewModelScope.launch {
             try {
-                val directories = mediaRepository.getAllImageDirectories()
-                    .map { directory -> SelectableMediaImageDirectory.from(directory) }
+                val directories = mediaRepository.getAllLocalMediaDirectories()
+                    .map { directory -> SelectableLocalMediaDirectory.from(directory) }
                 mutableImageDirectories.value = directories
             } catch (e: Exception) {
                 Log.e("MediaSelectorViewModel", "Failed to load directories", e)
@@ -39,7 +39,7 @@ class MediaSelectorViewModel @Inject constructor(
         }
     }
 
-    fun onSelect(selectableMediaImage: SelectableMediaImage) {
+    fun onSelect(selectableMediaImage: SelectableLocalMediaImage) {
         mutableImageDirectories.value
             .flatMap { directory -> directory.selectableMediaImages }
             .find { image -> image.id == selectableMediaImage.id }
@@ -50,13 +50,17 @@ class MediaSelectorViewModel @Inject constructor(
     }
 
     fun onFinish() {
+        // TODO: set slide group name
         viewModelScope.launch {
-            val selectedMediaImage = imageDirectories.value
+            val selectedLocalImages = imageDirectories.value
                 .flatMap { directory -> directory.selectableMediaImages }
                 .filter { image -> image.isSelected.value }
-                .map { image -> image.toMediaImage() }
-            Log.d("MediaSelectorViewModel", "onFinish: $selectedMediaImage")
-            mediaRepository.updateSelectedLocalMediaImages(selectedMediaImage)
+                .map { image -> image.toLocalImage() }
+            Log.d("MediaSelectorViewModel", "onFinish: $selectedLocalImages")
+            mediaRepository.createSlideGroup(
+                slideGroupName = "SlideGroup",
+                localImages = selectedLocalImages,
+            )
         }
     }
 }

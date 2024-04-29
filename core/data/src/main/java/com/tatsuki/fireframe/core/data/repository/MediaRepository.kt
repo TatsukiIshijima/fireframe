@@ -1,13 +1,21 @@
 package com.tatsuki.fireframe.core.data.repository
 
-import com.tatsuki.fireframe.core.model.MediaImage
-import com.tatsuki.fireframe.core.model.MediaImageDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaImage
+import com.tatsuki.fireframe.core.model.SlideGroup
 
 interface MediaRepository {
 
-    suspend fun getAllImageDirectories(): List<MediaImageDirectory>
+    suspend fun getSlideGroups(): List<SlideGroup>
 
-    suspend fun getSelectedLocalMediaImages(): List<MediaImage>
+    suspend fun getSlideGroupImages(groupId: Long): List<LocalMediaImage>
 
-    suspend fun updateSelectedLocalMediaImages(selectedMediaImages: List<MediaImage>)
+    suspend fun getAllLocalMediaDirectories(): List<LocalMediaDirectory>
+
+    suspend fun createSlideGroup(
+        slideGroupName: String,
+        localImages: List<LocalMediaImage>,
+    )
+
+    suspend fun deleteSlideGroup(groupId: Long)
 }
