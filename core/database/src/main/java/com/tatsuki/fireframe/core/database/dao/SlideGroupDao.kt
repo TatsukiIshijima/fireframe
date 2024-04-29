@@ -16,6 +16,13 @@ interface SlideGroupDao {
     )
     suspend fun getSlideGroups(): List<SlideGroupEntity>
 
+    @Query(
+        value = """
+            SELECT * FROM slide_group WHERE id = :id
+        """,
+    )
+    suspend fun getSlideGroup(id: Long): SlideGroupEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSlideGroup(vararg slideGroup: SlideGroupEntity): List<Long>
 

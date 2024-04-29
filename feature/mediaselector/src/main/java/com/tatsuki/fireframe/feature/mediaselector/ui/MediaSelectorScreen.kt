@@ -95,7 +95,7 @@ internal fun MediaSelectorScreen(
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
-            titleRes = R.string.media_selector_title,
+            title = stringResource(id = R.string.media_selector_title),
             navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
             navigationIconDescription = "Back",
             onNavigationClick = onCancel,

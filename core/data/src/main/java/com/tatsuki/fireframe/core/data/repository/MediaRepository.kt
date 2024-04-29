@@ -8,6 +8,8 @@ interface MediaRepository {
 
     suspend fun getSlideGroups(): List<SlideGroup>
 
+    suspend fun getSlideGroup(groupId: Long): SlideGroup
+
     suspend fun getSlideGroupImages(groupId: Long): List<LocalMediaImage>
 
     suspend fun getAllLocalMediaDirectories(): List<LocalMediaDirectory>
