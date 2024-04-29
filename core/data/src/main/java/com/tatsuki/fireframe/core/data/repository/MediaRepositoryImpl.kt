@@ -23,6 +23,10 @@ class MediaRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSlideGroup(groupId: Long): SlideGroup {
+        return slideGroupDao.getSlideGroup(groupId).asExternalModel()
+    }
+
     override suspend fun getSlideGroupImages(groupId: Long): List<LocalMediaImage> {
         return localMediaImageDao.getLocalMediaImagesByGroupId(groupId).map { entity ->
             entity.asExternalModel()

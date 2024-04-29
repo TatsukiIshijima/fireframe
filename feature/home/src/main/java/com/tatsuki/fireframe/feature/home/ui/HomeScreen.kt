@@ -97,7 +97,7 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
         ) {
             TopAppBar(
-                titleRes = R.string.app_name,
+                title = stringResource(id = R.string.app_name),
                 actionIcon = Icons.Default.Settings,
                 actionIconDescription = "Settings",
                 onActionClick = onActionClick,
