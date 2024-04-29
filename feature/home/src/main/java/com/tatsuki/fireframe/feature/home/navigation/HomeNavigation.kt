@@ -8,7 +8,7 @@ import com.tatsuki.fireframe.core.model.SlideGroup
 import com.tatsuki.fireframe.feature.home.model.SourceType
 import com.tatsuki.fireframe.feature.home.ui.HomeRoute
 
-const val HOME_ROUTE = "home_route"
+const val HOME_ROUTE = "home"
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
     navigate(HOME_ROUTE, navOptions)

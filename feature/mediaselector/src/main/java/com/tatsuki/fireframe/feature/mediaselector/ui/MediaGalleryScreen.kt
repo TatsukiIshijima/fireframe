@@ -18,6 +18,7 @@ import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
 
 @Composable
 internal fun MediaGalleryRoute(
+    slideGroupId: Long,
     modifier: Modifier = Modifier,
     mediaGalleryViewModel: MediaGalleryViewModel = hiltViewModel(),
 ) {
@@ -29,8 +30,9 @@ internal fun MediaGalleryRoute(
     )
 
     LaunchedEffect(Unit) {
-        // TODO: 引数渡す
-//        mediaGalleryViewModel.loadSlideGroupImages()
+        mediaGalleryViewModel.loadSlideGroupImages(
+            slideGroupId = slideGroupId,
+        )
     }
 }
 

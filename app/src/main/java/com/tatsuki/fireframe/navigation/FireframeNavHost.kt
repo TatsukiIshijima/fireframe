@@ -30,8 +30,9 @@ fun FireframeNavHost(
                 navController.navigateToMediaSelector()
             },
             onOpenSlideGroup = { slideGroup ->
-                // TODO : Handle open slide group
-                navController.navigateToMediaGallery()
+                navController.navigateToMediaGallery(
+                    slideGroup = slideGroup,
+                )
             },
             onClickSlideStart = navController::navigateToSlideshow,
         )

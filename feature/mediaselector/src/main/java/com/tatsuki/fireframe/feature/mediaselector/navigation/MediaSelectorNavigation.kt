@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.tatsuki.fireframe.feature.mediaselector.ui.MediaSelectorRoute
 
-const val MEDIA_SELECTOR_ROUTE = "media_selector_route"
+const val MEDIA_SELECTOR_ROUTE = "mediaSelector"
 
 fun NavController.navigateToMediaSelector(navOptions: NavOptions? = null) {
     navigate(MEDIA_SELECTOR_ROUTE, navOptions)

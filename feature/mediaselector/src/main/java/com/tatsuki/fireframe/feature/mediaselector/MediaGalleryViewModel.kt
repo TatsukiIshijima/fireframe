@@ -22,10 +22,10 @@ class MediaGalleryViewModel @Inject constructor(
         MutableStateFlow(emptyList<SelectableLocalMediaImage>())
     val selectedImages = mutableSelectedImages.asStateFlow()
 
-    fun loadSlideGroupImages(slideGroup: SlideGroup) {
+    fun loadSlideGroupImages(slideGroupId: Long) {
         viewModelScope.launch {
             try {
-                val slideGroupImages = mediaRepository.getSlideGroupImages(slideGroup.id)
+                val slideGroupImages = mediaRepository.getSlideGroupImages(slideGroupId)
                     .map { image -> SelectableLocalMediaImage.from(image) }
                 mutableSelectedImages.value = slideGroupImages
             } catch (e: Exception) {
