@@ -18,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,7 +57,10 @@ internal fun MediaSelectorRoute(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
         )
     }
+
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
+    var saveSlideGroupConfirmDialogOpenState by remember { mutableStateOf(false) }
+
     if (multiplePermissionState.allPermissionsGranted) {
         LaunchedEffect(Unit) {
             mediaSelectorViewModel.onGrantedReadExternalStoragePermission()
@@ -65,7 +71,9 @@ internal fun MediaSelectorRoute(
             onBack = onBack,
             modifier = modifier,
             onSelect = mediaSelectorViewModel::onSelect,
-            onFinish = mediaSelectorViewModel::onFinish,
+            onSave = {
+                saveSlideGroupConfirmDialogOpenState = true
+            },
         )
     } else {
         if (multiplePermissionState.shouldShowRationale) {
@@ -81,6 +89,17 @@ internal fun MediaSelectorRoute(
             }
         }
     }
+    if (saveSlideGroupConfirmDialogOpenState) {
+        SaveSlideGroupConfirmDialog(
+            onDismissRequest = {
+                saveSlideGroupConfirmDialogOpenState = false
+            },
+            onSaveRequest = { slideGroupName ->
+                mediaSelectorViewModel.onSaveSlideGroup(slideGroupName)
+                onBack()
+            },
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -90,7 +109,7 @@ internal fun MediaSelectorScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onSelect: (SelectableLocalMediaImage) -> Unit = {},
-    onFinish: () -> Unit = {},
+    onSave: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
@@ -124,9 +143,9 @@ internal fun MediaSelectorScreen(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = onFinish,
+                onClick = onSave,
             ) {
-                Text(text = stringResource(id = R.string.media_selector_ok_button))
+                Text(text = stringResource(id = R.string.decide_button))
             }
         }
     }

@@ -49,16 +49,14 @@ class MediaSelectorViewModel @Inject constructor(
             }
     }
 
-    fun onFinish() {
-        // TODO: set slide group name
+    fun onSaveSlideGroup(slideGroupName: String) {
         viewModelScope.launch {
             val selectedLocalImages = imageDirectories.value
                 .flatMap { directory -> directory.selectableMediaImages }
                 .filter { image -> image.isSelected.value }
                 .map { image -> image.toLocalImage() }
-            Log.d("MediaSelectorViewModel", "onFinish: $selectedLocalImages")
             mediaRepository.createSlideGroup(
-                slideGroupName = "SlideGroup",
+                slideGroupName = slideGroupName,
                 localImages = selectedLocalImages,
             )
         }
