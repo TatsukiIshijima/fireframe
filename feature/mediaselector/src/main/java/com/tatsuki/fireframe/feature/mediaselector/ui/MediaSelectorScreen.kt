@@ -40,6 +40,7 @@ import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaSelectorTab
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun MediaSelectorRoute(
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     mediaSelectorViewModel: MediaSelectorViewModel = hiltViewModel(),
 ) {
@@ -61,11 +62,9 @@ internal fun MediaSelectorRoute(
         val directoriesState by mediaSelectorViewModel.imageDirectories.collectAsStateWithLifecycle()
         MediaSelectorScreen(
             directories = directoriesState,
+            onBack = onBack,
             modifier = modifier,
             onSelect = mediaSelectorViewModel::onSelect,
-            onCancel = {
-                // TODO: Implement onCancel
-            },
             onFinish = mediaSelectorViewModel::onFinish,
         )
     } else {
@@ -88,9 +87,9 @@ internal fun MediaSelectorRoute(
 @Composable
 internal fun MediaSelectorScreen(
     directories: List<SelectableLocalMediaDirectory>,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onSelect: (SelectableLocalMediaImage) -> Unit = {},
-    onCancel: () -> Unit = {},
     onFinish: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -98,7 +97,7 @@ internal fun MediaSelectorScreen(
             title = stringResource(id = R.string.media_selector_title),
             navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
             navigationIconDescription = "Back",
-            onNavigationClick = onCancel,
+            onNavigationClick = onBack,
         )
         MediaSelectorTabPager(
             tabNames = directories.map { it.name },
@@ -149,6 +148,7 @@ private fun MediaSelectorScreenTabletPreview() {
                     name = "Screenshots",
                 ),
             ),
+            onBack = {},
         )
     }
 }
@@ -169,6 +169,7 @@ private fun MediaSelectorScreenMobilePreview() {
                     name = "Screenshots",
                 ),
             ),
+            onBack = {},
         )
     }
 }

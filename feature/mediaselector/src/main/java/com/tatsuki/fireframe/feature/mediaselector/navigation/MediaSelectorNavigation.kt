@@ -12,8 +12,12 @@ fun NavController.navigateToMediaSelector(navOptions: NavOptions? = null) {
     navigate(MEDIA_SELECTOR_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.mediaSelectorScreen() {
+fun NavGraphBuilder.mediaSelectorScreen(
+    onBack: () -> Unit,
+) {
     composable(route = MEDIA_SELECTOR_ROUTE) {
-        MediaSelectorRoute()
+        MediaSelectorRoute(
+            onBack = onBack,
+        )
     }
 }

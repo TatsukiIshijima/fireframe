@@ -37,7 +37,11 @@ fun FireframeNavHost(
             onClickSlideStart = navController::navigateToSlideshow,
         )
         mediaGalleryScreen()
-        mediaSelectorScreen()
+        mediaSelectorScreen(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
         slideshowScreen()
     }
 }
