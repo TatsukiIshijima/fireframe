@@ -2,6 +2,8 @@ package com.tatsuki.fireframe.feature.mediaselector.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +21,7 @@ import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
 @Composable
 internal fun MediaGalleryRoute(
     slideGroupId: Long,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     mediaGalleryViewModel: MediaGalleryViewModel = hiltViewModel(),
 ) {
@@ -26,6 +29,7 @@ internal fun MediaGalleryRoute(
 
     MediaGalleryScreen(
         mediaGalleryState = mediaGalleryState,
+        onBack = onBack,
         modifier = modifier,
     )
 
@@ -40,12 +44,16 @@ internal fun MediaGalleryRoute(
 @Composable
 internal fun MediaGalleryScreen(
     mediaGalleryState: MediaGalleryState,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
             title = mediaGalleryState.groupName,
             modifier = Modifier,
+            navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            navigationIconDescription = "Back",
+            onNavigationClick = onBack,
         )
         MediaGallery(
             mediaImages = mediaGalleryState.images,
@@ -65,7 +73,7 @@ private fun MediaGalleryScreenPreview() {
                 SelectableLocalMediaImage.fake(id = 1),
                 SelectableLocalMediaImage.fake(id = 2),
             ),
-
         ),
+        onBack = {},
     )
 }
