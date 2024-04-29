@@ -1,7 +1,7 @@
 package com.tatsuki.fireframe.core.data.repository
 
-import com.tatsuki.fireframe.core.model.LocalMediaImage
 import com.tatsuki.fireframe.core.model.LocalMediaDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaImage
 import com.tatsuki.fireframe.core.model.SlideGroup
 
 interface MediaRepository {

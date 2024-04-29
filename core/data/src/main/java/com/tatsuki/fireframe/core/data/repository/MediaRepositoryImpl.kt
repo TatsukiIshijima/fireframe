@@ -6,8 +6,8 @@ import com.tatsuki.fireframe.core.database.dao.SlideGroupDao
 import com.tatsuki.fireframe.core.database.model.LocalMediaImageEntity
 import com.tatsuki.fireframe.core.database.model.SlideGroupEntity
 import com.tatsuki.fireframe.core.database.model.asExternalModel
-import com.tatsuki.fireframe.core.model.LocalMediaImage
 import com.tatsuki.fireframe.core.model.LocalMediaDirectory
+import com.tatsuki.fireframe.core.model.LocalMediaImage
 import com.tatsuki.fireframe.core.model.SlideGroup
 import javax.inject.Inject
 
