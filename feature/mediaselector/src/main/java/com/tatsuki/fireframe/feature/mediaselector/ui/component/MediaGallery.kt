@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 
 @Composable
 internal fun MediaGallery(
-    mediaImages: List<SelectableMediaImage>,
+    mediaImages: List<SelectableLocalMediaImage>,
     modifier: Modifier = Modifier,
-    onSelect: (SelectableMediaImage) -> Unit = {},
+    onSelect: (SelectableLocalMediaImage) -> Unit = {},
     state: LazyGridState = rememberLazyGridState(),
 ) {
     LazyVerticalGrid(
@@ -58,7 +58,7 @@ internal fun MediaGallery(
 private fun MediaGalleryPreview() {
     MediaGallery(
         mediaImages = List(10) {
-            SelectableMediaImage.fake(id = it.toLong())
+            SelectableLocalMediaImage.fake(id = it.toLong())
         },
     )
 }

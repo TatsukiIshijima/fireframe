@@ -19,15 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tatsuki.fireframe.core.model.SlideGroup
 
 @Composable
 internal fun SlideGroupItem(
-    name: String,
+    slideGroup: SlideGroup,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onSelectGroup: (String) -> Unit = {},
-    onOpenGroup: (String) -> Unit = {},
-    onDeleteGroup: (String) -> Unit = {},
+    onSelectGroup: (SlideGroup) -> Unit = {},
+    onOpenGroup: (SlideGroup) -> Unit = {},
+    onDeleteGroup: (SlideGroup) -> Unit = {},
 ) {
     Card(
         modifier = modifier,
@@ -35,7 +36,7 @@ internal fun SlideGroupItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onSelectGroup(name) }
+                .clickable { onSelectGroup(slideGroup) }
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -48,7 +49,7 @@ internal fun SlideGroupItem(
                 Spacer(modifier = Modifier.width(8.dp))
             }
             Text(
-                text = name,
+                text = slideGroup.groupName,
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
@@ -56,13 +57,13 @@ internal fun SlideGroupItem(
             Text(
                 text = "確認",
                 modifier = Modifier
-                    .clickable { onOpenGroup(name) }
+                    .clickable { onOpenGroup(slideGroup) }
                     .padding(4.dp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
-                onClick = { onDeleteGroup(name) },
+                onClick = { onDeleteGroup(slideGroup) },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -78,7 +79,7 @@ internal fun SlideGroupItem(
 @Composable
 private fun SlideGroupItemSelectedPreview() {
     SlideGroupItem(
-        name = "グループ１",
+        slideGroup = SlideGroup.fake(),
         isSelected = true,
     )
 }
@@ -87,7 +88,7 @@ private fun SlideGroupItemSelectedPreview() {
 @Composable
 private fun SlideGroupItemUnselectedPreview() {
     SlideGroupItem(
-        name = "グループ１",
+        slideGroup = SlideGroup.fake(),
         isSelected = false,
     )
 }

@@ -13,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.feature.mediaselector.MediaGalleryViewModel
 import com.tatsuki.fireframe.feature.mediaselector.R
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
 
 @Composable
@@ -29,18 +29,20 @@ internal fun MediaGalleryRoute(
     )
 
     LaunchedEffect(Unit) {
-        mediaGalleryViewModel.loadSelectedImages()
+        // TODO: 引数渡す
+//        mediaGalleryViewModel.loadSlideGroupImages()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MediaGalleryScreen(
-    mediaImages: List<SelectableMediaImage>,
+    mediaImages: List<SelectableLocalMediaImage>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
+            // TODO: 文言変更
             titleRes = R.string.media_selector_title,
             modifier = Modifier,
         )
@@ -56,9 +58,9 @@ internal fun MediaGalleryScreen(
 private fun MediaGalleryScreenPreview() {
     MediaGalleryScreen(
         mediaImages = listOf(
-            SelectableMediaImage.fake(id = 0),
-            SelectableMediaImage.fake(id = 1),
-            SelectableMediaImage.fake(id = 2),
+            SelectableLocalMediaImage.fake(id = 0),
+            SelectableLocalMediaImage.fake(id = 1),
+            SelectableLocalMediaImage.fake(id = 2),
         ),
     )
 }

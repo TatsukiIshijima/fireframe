@@ -21,14 +21,14 @@ import com.tatsuki.fireframe.core.common.toThumbnail
 import com.tatsuki.fireframe.core.designsystem.component.FireframeAsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.feature.mediaselector.R
-import com.tatsuki.fireframe.feature.mediaselector.model.SelectableMediaImage
+import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 
 @Composable
 internal fun MediaImageItem(
-    mediaImage: SelectableMediaImage,
+    mediaImage: SelectableLocalMediaImage,
     contentDescription: String?,
     isSelected: Boolean,
-    onSelect: (SelectableMediaImage) -> Unit,
+    onSelect: (SelectableLocalMediaImage) -> Unit,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
 ) {
@@ -71,7 +71,7 @@ internal fun MediaImageItem(
 @Composable
 private fun MediaImageItemPreview() {
     MediaImageItem(
-        mediaImage = SelectableMediaImage.fake(),
+        mediaImage = SelectableLocalMediaImage.fake(),
         contentDescription = "Image",
         modifier = Modifier.size(128.dp),
         isSelected = true,
