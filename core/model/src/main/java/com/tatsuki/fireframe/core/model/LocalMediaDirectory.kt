@@ -1,7 +1,7 @@
 package com.tatsuki.fireframe.core.model
 
-data class MediaImageDirectory(
+data class LocalMediaDirectory(
     val id: Long,
     val name: String,
-    val images: List<MediaImage>,
+    val images: List<LocalMediaImage>,
 )

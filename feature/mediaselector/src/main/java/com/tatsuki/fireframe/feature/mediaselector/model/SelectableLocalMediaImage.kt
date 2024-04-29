@@ -4,25 +4,25 @@ import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.tatsuki.fireframe.core.common.toContentUri
-import com.tatsuki.fireframe.core.model.MediaImage
+import com.tatsuki.fireframe.core.model.LocalMediaImage
 
-data class SelectableMediaImage(
+data class SelectableLocalMediaImage(
     val id: Long,
     val uri: Uri,
     val isSelected: MutableState<Boolean> = mutableStateOf(false),
 ) {
 
-    fun toMediaImage(): MediaImage {
-        return MediaImage(
+    fun toLocalImage(): LocalMediaImage {
+        return LocalMediaImage(
             id = id,
         )
     }
 
     companion object {
-        fun from(mediaImage: MediaImage): SelectableMediaImage {
-            return SelectableMediaImage(
-                id = mediaImage.id,
-                uri = mediaImage.id.toContentUri(),
+        fun from(localMediaImage: LocalMediaImage): SelectableLocalMediaImage {
+            return SelectableLocalMediaImage(
+                id = localMediaImage.id,
+                uri = localMediaImage.id.toContentUri(),
                 isSelected = mutableStateOf(false),
             )
         }
@@ -31,8 +31,8 @@ data class SelectableMediaImage(
             id: Long = 0,
             uri: Uri = Uri.EMPTY,
             isSelected: MutableState<Boolean> = mutableStateOf(false),
-        ): SelectableMediaImage {
-            return SelectableMediaImage(
+        ): SelectableLocalMediaImage {
+            return SelectableLocalMediaImage(
                 id = id,
                 uri = uri,
                 isSelected = isSelected,
