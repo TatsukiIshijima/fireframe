@@ -18,7 +18,6 @@ class MediaDataClientImpl @Inject constructor(
         val projection = arrayOf(
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-            MediaStore.Images.Media.VOLUME_NAME,
             MediaStore.Images.Media.DATA,
         )
         val sortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
