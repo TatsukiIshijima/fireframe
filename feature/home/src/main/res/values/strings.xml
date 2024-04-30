@@ -6,4 +6,7 @@
     <string name="slideshow_group_label">スライドセット</string>
     <string name="local_storage_name">内部ストレージ</string>
     <string name="slide_group_add_button_label">追加</string>
+    <string name="delete_slide_group_confirm_dialog_title">%sを削除しますか？</string>
+    <string name="delete_button">削除</string>
+    <string name="cancel_button">キャンセル</string>
 </resources>

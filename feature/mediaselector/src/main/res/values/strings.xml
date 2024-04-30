@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="save_button">保存</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="decide_button">決定</string>
     <string name="media_selector_title">画像選択</string>
-    <string name="media_selector_ok_button">OK</string>
-    <string name="media_selector_cancel_button">キャンセル</string>
+    <string name="save_slide_group_confirm_dialog_message">選択した画像を保存します。\nスライドグループ名を入力してください。</string>
 </resources>

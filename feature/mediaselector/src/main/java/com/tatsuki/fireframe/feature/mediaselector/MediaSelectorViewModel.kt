@@ -49,18 +49,21 @@ class MediaSelectorViewModel @Inject constructor(
             }
     }
 
-    fun onFinish() {
-        // TODO: set slide group name
+    fun onSaveSlideGroup(slideGroupName: String) {
         viewModelScope.launch {
-            val selectedLocalImages = imageDirectories.value
-                .flatMap { directory -> directory.selectableMediaImages }
-                .filter { image -> image.isSelected.value }
-                .map { image -> image.toLocalImage() }
-            Log.d("MediaSelectorViewModel", "onFinish: $selectedLocalImages")
-            mediaRepository.createSlideGroup(
-                slideGroupName = "SlideGroup",
-                localImages = selectedLocalImages,
-            )
+            try {
+                val selectedLocalImages = imageDirectories.value
+                    .flatMap { directory -> directory.selectableMediaImages }
+                    .filter { image -> image.isSelected.value }
+                    .map { image -> image.toLocalImage() }
+                mediaRepository.createSlideGroup(
+                    slideGroupName = slideGroupName,
+                    localImages = selectedLocalImages,
+                )
+            } catch (e: Exception) {
+                Log.e("MediaSelectorViewModel", "Failed to save slide group", e)
+                coroutineContext.ensureActive()
+            }
         }
     }
 }

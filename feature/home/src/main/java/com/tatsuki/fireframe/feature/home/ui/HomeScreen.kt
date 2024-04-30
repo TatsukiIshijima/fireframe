@@ -24,6 +24,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tatsuki.fireframe.core.designsystem.component.ConfirmDialog
 import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.SlideGroup
@@ -52,11 +57,12 @@ internal fun HomeRoute(
     val sourceTypes = listOf<SourceType>(
         SourceType.LocalStorage(),
     )
-    val slideGroupsState = homeViewModel.slideGroups.collectAsStateWithLifecycle()
+    val slideGroupsState by homeViewModel.slideGroups.collectAsStateWithLifecycle()
+    var deleteTargetSlideGroup by remember { mutableStateOf<SlideGroup?>(null) }
 
     HomeScreen(
         sourceTypes = sourceTypes,
-        slideGroups = slideGroupsState.value,
+        slideGroups = slideGroupsState,
         modifier = modifier,
         onActionClick = {
             // TODO : Handle action click
@@ -70,9 +76,32 @@ internal fun HomeRoute(
         onOpenSlideGroup = { slideGroup ->
             onOpenSlideGroup(slideGroup)
         },
-        onDeleteSlideGroup = homeViewModel::onDeleteSlideGroup,
+        onDeleteSlideGroup = { slideGroup ->
+            deleteTargetSlideGroup = slideGroup
+        },
         onClickStartButton = onClickSlideStart,
     )
+
+    if (deleteTargetSlideGroup != null) {
+        ConfirmDialog(
+            title = stringResource(
+                id = R.string.delete_slide_group_confirm_dialog_title,
+                deleteTargetSlideGroup?.groupName ?: "",
+            ),
+            positiveButtonText = stringResource(id = R.string.delete_button),
+            negativeButtonText = stringResource(id = R.string.cancel_button),
+            onDismissRequest = {
+                deleteTargetSlideGroup = null
+            },
+            onConfirmation = {
+                val slideGroup = deleteTargetSlideGroup
+                deleteTargetSlideGroup = null
+                slideGroup?.let {
+                    homeViewModel.onDeleteSlideGroup(it)
+                }
+            },
+        )
+    }
 
     LaunchedEffect(Unit) {
         homeViewModel.onCreate()

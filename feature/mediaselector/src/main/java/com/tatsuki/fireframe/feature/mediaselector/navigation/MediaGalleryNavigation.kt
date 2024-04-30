@@ -20,14 +20,21 @@ fun NavController.navigateToMediaGallery(
     navigate(path, navOptions)
 }
 
-fun NavGraphBuilder.mediaGalleryScreen() {
+fun NavGraphBuilder.mediaGalleryScreen(
+    onBack: () -> Unit,
+) {
     composable(
         route = "$MEDIA_GALLERY_ROUTE/{$MEDIA_GALLERY_SLIDE_GROUP_ID_PATH}",
-        arguments = listOf(navArgument(MEDIA_GALLERY_SLIDE_GROUP_ID_PATH) { type = NavType.LongType }),
+        arguments = listOf(
+            navArgument(MEDIA_GALLERY_SLIDE_GROUP_ID_PATH) {
+                type = NavType.LongType
+            },
+        ),
     ) { backStackEntry ->
         backStackEntry.arguments?.getLong(MEDIA_GALLERY_SLIDE_GROUP_ID_PATH)?.let { slideGroupId ->
             MediaGalleryRoute(
                 slideGroupId = slideGroupId,
+                onBack = onBack,
             )
         }
     }
