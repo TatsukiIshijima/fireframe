@@ -24,3 +24,6 @@ bin/
 gen/
 out/
 build/
+
+# service account key json file
+fireframe-service-account-key.json

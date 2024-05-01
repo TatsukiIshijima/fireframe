@@ -33,6 +33,11 @@ runs:
         echo "storeFile=`pwd`/keystore.jks" >> ./keystore.properties
       shell: bash
 
+    - name: Set up service account key json
+      run: |
+        echo ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 --d > app/fireframe-service-account-key.json
+      shell: bash
+
     - name: Setup JDK 17
       uses: actions/setup-java@v4
       with:
