@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.fireframe.android.application.compose)
     alias(libs.plugins.fireframe.android.hilt)
+    alias(libs.plugins.gradle.play.publisher)
     alias(libs.plugins.roborazzi)
 }
 
@@ -49,7 +50,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -78,6 +80,11 @@ android {
         }
     }
 }
+
+// TODO
+//play {
+//    serviceAccountCredentials.set(file("your-key.json"))
+//}
 
 dependencies {
 
