@@ -17,7 +17,6 @@ runs:
   steps:
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v3
-      shell: bash
 
     - name: Copy CI gradle.properties
       run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
@@ -51,11 +50,9 @@ runs:
       with:
         distribution: 'zulu' # See 'Supported distributions' for available options
         java-version: '17'
-      shell: bash
 
     - name: Setup Gradle
       uses: gradle/gradle-assemble-action@v3
-      shell: bash
 
     - name: Check spotless
       run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
