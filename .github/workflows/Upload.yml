@@ -1,0 +1,40 @@
+name: Upload
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Allows you to run this workflow on push (merge into main) events
+  push:
+    branches:
+      - 'main'
+  # Triggers the workflow when a pull request is created
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upload:
+    name: "Upload build outputs"
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Build Action
+        uses: ./.github/actions/Build
+
+      # Upload build outputs (APKs and AABs)
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: APKs and AABs
+          path: |
+            **/build/outputs/apk/**/*.apk
+            **/build/outputs/bundle/**/*.aab
+            **/build/outputs/mapping/**/*.txt
+          retention-days: 1
