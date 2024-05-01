@@ -27,6 +27,8 @@ jobs:
 
       # Local properties write in local.properties
       - name: Setup local.properties
+        env:
+          OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
         run: |
           bash ./scripts/check_api_key.sh
 
