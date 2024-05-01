@@ -29,7 +29,6 @@ jobs:
           retention-days: 1
 
       # Publish build outputs (AAB) to Google Play
-      - name: Publish Google Play
+      - name: Publish Release Bundle
         run: |
-          echo "Publish Google Play"
           ./gradlew publishReleaseBundle --artifact-dir app/build/outputs/bundle/release
