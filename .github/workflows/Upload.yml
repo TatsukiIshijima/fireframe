@@ -27,6 +27,12 @@ jobs:
 
       - name: Run Build Action
         uses: ./.github/actions/assemble
+        with:
+          encoded_keystore: ${{ secrets.KEYSTORE }}
+          keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
+          key_password: ${{ secrets.KEY_PASSWORD }}
+          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
+          open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
 
       # Upload build outputs (APKs and AABs)
       - name: Upload build outputs

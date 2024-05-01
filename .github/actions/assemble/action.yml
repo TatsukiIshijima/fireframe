@@ -1,5 +1,16 @@
 name: "Assemble"
 description: "Build the project and run local tests"
+inputs:
+  encoded_keystore:
+    required: true
+  keystore_password:
+    required: true
+  key_password:
+    required: true
+  keystore_alias:
+    required: true
+  open_weather_api_key:
+    required: true
 
 runs:
   using: 'composite'
@@ -14,6 +25,8 @@ runs:
 
     # Local properties write in local.properties
     - name: Setup local.properties
+      env:
+        OPEN_WEATHER_API_KEY: ${{ inputs.open_weather_api_key }}
       run: |
         bash ./scripts/check_api_key.sh
       shell: bash
@@ -21,21 +34,16 @@ runs:
     # Decode keystore file encoded by base64
     - name: Decode Keystore
       run: |
-        echo ${{ secrets.KEYSTORE }} | base64 --d > keystore.jks
+        echo ${{ inputs.encoded_keystore }} | base64 --d > keystore.jks
       shell: bash
 
     # Keystore properties write in keystore.properties
     - name: Set up keystore.properties
       run: |
-        echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> keystore.properties
-        echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
-        echo "keyAlias=${{ secrets.KEYSTORE_ALIAS }}" >> keystore.properties  
+        echo "storePassword=${{ inputs.keystore_password }}" >> keystore.properties
+        echo "keyPassword=${{ inputs.key_password }}" >> keystore.properties
+        echo "keyAlias=${{ inputs.keystore_alias }}" >> keystore.properties  
         echo "storeFile=`pwd`/keystore.jks" >> ./keystore.properties
-      shell: bash
-
-    - name: Set up service account key json
-      run: |
-        echo ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 --d > app/fireframe-service-account-key.json
       shell: bash
 
     - name: Setup JDK 17

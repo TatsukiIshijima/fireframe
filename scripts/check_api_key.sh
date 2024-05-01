@@ -1,9 +1,9 @@
 #!/bin/bash
 
 file_path="local.properties"
-api_key="$open_weather_api_key"
+api_key="$OPEN_WEATHER_API_KEY"
 
-if [ -z "$open_weather_api_key" ]; then
+if [ -z "$OPEN_WEATHER_API_KEY" ]; then
   echo "ERROR: open_weather_api_key environment variable is not set."
   exit 1
 fi
