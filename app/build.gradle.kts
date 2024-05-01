@@ -81,10 +81,9 @@ android {
     }
 }
 
-// TODO
-//play {
-//    serviceAccountCredentials.set(file("your-key.json"))
-//}
+play {
+    serviceAccountCredentials.set(rootProject.file("fireframe-service-account-key.json"))
+}
 
 dependencies {
 
