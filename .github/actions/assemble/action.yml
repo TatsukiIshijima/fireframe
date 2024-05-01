@@ -1,4 +1,4 @@
-name: "Build"
+name: "Assemble"
 description: "Build the project and run local tests"
 
 runs:
@@ -46,20 +46,20 @@ runs:
       shell: bash
 
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/gradle-assemble-action@v3
       shell: bash
 
     - name: Check spotless
       run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
       shell: bash
 
-    # Run tests build
+    # Run tests assemble
     - name: Run local tests
       run: ./gradlew testDebugUnitTest --stacktrace
       shell: bash
 
     # Create APK and AAB
-    - name: Build all build type and flavor permutations
+    - name: Build all assemble type and flavor permutations
       run: |
         ./gradlew :app:assemble
         ./gradlew :app:bundle
