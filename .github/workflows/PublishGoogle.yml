@@ -16,7 +16,7 @@ jobs:
 
       - name: Set up service account key json
         run: |
-          echo ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 --d > app/fireframe-service-account-key.json
+          echo ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 --d > fireframe-service-account-key.json
 
       - name: Run Build Action
         uses: ./.github/actions/assemble
