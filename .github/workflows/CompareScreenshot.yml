@@ -2,9 +2,6 @@
 
 name: CompareScreenshot
 
-env:
-  open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
-
 on:
   pull_request:
 
@@ -25,6 +22,8 @@ jobs:
 
       # Local properties write in local.properties
       - name: Setup local.properties
+        env:
+          OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
         run: |
           bash ./scripts/check_api_key.sh
 
@@ -35,7 +34,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: wrapper
 
