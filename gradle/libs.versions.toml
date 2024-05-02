@@ -10,7 +10,7 @@ composeCompiler = "1.5.11"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 composeBom = "2024.04.01"
 coreKtx = "1.13.1"
-dataStorePreferences = "1.1.0"
+dataStorePreferences = "1.1.1"
 espressoCore = "3.5.1"
 gradle-play-publisher = "3.9.1"
 hilt = "2.51.1"
