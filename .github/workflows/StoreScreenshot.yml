@@ -32,6 +32,11 @@ jobs:
         run: |
           bash ./scripts/check_api_key.sh
 
+      # Decode google-services.json encoded by base64 for firebase
+      - name: Decode Google Services Json
+        run: |
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 --d > ./app/google-services.json
+
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:

@@ -7,6 +7,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.fireframe.android.application)
     alias(libs.plugins.fireframe.android.application.compose)
+    alias(libs.plugins.fireframe.android.application.firebase)
     alias(libs.plugins.fireframe.android.hilt)
     alias(libs.plugins.gradle.play.publisher)
     alias(libs.plugins.roborazzi)

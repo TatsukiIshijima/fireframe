@@ -65,6 +65,10 @@ gradlePlugin {
             id = "fireframe.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("androidFirebase") {
+            id = "fireframe.android.application.firebase"
+            implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+        }
         register("androidHilt") {
             id = "fireframe.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"

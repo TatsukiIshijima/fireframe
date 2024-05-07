@@ -27,3 +27,5 @@ build/
 
 # service account key json file
 fireframe-service-account-key.json
+
+app/src/main/play/
