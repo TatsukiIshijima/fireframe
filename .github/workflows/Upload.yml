@@ -33,6 +33,7 @@ jobs:
           key_password: ${{ secrets.KEY_PASSWORD }}
           keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
           open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
+          encoded_google_services_json: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       # Upload build outputs (APKs and AABs)
       - name: Upload build outputs

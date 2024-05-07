@@ -11,6 +11,8 @@ inputs:
     required: true
   open_weather_api_key:
     required: true
+  encoded_google_services_json:
+    required: true
 
 runs:
   using: 'composite'
@@ -28,6 +30,12 @@ runs:
         OPEN_WEATHER_API_KEY: ${{ inputs.open_weather_api_key }}
       run: |
         bash ./scripts/check_api_key.sh
+      shell: bash
+
+    # Decode google-services.json encoded by base64 for firebase
+    - name: Decode Google Services Json
+      run: |
+        echo ${{ inputs.encoded_google_services_json }} | base64 --d > ./app/google-services.json
       shell: bash
 
     # Decode keystore file encoded by base64
