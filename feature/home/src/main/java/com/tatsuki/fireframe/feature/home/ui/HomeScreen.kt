@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -64,9 +63,6 @@ internal fun HomeRoute(
         sourceTypes = sourceTypes,
         slideGroups = slideGroupsState,
         modifier = modifier,
-        onActionClick = {
-            // TODO : Handle action click
-        },
         onClickSource = { sourceType ->
             onClickSource(sourceType)
         },
@@ -114,7 +110,6 @@ internal fun HomeScreen(
     sourceTypes: List<SourceType>,
     slideGroups: List<SlideGroup>,
     modifier: Modifier = Modifier,
-    onActionClick: () -> Unit = {},
     onClickSource: (SourceType) -> Unit = {},
     onSelectSlideGroup: (SlideGroup) -> Unit = {},
     onOpenSlideGroup: (SlideGroup) -> Unit = {},
@@ -127,9 +122,6 @@ internal fun HomeScreen(
         ) {
             TopAppBar(
                 title = stringResource(id = R.string.app_name),
-                actionIcon = Icons.Default.Settings,
-                actionIconDescription = "Settings",
-                onActionClick = onActionClick,
             )
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
@@ -183,14 +175,14 @@ internal fun HomeScreen(
                     SlideGroupItem(
                         slideGroup = slideGroup,
                         isSelected = it == 0,
-                        onSelectGroup = {
-                            onSelectSlideGroup(it)
+                        onSelectGroup = { selectSlideGroup ->
+                            onSelectSlideGroup(selectSlideGroup)
                         },
-                        onOpenGroup = {
-                            onOpenSlideGroup(it)
+                        onOpenGroup = { openSlideGroup ->
+                            onOpenSlideGroup(openSlideGroup)
                         },
-                        onDeleteGroup = {
-                            onDeleteSlideGroup(it)
+                        onDeleteGroup = { deleteSlideGroup ->
+                            onDeleteSlideGroup(deleteSlideGroup)
                         },
                     )
                     if (it != MAX_SLIDE_GROUP_COUNT) {
