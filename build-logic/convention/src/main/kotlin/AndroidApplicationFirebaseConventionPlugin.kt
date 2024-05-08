@@ -17,6 +17,7 @@
 // https://github.com/android/nowinandroid/blob/main/build-logic/convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt
 
 import com.android.build.api.dsl.ApplicationExtension
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import com.tatsuki.fireframe.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -28,11 +29,13 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.google.gms.google-services")
+                apply("com.google.firebase.crashlytics")
             }
 
             dependencies {
                 val bom = libs.findLibrary("firebase-bom").get()
                 add("implementation", platform(bom))
+                "implementation"(libs.findLibrary("firebase.crashlytics").get())
             }
 
             extensions.configure<ApplicationExtension> {
@@ -40,9 +43,9 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
                     // Disable the Crashlytics mapping file upload. This feature should only be
                     // enabled if a Firebase backend is available and configured in
                     // google-services.json.
-//                    configure<CrashlyticsExtension> {
-//                        mappingFileUploadEnabled = false
-//                    }
+                    configure<CrashlyticsExtension> {
+                        mappingFileUploadEnabled = false
+                    }
                 }
             }
         }
