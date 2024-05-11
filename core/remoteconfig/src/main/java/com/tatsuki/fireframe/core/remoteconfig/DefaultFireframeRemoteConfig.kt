@@ -1,15 +1,11 @@
 package com.tatsuki.fireframe.core.remoteconfig
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 class DefaultFireframeRemoteConfig @Inject constructor() : FireframeRemoteConfig {
 

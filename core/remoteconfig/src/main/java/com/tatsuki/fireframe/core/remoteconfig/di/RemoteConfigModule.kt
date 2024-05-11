@@ -15,6 +15,6 @@ interface RemoteConfigModule {
     @Binds
     @Singleton
     fun bindFireframeRemoteConfig(
-        defaultFireframeRemoteConfig: DefaultFireframeRemoteConfig
+        defaultFireframeRemoteConfig: DefaultFireframeRemoteConfig,
     ): FireframeRemoteConfig
 }
