@@ -12,8 +12,12 @@ fun NavController.navigateToSlideshow(navOptions: NavOptions? = null) {
     navigate(SLIDESHOW_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.slideshowScreen() {
+fun NavGraphBuilder.slideshowScreen(
+    isEnableWeather: Boolean,
+) {
     composable(route = SLIDESHOW_ROUTE) {
-        SlideshowRoute()
+        SlideshowRoute(
+            isEnableWeather = isEnableWeather,
+        )
     }
 }
