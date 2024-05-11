@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.FireframeAsyncImage
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
-import com.tatsuki.fireframe.core.ui.BatteryIcon
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
 import com.tatsuki.fireframe.core.ui.TextClock
@@ -41,6 +40,7 @@ import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
 
 @Composable
 internal fun SlideshowRoute(
+    isEnableWeather: Boolean,
     modifier: Modifier = Modifier,
     slideshowViewModel: SlideshowViewModel = hiltViewModel(),
 ) {
@@ -60,6 +60,7 @@ internal fun SlideshowRoute(
     val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsStateWithLifecycle()
 
     SlideshowScreen(
+        isEnableWeather = isEnableWeather,
         batteryLevel = 50,
         photoUrls = photoUrls,
         currentAndForecastWeather = currentAndForecastWeather,
@@ -67,15 +68,18 @@ internal fun SlideshowRoute(
     )
 
     // FIXME: prevent call twice
-    LaunchedEffect(Unit) {
-        Log.d("SlideshowRoute", "LaunchedEffect")
-        slideshowViewModel.fetchCurrentAndForecastWeather()
+    if (isEnableWeather) {
+        LaunchedEffect(Unit) {
+            Log.d("SlideshowRoute", "LaunchedEffect")
+            slideshowViewModel.fetchCurrentAndForecastWeather()
+        }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SlideshowScreen(
+    isEnableWeather: Boolean,
     batteryLevel: Int,
     photoUrls: List<Any?>,
     currentAndForecastWeather: CurrentAndForecastWeather?,
@@ -102,22 +106,23 @@ internal fun SlideshowScreen(
                 )
             }
         }
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd),
-        ) {
-            BatteryIcon(
-                level = batteryLevel,
-                modifier = Modifier
-                    .size(58.dp)
-                    .padding(16.dp),
-            )
-        }
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.TopEnd),
+//        ) {
+//            BatteryIcon(
+//                level = batteryLevel,
+//                modifier = Modifier
+//                    .size(58.dp)
+//                    .padding(16.dp),
+//            )
+//        }
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart),
         ) {
             DateInfoShortPanel(
+                isEnableWeather = isEnableWeather,
                 currentAndForecastWeather = currentAndForecastWeather,
             )
         }
@@ -126,6 +131,7 @@ internal fun SlideshowScreen(
 
 @Composable
 private fun DateInfoShortPanel(
+    isEnableWeather: Boolean,
     currentAndForecastWeather: CurrentAndForecastWeather?,
     modifier: Modifier = Modifier,
 ) {
@@ -142,32 +148,35 @@ private fun DateInfoShortPanel(
                 Modifier.alignByBaseline()
             }
 
-            if (currentAndForecastWeather == null) {
+            if (isEnableWeather) {
+                if (currentAndForecastWeather == null) {
+                    Text(
+                        text = "ー",
+                        modifier = baseModifier.padding(end = 12.dp),
+                    )
+                } else {
+                    WeatherIcon(
+                        weatherId = currentAndForecastWeather.currentWeather.weatherDataList.first().id,
+                        modifier = baseModifier.size(42.dp),
+                    )
+                }
+
+                val temperature =
+                    currentAndForecastWeather?.currentWeather?.temperature?.toInt()
+                val temperatureText = if (temperature != null) {
+                    stringResource(id = R.string.unit_celsius, temperature)
+                } else {
+                    "-"
+                }
+
                 Text(
-                    text = "ー",
-                    modifier = baseModifier.padding(end = 12.dp),
+                    text = temperatureText,
+                    modifier = baseModifier,
+                    fontSize = 24.sp,
                 )
-            } else {
-                WeatherIcon(
-                    weatherId = currentAndForecastWeather.currentWeather.weatherDataList.first().id,
-                    modifier = baseModifier.size(42.dp),
-                )
+                Spacer(modifier = Modifier.width(12.dp))
             }
 
-            val temperature =
-                currentAndForecastWeather?.currentWeather?.temperature?.toInt()
-            val temperatureText = if (temperature != null) {
-                stringResource(id = R.string.unit_celsius, temperature)
-            } else {
-                "-"
-            }
-
-            Text(
-                text = temperatureText,
-                modifier = baseModifier,
-                fontSize = 24.sp,
-            )
-            Spacer(modifier = Modifier.width(12.dp))
             DateText(
                 modifier = baseModifier,
                 fontSize = 24.sp,
@@ -190,6 +199,7 @@ private fun DateInfoShortPanel(
 fun SlideshowScreenTabletPreview() {
     FireframeTheme {
         SlideshowScreen(
+            isEnableWeather = true,
             batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,
@@ -207,6 +217,7 @@ fun SlideshowScreenTabletPreview() {
 fun SlideshowScreenMobilePreview() {
     FireframeTheme {
         SlideshowScreen(
+            isEnableWeather = true,
             batteryLevel = 50,
             photoUrls = listOf(
                 R.drawable.dummy_image,

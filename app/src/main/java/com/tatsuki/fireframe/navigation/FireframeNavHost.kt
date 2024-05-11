@@ -3,6 +3,7 @@ package com.tatsuki.fireframe.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.tatsuki.fireframe.core.remoteconfig.FireframeRemoteConfig
 import com.tatsuki.fireframe.feature.home.navigation.homeScreen
 import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaGalleryScreen
 import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaSelectorScreen
@@ -15,6 +16,7 @@ import com.tatsuki.fireframe.ui.FireframeAppState
 @Composable
 fun FireframeNavHost(
     appState: FireframeAppState,
+    remoteConfig: FireframeRemoteConfig,
     modifier: Modifier = Modifier,
     startDestination: Destination = Destination.Home(),
 ) {
@@ -46,6 +48,8 @@ fun FireframeNavHost(
                 navController.popBackStack()
             },
         )
-        slideshowScreen()
+        slideshowScreen(
+            isEnableWeather = remoteConfig.isEnableWeather(),
+        )
     }
 }
