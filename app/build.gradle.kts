@@ -89,6 +89,7 @@ play {
 dependencies {
 
     implementation(project(":core:designsystem"))
+    implementation(project(":core:remoteconfig"))
     implementation(project(":core:ui"))
     implementation(project(":feature:home"))
     implementation(project(":feature:mediaselector"))
