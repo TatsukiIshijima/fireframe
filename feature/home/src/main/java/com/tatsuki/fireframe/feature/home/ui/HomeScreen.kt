@@ -57,18 +57,21 @@ internal fun HomeRoute(
         SourceType.LocalStorage(),
     )
     val slideGroupsState by homeViewModel.slideGroups.collectAsStateWithLifecycle()
+    val selectedSlideGroupId by homeViewModel.selectedSlideGroupId.collectAsStateWithLifecycle(
+        initialValue = -1L,
+    )
+    // FIXME: move viewmodel
     var deleteTargetSlideGroup by remember { mutableStateOf<SlideGroup?>(null) }
 
     HomeScreen(
         sourceTypes = sourceTypes,
         slideGroups = slideGroupsState,
+        selectedSlideGroupId = selectedSlideGroupId,
         modifier = modifier,
         onClickSource = { sourceType ->
             onClickSource(sourceType)
         },
-        onSelectSlideGroup = { slideGroup ->
-            // TODO : Handle select slide group
-        },
+        onSelectSlideGroup = homeViewModel::onSelectSlideGroup,
         onOpenSlideGroup = { slideGroup ->
             onOpenSlideGroup(slideGroup)
         },
@@ -109,6 +112,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
     sourceTypes: List<SourceType>,
     slideGroups: List<SlideGroup>,
+    selectedSlideGroupId: Long,
     modifier: Modifier = Modifier,
     onClickSource: (SourceType) -> Unit = {},
     onSelectSlideGroup: (SlideGroup) -> Unit = {},
@@ -174,7 +178,7 @@ internal fun HomeScreen(
                     val slideGroup = slideGroups[it]
                     SlideGroupItem(
                         slideGroup = slideGroup,
-                        isSelected = it == 0,
+                        isSelected = selectedSlideGroupId == slideGroup.id,
                         onSelectGroup = { selectSlideGroup ->
                             onSelectSlideGroup(selectSlideGroup)
                         },
@@ -262,6 +266,7 @@ private fun HomeScreenTabletPreview() {
         HomeScreen(
             sourceTypes = sourceTypes,
             slideGroups = slideGroups,
+            selectedSlideGroupId = 1,
         )
     }
 }
@@ -293,6 +298,7 @@ private fun HomeScreenMobilePreview() {
         HomeScreen(
             sourceTypes = sourceTypes,
             slideGroups = slideGroups,
+            selectedSlideGroupId = 1,
         )
     }
 }

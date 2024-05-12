@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tatsuki.fireframe.core.data.repository.MediaRepository
+import com.tatsuki.fireframe.core.data.repository.SettingRepository
 import com.tatsuki.fireframe.core.model.SlideGroup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
@@ -15,10 +16,13 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
+    private val settingRepository: SettingRepository,
 ) : ViewModel() {
 
     private val mutableSlideGroups = MutableStateFlow(emptyList<SlideGroup>())
     val slideGroups = mutableSlideGroups.asStateFlow()
+
+    val selectedSlideGroupId = settingRepository.selectedSlideGroupIdFlow
 
     fun onCreate() {
         loadSlideGroups()
@@ -32,6 +36,12 @@ class HomeViewModel @Inject constructor(
                 Log.e("HomeViewModel", "Failed to load slide groups", e)
                 coroutineContext.ensureActive()
             }
+        }
+    }
+
+    fun onSelectSlideGroup(slideGroup: SlideGroup) {
+        viewModelScope.launch {
+            settingRepository.updateSelectedSlideGroupId(slideGroup.id)
         }
     }
 

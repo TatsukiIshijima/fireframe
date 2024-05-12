@@ -9,9 +9,15 @@ class SettingRepositoryImpl @Inject constructor(
     private val settingPreferences: SettingPreferences,
 ) : SettingRepository {
 
-    override val locationFlow: Flow<Location?> = settingPreferences.locationFlow
+    override val locationFlow: Flow<Location> = settingPreferences.locationFlow
+
+    override val selectedSlideGroupIdFlow: Flow<Long> = settingPreferences.selectedSlideGroupIdFlow
 
     override suspend fun updateLocation(location: Location) {
         settingPreferences.updateLocation(location)
+    }
+
+    override suspend fun updateSelectedSlideGroupId(groupId: Long) {
+        settingPreferences.updateSelectedSlideGroupId(groupId)
     }
 }

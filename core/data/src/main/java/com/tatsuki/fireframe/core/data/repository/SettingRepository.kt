@@ -5,7 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingRepository {
 
-    val locationFlow: Flow<Location?>
+    val locationFlow: Flow<Location>
+
+    val selectedSlideGroupIdFlow: Flow<Long>
 
     suspend fun updateLocation(location: Location)
+
+    suspend fun updateSelectedSlideGroupId(groupId: Long)
 }
