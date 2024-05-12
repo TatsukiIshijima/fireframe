@@ -44,4 +44,16 @@ class SettingPreferencesTest {
             )
         }
     }
+
+    @Test
+    fun flowSelectedSlideGroupIdWhenUpdateSelectedSlideGroupId() = runTest {
+        settingPreferences.selectedSlideGroupIdFlow.test {
+            val defaultSelectedSlideGroupId = awaitItem()
+            assertEquals(-1, defaultSelectedSlideGroupId)
+
+            settingPreferences.updateSelectedSlideGroupId(1)
+            val selectedSlideGroupId = awaitItem()
+            assertEquals(1, selectedSlideGroupId)
+        }
+    }
 }
