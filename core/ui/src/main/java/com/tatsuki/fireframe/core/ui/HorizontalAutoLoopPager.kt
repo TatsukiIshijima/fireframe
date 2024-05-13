@@ -27,7 +27,7 @@ fun HorizontalAutoLoopPager(
     pageSize: PageSize = PageSize.Fill,
     beyondBoundsPageCount: Int = PagerDefaults.BeyondBoundsPageCount,
     pageSpacing: Dp = 0.dp,
-    userScrollEnabled: Boolean = true,
+    userScrollEnabled: Boolean = false,
     delayMills: Long = 1000,
     pageContent: @Composable PagerScope.(page: Int) -> Unit,
 ) {
