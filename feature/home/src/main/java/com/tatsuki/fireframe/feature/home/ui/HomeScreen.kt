@@ -43,6 +43,7 @@ import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.SlideGroup
 import com.tatsuki.fireframe.feature.home.HomeViewModel
 import com.tatsuki.fireframe.feature.home.R
+import com.tatsuki.fireframe.feature.home.model.HomeState
 import com.tatsuki.fireframe.feature.home.model.SourceType
 
 @Composable
@@ -53,20 +54,12 @@ internal fun HomeRoute(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val sourceTypes = listOf<SourceType>(
-        SourceType.LocalStorage(),
+    val homeState by homeViewModel.homeState.collectAsStateWithLifecycle(
+        initialValue = HomeState.create(),
     )
-    val slideGroupsState by homeViewModel.slideGroups.collectAsStateWithLifecycle()
-    val selectedSlideGroupId by homeViewModel.selectedSlideGroupId.collectAsStateWithLifecycle(
-        initialValue = -1L,
-    )
-    // FIXME: move viewmodel
-    var deleteTargetSlideGroup by remember { mutableStateOf<SlideGroup?>(null) }
 
     HomeScreen(
-        sourceTypes = sourceTypes,
-        slideGroups = slideGroupsState,
-        selectedSlideGroupId = selectedSlideGroupId,
+        homeState = homeState,
         modifier = modifier,
         onClickSource = { sourceType ->
             onClickSource(sourceType)
@@ -75,30 +68,20 @@ internal fun HomeRoute(
         onOpenSlideGroup = { slideGroup ->
             onOpenSlideGroup(slideGroup)
         },
-        onDeleteSlideGroup = { slideGroup ->
-            deleteTargetSlideGroup = slideGroup
-        },
+        onDeleteSlideGroup = homeViewModel::onClickDeleteSlideGroupButton,
         onClickStartButton = onClickSlideStart,
     )
 
-    if (deleteTargetSlideGroup != null) {
+    if (homeState.deleteTargetSlideGroup != null) {
         ConfirmDialog(
             title = stringResource(
                 id = R.string.delete_slide_group_confirm_dialog_title,
-                deleteTargetSlideGroup?.groupName ?: "",
+                homeState.deleteTargetSlideGroup?.groupName ?: "",
             ),
             positiveButtonText = stringResource(id = R.string.delete_button),
             negativeButtonText = stringResource(id = R.string.cancel_button),
-            onDismissRequest = {
-                deleteTargetSlideGroup = null
-            },
-            onConfirmation = {
-                val slideGroup = deleteTargetSlideGroup
-                deleteTargetSlideGroup = null
-                slideGroup?.let {
-                    homeViewModel.onDeleteSlideGroup(it)
-                }
-            },
+            onDismissRequest = homeViewModel::onDeleteSlideGroupCancel,
+            onConfirmation = homeViewModel::onDeleteSlideGroup,
         )
     }
 
@@ -110,9 +93,7 @@ internal fun HomeRoute(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun HomeScreen(
-    sourceTypes: List<SourceType>,
-    slideGroups: List<SlideGroup>,
-    selectedSlideGroupId: Long,
+    homeState: HomeState,
     modifier: Modifier = Modifier,
     onClickSource: (SourceType) -> Unit = {},
     onSelectSlideGroup: (SlideGroup) -> Unit = {},
@@ -147,7 +128,7 @@ internal fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         maxItemsInEachRow = 2,
                     ) {
-                        sourceTypes.forEach {
+                        homeState.sourceTypes.forEach {
                             SourceTypeItem(
                                 sourceType = it,
                                 contentDescription = "SourceCategory",
@@ -174,11 +155,11 @@ internal fun HomeScreen(
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
-                items(slideGroups.size) {
-                    val slideGroup = slideGroups[it]
+                items(homeState.slideshowGroups.size) {
+                    val slideGroup = homeState.slideshowGroups[it]
                     SlideGroupItem(
                         slideGroup = slideGroup,
-                        isSelected = selectedSlideGroupId == slideGroup.id,
+                        isSelected = homeState.isSelectedSlideGroup(slideGroup),
                         onSelectGroup = { selectSlideGroup ->
                             onSelectSlideGroup(selectSlideGroup)
                         },
@@ -203,7 +184,7 @@ internal fun HomeScreen(
                 onClickStartButton()
             },
             modifier = Modifier.align(Alignment.BottomCenter),
-            enable = true,
+            enable = homeState.isSelectedAnySlideGroup(),
         )
     }
 }
@@ -243,30 +224,9 @@ private fun StartSlideshowButton(
 )
 @Composable
 private fun HomeScreenTabletPreview() {
-    val sourceTypes = listOf<SourceType>(
-        SourceType.LocalStorage(),
-        SourceType.LocalStorage(),
-    )
-    val slideGroups = listOf<SlideGroup>(
-        SlideGroup.fake(
-            id = 1,
-            groupName = "SlideGroup1",
-        ),
-        SlideGroup.fake(
-            id = 2,
-            groupName = "SlideGroup2",
-        ),
-        SlideGroup.fake(
-            id = 3,
-            groupName = "SlideGroup3",
-        ),
-    )
-
     FireframeTheme {
         HomeScreen(
-            sourceTypes = sourceTypes,
-            slideGroups = slideGroups,
-            selectedSlideGroupId = 1,
+            homeState = HomeState.fake()
         )
     }
 }
@@ -274,31 +234,9 @@ private fun HomeScreenTabletPreview() {
 @Preview
 @Composable
 private fun HomeScreenMobilePreview() {
-    val sourceTypes = listOf<SourceType>(
-        SourceType.LocalStorage(),
-        SourceType.LocalStorage(),
-        SourceType.LocalStorage(),
-    )
-    val slideGroups = listOf<SlideGroup>(
-        SlideGroup.fake(
-            id = 1,
-            groupName = "SlideGroup1",
-        ),
-        SlideGroup.fake(
-            id = 2,
-            groupName = "SlideGroup2",
-        ),
-        SlideGroup.fake(
-            id = 3,
-            groupName = "SlideGroup3",
-        ),
-    )
-
     FireframeTheme {
         HomeScreen(
-            sourceTypes = sourceTypes,
-            slideGroups = slideGroups,
-            selectedSlideGroupId = 1,
+            homeState = HomeState.fake()
         )
     }
 }
