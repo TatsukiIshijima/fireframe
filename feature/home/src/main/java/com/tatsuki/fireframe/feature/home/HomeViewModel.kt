@@ -11,9 +11,8 @@ import com.tatsuki.fireframe.feature.home.model.SourceType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,6 +74,9 @@ class HomeViewModel @Inject constructor(
                 val deleteTargetSlideGroup = mutableDeleteTargetSlideGroup.value
                     ?: throw IllegalStateException("Delete target slide group is null")
                 mediaRepository.deleteSlideGroup(deleteTargetSlideGroup.id)
+                if (selectedSlideGroupId.first() == deleteTargetSlideGroup.id) {
+                    settingRepository.updateSelectedSlideGroupId(-1L)
+                }
                 mutableDeleteTargetSlideGroup.value = null
                 mutableSlideGroups.value = mediaRepository.getSlideGroups()
             } catch (e: Exception) {

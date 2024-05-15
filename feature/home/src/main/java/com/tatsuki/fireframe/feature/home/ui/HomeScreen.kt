@@ -193,14 +193,22 @@ internal fun HomeScreen(
 private fun StartSlideshowButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
     enable: Boolean = false,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color)
-            .clickable { onClick() }
+            .background(
+                if (enable) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.surface
+                },
+            )
+            .clickable {
+                if (!enable) return@clickable
+                onClick()
+            }
             .padding(16.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -208,12 +216,20 @@ private fun StartSlideshowButton(
         Icon(
             imageVector = Icons.Default.PlayArrow,
             contentDescription = "Play Arrow",
-            tint = MaterialTheme.colorScheme.onPrimary,
+            tint = if (enable) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = stringResource(id = R.string.start_slideshow_button),
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = if (enable) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
         )
     }
 }
@@ -226,7 +242,7 @@ private fun StartSlideshowButton(
 private fun HomeScreenTabletPreview() {
     FireframeTheme {
         HomeScreen(
-            homeState = HomeState.fake()
+            homeState = HomeState.fake(),
         )
     }
 }
@@ -236,7 +252,7 @@ private fun HomeScreenTabletPreview() {
 private fun HomeScreenMobilePreview() {
     FireframeTheme {
         HomeScreen(
-            homeState = HomeState.fake()
+            homeState = HomeState.fake(),
         )
     }
 }
