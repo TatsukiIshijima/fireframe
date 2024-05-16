@@ -27,13 +27,13 @@ data class HomeState(
             )
         }
 
-        fun fake(): HomeState {
-            val sourceTypes = listOf<SourceType>(
+        fun fake(
+            sourceTypes: List<SourceType> = listOf<SourceType>(
                 SourceType.LocalStorage(),
                 SourceType.LocalStorage(),
                 SourceType.LocalStorage(),
-            )
-            val slideGroups = listOf<SlideGroup>(
+            ),
+            slideGroups: List<SlideGroup> = listOf(
                 SlideGroup.fake(
                     id = 1,
                     groupName = "SlideGroup1",
@@ -46,11 +46,13 @@ data class HomeState(
                     id = 3,
                     groupName = "SlideGroup3",
                 ),
-            )
+            ),
+            selectedSlideGroupId: Long = 1,
+        ): HomeState {
             return HomeState(
                 sourceTypes = sourceTypes,
                 slideshowGroups = slideGroups,
-                selectedSlideGroupId = 1,
+                selectedSlideGroupId = selectedSlideGroupId,
                 deleteTargetSlideGroup = null,
             )
         }
