@@ -39,7 +39,7 @@ import com.tatsuki.fireframe.core.ui.TextClock
 import com.tatsuki.fireframe.core.ui.WeatherIcon
 import com.tatsuki.fireframe.feature.slideshow.R
 import com.tatsuki.fireframe.feature.slideshow.SlideshowViewModel
-import com.tatsuki.fireframe.feature.slideshow.model.SlideImage
+import com.tatsuki.fireframe.feature.slideshow.model.SlideshowState
 
 @Composable
 internal fun SlideshowRoute(
@@ -47,13 +47,13 @@ internal fun SlideshowRoute(
     modifier: Modifier = Modifier,
     slideshowViewModel: SlideshowViewModel = hiltViewModel(),
 ) {
-    val slideImages by slideshowViewModel.slideImages.collectAsStateWithLifecycle()
-    val currentAndForecastWeather by slideshowViewModel.currentAndForecastWeather.collectAsStateWithLifecycle()
+    val slideshowState by slideshowViewModel.slideshowState.collectAsStateWithLifecycle(
+        initialValue = SlideshowState.create(),
+    )
 
     SlideshowScreen(
         isEnableWeather = isEnableWeather,
-        slideImages = slideImages,
-        currentAndForecastWeather = currentAndForecastWeather,
+        slideshowState = slideshowState,
         modifier = modifier,
     )
 
@@ -74,8 +74,7 @@ internal fun SlideshowRoute(
 @Composable
 internal fun SlideshowScreen(
     isEnableWeather: Boolean,
-    slideImages: List<SlideImage>,
-    currentAndForecastWeather: CurrentAndForecastWeather?,
+    slideshowState: SlideshowState,
     modifier: Modifier = Modifier,
 ) {
     val isLocalInspection = LocalInspectionMode.current
@@ -83,11 +82,11 @@ internal fun SlideshowScreen(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        if (slideImages.isEmpty()) {
+        if (slideshowState.slideImages.isEmpty()) {
             // TODO: Add error handling
         } else {
             HorizontalAutoLoopPager(
-                pageCount = slideImages.size,
+                pageCount = slideshowState.slideImages.size,
                 modifier = Modifier.fillMaxSize(),
                 beyondBoundsPageCount = 1,
                 delayMills = 5000,
@@ -99,7 +98,7 @@ internal fun SlideshowScreen(
                     )
                 } else {
                     FireframeAsyncImage(
-                        model = slideImages[page].uri,
+                        model = slideshowState.slideImages[page].uri,
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
@@ -113,7 +112,7 @@ internal fun SlideshowScreen(
         ) {
             DateInfoShortPanel(
                 isEnableWeather = isEnableWeather,
-                currentAndForecastWeather = currentAndForecastWeather,
+                currentAndForecastWeather = slideshowState.currentAndForecastWeather,
             )
         }
     }
@@ -190,10 +189,7 @@ fun SlideshowScreenTabletPreview() {
     FireframeTheme {
         SlideshowScreen(
             isEnableWeather = true,
-            slideImages = listOf(
-                SlideImage.fake(),
-            ),
-            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
+            slideshowState = SlideshowState.fake(),
         )
     }
 }
@@ -207,10 +203,7 @@ fun SlideshowScreenMobilePreview() {
     FireframeTheme {
         SlideshowScreen(
             isEnableWeather = true,
-            slideImages = listOf(
-                SlideImage.fake(),
-            ),
-            currentAndForecastWeather = CurrentAndForecastWeather.fake(),
+            slideshowState = SlideshowState.fake(),
         )
     }
 }

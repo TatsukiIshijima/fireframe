@@ -1,13 +1,12 @@
-package com.tatsuki.fireframe.feature.slideshow
+package com.tatsuki.fireframe.feature.home
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
-import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
-import com.tatsuki.fireframe.feature.slideshow.model.SlideImage
-import com.tatsuki.fireframe.feature.slideshow.ui.SlideshowScreen
+import com.tatsuki.fireframe.feature.home.model.HomeState
+import com.tatsuki.fireframe.feature.home.ui.HomeScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,20 +14,16 @@ import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-class SlideshowScreenshotTests {
+class HomeScreenshotTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun capture_slideshow_screen() {
+    fun capture_home_screen() {
         composeTestRule.setContent {
-            SlideshowScreen(
-                isEnableWeather = false,
-                slideImages = listOf(
-                    SlideImage.fake(),
-                ),
-                currentAndForecastWeather = CurrentAndForecastWeather.fake(),
+            HomeScreen(
+                homeState = HomeState.fake(),
             )
         }
 

@@ -20,6 +20,7 @@ package com.tatsuki.fireframe.core.designsystem.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
@@ -53,8 +54,13 @@ fun FireframeAsyncImage(
 
     val imageRequest = imageRequestParams.build()
 
+    // Maintain image loading state to prevent recomposition.
+    val data = rememberSaveable {
+        imageRequest.data
+    }
+
     coil.compose.AsyncImage(
-        model = imageRequest.data,
+        model = data,
         contentDescription = contentDescription,
         modifier = modifier,
         contentScale = contentScale,
