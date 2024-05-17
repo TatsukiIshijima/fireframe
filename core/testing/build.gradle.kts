@@ -15,7 +15,7 @@ dependencies {
     api(libs.robolectric)
     api(libs.turbine)
 
-    api(libs.androidx.ui.test.manifest)
+    debugApi(libs.androidx.ui.test.manifest)
 
     implementation(project(":core:common"))
     implementation(libs.androidx.activity.compose)
