@@ -18,9 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,6 +32,7 @@ import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.feature.mediaselector.MediaSelectorViewModel
 import com.tatsuki.fireframe.feature.mediaselector.R
+import com.tatsuki.fireframe.feature.mediaselector.model.MediaSelectorState
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaDirectory
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 import com.tatsuki.fireframe.feature.mediaselector.ui.component.MediaGallery
@@ -59,21 +57,20 @@ internal fun MediaSelectorRoute(
     }
 
     val multiplePermissionState = rememberMultiplePermissionsState(needPermissions)
-    var saveSlideGroupConfirmDialogOpenState by remember { mutableStateOf(false) }
+    val mediaSelectorState by mediaSelectorViewModel.mediaSelectorState.collectAsStateWithLifecycle(
+        initialValue = MediaSelectorState.create(),
+    )
 
     if (multiplePermissionState.allPermissionsGranted) {
         LaunchedEffect(Unit) {
             mediaSelectorViewModel.onGrantedReadExternalStoragePermission()
         }
-        val directoriesState by mediaSelectorViewModel.imageDirectories.collectAsStateWithLifecycle()
         MediaSelectorScreen(
-            directories = directoriesState,
+            mediaSelectorState = mediaSelectorState,
             onBack = onBack,
             modifier = modifier,
             onSelect = mediaSelectorViewModel::onSelect,
-            onSave = {
-                saveSlideGroupConfirmDialogOpenState = true
-            },
+            onSave = mediaSelectorViewModel::onShowConfirmDialog,
         )
     } else {
         if (multiplePermissionState.shouldShowRationale) {
@@ -89,11 +86,9 @@ internal fun MediaSelectorRoute(
             }
         }
     }
-    if (saveSlideGroupConfirmDialogOpenState) {
+    if (mediaSelectorState.shouldShowConfirmDialog) {
         SaveSlideGroupConfirmDialog(
-            onDismissRequest = {
-                saveSlideGroupConfirmDialogOpenState = false
-            },
+            onDismissRequest = mediaSelectorViewModel::onDismissConfirmDialog,
             onSaveRequest = { slideGroupName ->
                 mediaSelectorViewModel.onSaveSlideGroup(slideGroupName)
                 onBack()
@@ -105,7 +100,7 @@ internal fun MediaSelectorRoute(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun MediaSelectorScreen(
-    directories: List<SelectableLocalMediaDirectory>,
+    mediaSelectorState: MediaSelectorState,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onSelect: (SelectableLocalMediaImage) -> Unit = {},
@@ -119,10 +114,11 @@ internal fun MediaSelectorScreen(
             onNavigationClick = onBack,
         )
         MediaSelectorTabPager(
-            tabNames = directories.map { it.name },
+            tabNames = mediaSelectorState.selectableLocalMediaDirectories.map { it.name },
             modifier = Modifier.weight(1f),
             pageContent = { pageIndex ->
-                val images = directories[pageIndex].selectableMediaImages
+                val images =
+                    mediaSelectorState.selectableLocalMediaDirectories[pageIndex].selectableMediaImages
                 if (images.isNotEmpty()) {
                     MediaGallery(
                         mediaImages = images,
@@ -159,12 +155,14 @@ internal fun MediaSelectorScreen(
 private fun MediaSelectorScreenTabletPreview() {
     FireframeTheme {
         MediaSelectorScreen(
-            directories = listOf(
-                SelectableLocalMediaDirectory.fake(
-                    name = "Camera",
-                ),
-                SelectableLocalMediaDirectory.fake(
-                    name = "Screenshots",
+            mediaSelectorState = MediaSelectorState.fake(
+                selectableLocalMediaDirectories = listOf(
+                    SelectableLocalMediaDirectory.fake(
+                        name = "Camera",
+                    ),
+                    SelectableLocalMediaDirectory.fake(
+                        name = "Screenshots",
+                    ),
                 ),
             ),
             onBack = {},
@@ -180,12 +178,14 @@ private fun MediaSelectorScreenTabletPreview() {
 private fun MediaSelectorScreenMobilePreview() {
     FireframeTheme {
         MediaSelectorScreen(
-            directories = listOf(
-                SelectableLocalMediaDirectory.fake(
-                    name = "Camera",
-                ),
-                SelectableLocalMediaDirectory.fake(
-                    name = "Screenshots",
+            mediaSelectorState = MediaSelectorState.fake(
+                selectableLocalMediaDirectories = listOf(
+                    SelectableLocalMediaDirectory.fake(
+                        name = "Camera",
+                    ),
+                    SelectableLocalMediaDirectory.fake(
+                        name = "Screenshots",
+                    ),
                 ),
             ),
             onBack = {},

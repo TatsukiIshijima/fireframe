@@ -8,10 +8,11 @@ import com.tatsuki.fireframe.core.data.repository.SettingRepository
 import com.tatsuki.fireframe.core.data.repository.WeatherRepository
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.feature.slideshow.model.SlideImage
+import com.tatsuki.fireframe.feature.slideshow.model.SlideshowState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,11 +25,18 @@ class SlideshowViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val mutableSlideImages = MutableStateFlow<List<SlideImage>>(emptyList())
-    val slideImages = mutableSlideImages.asStateFlow()
-
     private val mutableCurrentAndForecastWeather =
         MutableStateFlow<CurrentAndForecastWeather?>(null)
-    val currentAndForecastWeather = mutableCurrentAndForecastWeather.asStateFlow()
+
+    val slideshowState = combine(
+        mutableSlideImages,
+        mutableCurrentAndForecastWeather,
+    ) { slideImages, currentAndForecastWeather ->
+        SlideshowState(
+            slideImages = slideImages,
+            currentAndForecastWeather = currentAndForecastWeather,
+        )
+    }
 
     fun onCreate() {
         loadSlideGroup()
