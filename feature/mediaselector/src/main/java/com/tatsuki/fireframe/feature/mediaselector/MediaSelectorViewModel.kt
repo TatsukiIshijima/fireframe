@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tatsuki.fireframe.core.data.repository.MediaRepository
+import com.tatsuki.fireframe.feature.mediaselector.model.MediaSelectorState
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaDirectory
 import com.tatsuki.fireframe.feature.mediaselector.model.SelectableLocalMediaImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,17 @@ class MediaSelectorViewModel @Inject constructor(
 
     private val mutableImageDirectories =
         MutableStateFlow(emptyList<SelectableLocalMediaDirectory>())
-    val imageDirectories = mutableImageDirectories.asStateFlow()
+    private val mutableShouldShowConfirmDialog = MutableStateFlow(false)
+
+    val mediaSelectorState = combine(
+        mutableImageDirectories,
+        mutableShouldShowConfirmDialog,
+    ) { imageDirectories, shouldShowConfirmDialog ->
+        MediaSelectorState(
+            selectableLocalMediaDirectories = imageDirectories,
+            shouldShowConfirmDialog = shouldShowConfirmDialog,
+        )
+    }
 
     fun onGrantedReadExternalStoragePermission() {
         loadLocalMediaDirectories()
@@ -49,10 +60,18 @@ class MediaSelectorViewModel @Inject constructor(
             }
     }
 
+    fun onShowConfirmDialog() {
+        mutableShouldShowConfirmDialog.value = true
+    }
+
+    fun onDismissConfirmDialog() {
+        mutableShouldShowConfirmDialog.value = false
+    }
+
     fun onSaveSlideGroup(slideGroupName: String) {
         viewModelScope.launch {
             try {
-                val selectedLocalImages = imageDirectories.value
+                val selectedLocalImages = mutableImageDirectories.value
                     .flatMap { directory -> directory.selectableMediaImages }
                     .filter { image -> image.isSelected.value }
                     .map { image -> image.toLocalImage() }
@@ -60,6 +79,7 @@ class MediaSelectorViewModel @Inject constructor(
                     slideGroupName = slideGroupName,
                     localImages = selectedLocalImages,
                 )
+                mutableShouldShowConfirmDialog.value = false
             } catch (e: Exception) {
                 Log.e("MediaSelectorViewModel", "Failed to save slide group", e)
                 coroutineContext.ensureActive()
