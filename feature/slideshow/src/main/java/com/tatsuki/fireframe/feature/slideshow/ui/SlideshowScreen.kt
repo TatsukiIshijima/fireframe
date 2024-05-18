@@ -167,6 +167,7 @@ private fun DateInfoShortPanel(
 
             DateText(
                 modifier = baseModifier,
+                color = androidx.compose.ui.graphics.Color.White,
                 fontSize = 24.sp,
             )
         }
