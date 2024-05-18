@@ -27,14 +27,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.ConfirmDialog
-import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.SlideGroup
 import com.tatsuki.fireframe.feature.home.HomeViewModel
@@ -101,8 +100,14 @@ internal fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            TopAppBar(
-                title = stringResource(id = R.string.app_name),
+            Text(
+                text = stringResource(id = R.string.app_name),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 32.dp),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.displaySmall,
+                fontFamily = FontFamily.Serif,
             )
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
@@ -111,7 +116,7 @@ internal fun HomeScreen(
                     Text(
                         text = stringResource(id = R.string.select_image_label),
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 item {
@@ -128,6 +133,7 @@ internal fun HomeScreen(
                             SourceTypeItem(
                                 sourceType = it,
                                 contentDescription = "SourceCategory",
+                                enable = homeState.isEnableSourceTypes,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f),
@@ -145,7 +151,7 @@ internal fun HomeScreen(
                     Text(
                         text = stringResource(id = R.string.slideshow_group_label),
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 item {
@@ -198,7 +204,8 @@ private fun StartSlideshowButton(
                 if (enable) {
                     MaterialTheme.colorScheme.primary
                 } else {
-                    MaterialTheme.colorScheme.surface
+                    MaterialTheme.colorScheme.onSurface
+                        .copy(alpha = 0.12f)
                 },
             )
             .clickable {
@@ -216,6 +223,7 @@ private fun StartSlideshowButton(
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.onSurface
+                    .copy(alpha = 0.38f)
             },
         )
         Spacer(modifier = Modifier.width(4.dp))
@@ -225,7 +233,9 @@ private fun StartSlideshowButton(
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.onSurface
+                    .copy(alpha = 0.38f)
             },
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }

@@ -36,6 +36,7 @@ class HomeViewModel @Inject constructor(
             slideshowGroups = slideGroups,
             selectedSlideGroupId = selectedSlideGroupId,
             deleteTargetSlideGroup = deleteTargetSlideGroup,
+            isEnableSourceTypes = slideGroups.count() < MAX_SLIDE_GROUP_COUNT,
         )
     }
 
@@ -86,3 +87,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 }
+
+private const val MAX_SLIDE_GROUP_COUNT = 10

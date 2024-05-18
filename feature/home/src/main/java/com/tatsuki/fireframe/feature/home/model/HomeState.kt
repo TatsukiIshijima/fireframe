@@ -7,6 +7,7 @@ data class HomeState(
     val slideshowGroups: List<SlideGroup>,
     val selectedSlideGroupId: Long,
     val deleteTargetSlideGroup: SlideGroup?,
+    val isEnableSourceTypes: Boolean,
 ) {
 
     fun isSelectedAnySlideGroup(): Boolean {
@@ -24,13 +25,12 @@ data class HomeState(
                 slideshowGroups = emptyList(),
                 selectedSlideGroupId = -1L,
                 deleteTargetSlideGroup = null,
+                isEnableSourceTypes = true,
             )
         }
 
         fun fake(
             sourceTypes: List<SourceType> = listOf<SourceType>(
-                SourceType.LocalStorage(),
-                SourceType.LocalStorage(),
                 SourceType.LocalStorage(),
             ),
             slideGroups: List<SlideGroup> = listOf(
@@ -48,12 +48,14 @@ data class HomeState(
                 ),
             ),
             selectedSlideGroupId: Long = 1,
+            isEnableSourceTypes: Boolean = true,
         ): HomeState {
             return HomeState(
                 sourceTypes = sourceTypes,
                 slideshowGroups = slideGroups,
                 selectedSlideGroupId = selectedSlideGroupId,
                 deleteTargetSlideGroup = null,
+                isEnableSourceTypes = isEnableSourceTypes,
             )
         }
     }

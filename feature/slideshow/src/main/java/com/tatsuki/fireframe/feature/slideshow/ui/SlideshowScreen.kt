@@ -1,5 +1,6 @@
 package com.tatsuki.fireframe.feature.slideshow.ui
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -168,12 +167,13 @@ private fun DateInfoShortPanel(
 
             DateText(
                 modifier = baseModifier,
+                color = androidx.compose.ui.graphics.Color.White,
                 fontSize = 24.sp,
             )
         }
         TextClock(
             modifier = Modifier,
-            textColorResource = LocalContentColor.current.toArgb(),
+            textColorResource = Color.WHITE,
             textSize = 80f,
             typefaceStyle = Typeface.DEFAULT_BOLD,
         )

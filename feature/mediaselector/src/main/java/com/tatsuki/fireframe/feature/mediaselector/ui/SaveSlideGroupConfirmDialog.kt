@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
+import androidx.compose.foundation.text2.input.delete
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -56,7 +57,7 @@ private fun SaveSlideGroupConfirmDialogContent(
     DialogBackground(
         content = {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,8 +65,7 @@ private fun SaveSlideGroupConfirmDialogContent(
                 Text(
                     text = stringResource(id = R.string.save_slide_group_confirm_dialog_message),
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -87,7 +87,14 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        textStyle = MaterialTheme.typography.titleMedium,
+                        inputTransformation = { originalValue, valueWithChanges ->
+                            if (valueWithChanges.length > MAX_GROUP_NAME_LENGTH) {
+                                valueWithChanges.delete(MAX_GROUP_NAME_LENGTH, valueWithChanges.length)
+                            }
+                        },
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
                         lineLimits = TextFieldLineLimits.SingleLine,
                     )
                 }
@@ -100,7 +107,10 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier
                             .weight(1f),
                     ) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(
+                            text = stringResource(id = R.string.cancel_button),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                     Spacer(modifier = Modifier.widthIn(16.dp))
                     Button(
@@ -111,13 +121,18 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier.weight(1f),
                         enabled = textFieldState.text.isNotEmpty(),
                     ) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(
+                            text = stringResource(id = R.string.save_button),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
             }
         },
     )
 }
+
+private const val MAX_GROUP_NAME_LENGTH = 15
 
 @Preview
 @Composable

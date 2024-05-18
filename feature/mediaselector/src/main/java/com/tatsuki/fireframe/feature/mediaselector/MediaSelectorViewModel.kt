@@ -21,14 +21,17 @@ class MediaSelectorViewModel @Inject constructor(
 
     private val mutableImageDirectories =
         MutableStateFlow(emptyList<SelectableLocalMediaDirectory>())
+    private val mutableIsEnableSaveButton = MutableStateFlow(false)
     private val mutableShouldShowConfirmDialog = MutableStateFlow(false)
 
     val mediaSelectorState = combine(
         mutableImageDirectories,
+        mutableIsEnableSaveButton,
         mutableShouldShowConfirmDialog,
-    ) { imageDirectories, shouldShowConfirmDialog ->
+    ) { imageDirectories, isEnableSaveButton, shouldShowConfirmDialog ->
         MediaSelectorState(
             selectableLocalMediaDirectories = imageDirectories,
+            isEnableSaveButton = isEnableSaveButton,
             shouldShowConfirmDialog = shouldShowConfirmDialog,
         )
     }
@@ -51,6 +54,7 @@ class MediaSelectorViewModel @Inject constructor(
     }
 
     fun onSelect(selectableMediaImage: SelectableLocalMediaImage) {
+        if (isMaxSelectedImages()) return
         mutableImageDirectories.value
             .flatMap { directory -> directory.selectableMediaImages }
             .find { image -> image.id == selectableMediaImage.id }
@@ -58,6 +62,20 @@ class MediaSelectorViewModel @Inject constructor(
                 image.isSelected.value = !image.isSelected.value
                 Log.d("MediaSelectorViewModel", "onSelect: $image")
             }
+        mutableIsEnableSaveButton.value = isEnableSaveButton()
+    }
+
+    private fun isMaxSelectedImages(): Boolean {
+        val isSelectedImages = mutableImageDirectories.value
+            .flatMap { directory -> directory.selectableMediaImages }
+            .filter { image -> image.isSelected.value }
+        return isSelectedImages.count() >= MAX_SELECTED_IMAGE_COUNT
+    }
+
+    private fun isEnableSaveButton(): Boolean {
+        return mutableImageDirectories.value
+            .flatMap { directory -> directory.selectableMediaImages }
+            .any { image -> image.isSelected.value }
     }
 
     fun onShowConfirmDialog() {
@@ -87,3 +105,5 @@ class MediaSelectorViewModel @Inject constructor(
         }
     }
 }
+
+private const val MAX_SELECTED_IMAGE_COUNT = 25
