@@ -134,14 +134,18 @@ internal fun MediaSelectorScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
                 .padding(16.dp),
         ) {
             Button(
-                modifier = Modifier.fillMaxWidth(),
                 onClick = onSave,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = mediaSelectorState.isEnableSaveButton,
             ) {
-                Text(text = stringResource(id = R.string.decide_button))
+                Text(
+                    text = stringResource(id = R.string.decide_button),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }
