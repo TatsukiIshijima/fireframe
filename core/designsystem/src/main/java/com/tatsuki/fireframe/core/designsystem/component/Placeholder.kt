@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.tatsuki.fireframe.core.designsystem.theme.Purple80
+import com.tatsuki.fireframe.core.designsystem.theme.backgroundLight
 
 @Composable
 fun Placeholder(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Purple80.copy(alpha = 0.3f),
+    backgroundColor: Color = backgroundLight,
     text: String = "Placeholder",
 ) {
     Box(
