@@ -24,16 +24,22 @@ import com.tatsuki.fireframe.feature.home.model.SourceType
 internal fun SourceTypeItem(
     sourceType: SourceType,
     contentDescription: String,
+    enable: Boolean,
     modifier: Modifier = Modifier,
     onClick: (SourceType) -> Unit = { _ -> },
 ) {
     Card(
         modifier = modifier,
     ) {
-        Row(
-            modifier = Modifier
+        val clickableModifier = if (enable) {
+            Modifier
                 .fillMaxWidth()
                 .clickable { onClick(sourceType) }
+        } else {
+            Modifier.fillMaxWidth()
+        }
+        Row(
+            modifier = clickableModifier
                 .padding(
                     horizontal = 12.dp,
                     vertical = 20.dp,
@@ -44,12 +50,20 @@ internal fun SourceTypeItem(
             Icon(
                 painter = painterResource(id = sourceType.iconResourceId),
                 contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                tint = if (enable) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                },
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = stringResource(id = sourceType.nameResourceId),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = if (enable) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                },
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
@@ -58,9 +72,20 @@ internal fun SourceTypeItem(
 
 @Preview
 @Composable
-fun SourceTypeItemPreview() {
+fun SourceTypeItemEnablePreview() {
     SourceTypeItem(
         sourceType = SourceType.LocalStorage(),
         contentDescription = "LocalStorage",
+        enable = true,
+    )
+}
+
+@Preview
+@Composable
+fun SourceTypeItemDisablePreview() {
+    SourceTypeItem(
+        sourceType = SourceType.LocalStorage(),
+        contentDescription = "LocalStorage",
+        enable = false,
     )
 }

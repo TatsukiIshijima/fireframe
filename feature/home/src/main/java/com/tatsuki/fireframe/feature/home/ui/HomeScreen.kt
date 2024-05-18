@@ -31,11 +31,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.ConfirmDialog
-import com.tatsuki.fireframe.core.designsystem.component.TopAppBar
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
 import com.tatsuki.fireframe.core.model.SlideGroup
 import com.tatsuki.fireframe.feature.home.HomeViewModel
@@ -135,6 +133,7 @@ internal fun HomeScreen(
                             SourceTypeItem(
                                 sourceType = it,
                                 contentDescription = "SourceCategory",
+                                enable = homeState.isEnableSourceTypes,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f),
