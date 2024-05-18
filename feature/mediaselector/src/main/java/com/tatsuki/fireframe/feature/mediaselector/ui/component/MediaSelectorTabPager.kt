@@ -34,7 +34,7 @@ internal fun MediaSelectorTabPager(
             modifier = Modifier.fillMaxWidth(),
         )
         HorizontalDivider(
-            thickness = 1.dp
+            thickness = 1.dp,
         )
         HorizontalPager(
             state = pagerState,
