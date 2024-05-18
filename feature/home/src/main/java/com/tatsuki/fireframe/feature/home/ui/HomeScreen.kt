@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -101,8 +102,14 @@ internal fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            TopAppBar(
-                title = stringResource(id = R.string.app_name),
+            Text(
+                text = stringResource(id = R.string.app_name),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 32.dp),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.displaySmall,
+                fontFamily = FontFamily.Serif,
             )
             LazyColumn(
                 modifier = Modifier.padding(16.dp),
@@ -111,7 +118,7 @@ internal fun HomeScreen(
                     Text(
                         text = stringResource(id = R.string.select_image_label),
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 item {
@@ -145,7 +152,7 @@ internal fun HomeScreen(
                     Text(
                         text = stringResource(id = R.string.slideshow_group_label),
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 item {
@@ -226,6 +233,7 @@ private fun StartSlideshowButton(
             } else {
                 MaterialTheme.colorScheme.onSurface
             },
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }

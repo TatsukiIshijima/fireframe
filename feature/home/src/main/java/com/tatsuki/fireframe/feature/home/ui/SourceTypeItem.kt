@@ -50,6 +50,7 @@ internal fun SourceTypeItem(
             Text(
                 text = stringResource(id = sourceType.nameResourceId),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
