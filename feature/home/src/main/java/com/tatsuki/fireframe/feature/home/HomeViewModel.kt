@@ -88,4 +88,4 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-private const val MAX_SLIDE_GROUP_COUNT = 2
+private const val MAX_SLIDE_GROUP_COUNT = 10
