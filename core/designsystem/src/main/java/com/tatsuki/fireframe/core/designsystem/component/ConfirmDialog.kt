@@ -62,8 +62,7 @@ private fun ConfirmDialogContent(
                 Text(
                     text = title,
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -75,14 +74,20 @@ private fun ConfirmDialogContent(
                         modifier = Modifier.weight(1f),
                         onClick = onDismissRequest,
                     ) {
-                        Text(text = negativeButtonText)
+                        Text(
+                            text = negativeButtonText,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                     Spacer(modifier = Modifier.widthIn(16.dp))
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = onConfirmation,
                     ) {
-                        Text(text = positiveButtonText)
+                        Text(
+                            text = positiveButtonText,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
             }
