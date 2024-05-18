@@ -6,6 +6,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.tatsuki.fireframe.core.testing.util.HiltAndroidAutoInjectRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -19,7 +20,10 @@ import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(application = HiltTestApplication::class)
+@Config(
+    application = HiltTestApplication::class,
+    qualifiers = RobolectricDeviceQualifiers.MediumTablet,
+)
 @HiltAndroidTest
 class MainActivityTest {
 

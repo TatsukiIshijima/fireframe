@@ -32,8 +32,6 @@ data class HomeState(
         fun fake(
             sourceTypes: List<SourceType> = listOf<SourceType>(
                 SourceType.LocalStorage(),
-                SourceType.LocalStorage(),
-                SourceType.LocalStorage(),
             ),
             slideGroups: List<SlideGroup> = listOf(
                 SlideGroup.fake(
