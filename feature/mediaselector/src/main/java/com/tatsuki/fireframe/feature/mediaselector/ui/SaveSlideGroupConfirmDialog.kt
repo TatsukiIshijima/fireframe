@@ -56,7 +56,7 @@ private fun SaveSlideGroupConfirmDialogContent(
     DialogBackground(
         content = {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,8 +64,7 @@ private fun SaveSlideGroupConfirmDialogContent(
                 Text(
                     text = stringResource(id = R.string.save_slide_group_confirm_dialog_message),
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -87,7 +86,9 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        textStyle = MaterialTheme.typography.titleMedium,
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
                         lineLimits = TextFieldLineLimits.SingleLine,
                     )
                 }
@@ -100,7 +101,10 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier
                             .weight(1f),
                     ) {
-                        Text(text = stringResource(id = R.string.cancel_button))
+                        Text(
+                            text = stringResource(id = R.string.cancel_button),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                     Spacer(modifier = Modifier.widthIn(16.dp))
                     Button(
@@ -111,7 +115,10 @@ private fun SaveSlideGroupConfirmDialogContent(
                         modifier = Modifier.weight(1f),
                         enabled = textFieldState.text.isNotEmpty(),
                     ) {
-                        Text(text = stringResource(id = R.string.save_button))
+                        Text(
+                            text = stringResource(id = R.string.save_button),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
             }
