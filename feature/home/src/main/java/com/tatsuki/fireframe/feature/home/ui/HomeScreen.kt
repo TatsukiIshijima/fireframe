@@ -204,7 +204,8 @@ private fun StartSlideshowButton(
                 if (enable) {
                     MaterialTheme.colorScheme.primary
                 } else {
-                    MaterialTheme.colorScheme.surface
+                    MaterialTheme.colorScheme.onSurface
+                        .copy(alpha = 0.12f)
                 },
             )
             .clickable {
@@ -222,6 +223,7 @@ private fun StartSlideshowButton(
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.onSurface
+                    .copy(alpha = 0.38f)
             },
         )
         Spacer(modifier = Modifier.width(4.dp))
@@ -231,6 +233,7 @@ private fun StartSlideshowButton(
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.onSurface
+                    .copy(alpha = 0.38f)
             },
             style = MaterialTheme.typography.bodyLarge,
         )

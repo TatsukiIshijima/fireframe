@@ -53,7 +53,7 @@ internal fun SourceTypeItem(
                 tint = if (enable) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 },
             )
             Spacer(modifier = Modifier.width(4.dp))
