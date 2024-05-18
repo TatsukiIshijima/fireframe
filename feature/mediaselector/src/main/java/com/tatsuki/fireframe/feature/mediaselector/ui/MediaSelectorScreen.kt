@@ -113,24 +113,26 @@ internal fun MediaSelectorScreen(
             navigationIconDescription = "Back",
             onNavigationClick = onBack,
         )
-        MediaSelectorTabPager(
-            tabNames = mediaSelectorState.selectableLocalMediaDirectories.map { it.name },
-            modifier = Modifier.weight(1f),
-            pageContent = { pageIndex ->
-                val images =
-                    mediaSelectorState.selectableLocalMediaDirectories[pageIndex].selectableMediaImages
-                if (images.isNotEmpty()) {
-                    MediaGallery(
-                        mediaImages = images,
-                        onSelect = { mediaImage -> onSelect(mediaImage) },
-                    )
-                } else {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text("No images found")
+        if (mediaSelectorState.selectableLocalMediaDirectories.isNotEmpty()) {
+            MediaSelectorTabPager(
+                tabNames = mediaSelectorState.selectableLocalMediaDirectories.map { it.name },
+                modifier = Modifier.weight(1f),
+                pageContent = { pageIndex ->
+                    val images =
+                        mediaSelectorState.selectableLocalMediaDirectories[pageIndex].selectableMediaImages
+                    if (images.isNotEmpty()) {
+                        MediaGallery(
+                            mediaImages = images,
+                            onSelect = { mediaImage -> onSelect(mediaImage) },
+                        )
+                    } else {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Text("No images found")
+                        }
                     }
-                }
-            },
-        )
+                },
+            )
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()

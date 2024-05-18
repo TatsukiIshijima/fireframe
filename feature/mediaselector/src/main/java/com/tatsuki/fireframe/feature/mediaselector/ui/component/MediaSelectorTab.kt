@@ -3,8 +3,8 @@ package com.tatsuki.fireframe.feature.mediaselector.ui.component
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -20,9 +20,10 @@ internal fun MediaSelectorTab(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    TabRow(
+    ScrollableTabRow(
         selectedTabIndex = pagerState.currentPage,
         modifier = modifier,
+        divider = {},
     ) {
         tabNames.forEachIndexed { index, name ->
             Tab(
