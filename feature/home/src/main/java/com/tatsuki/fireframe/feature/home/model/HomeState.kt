@@ -50,13 +50,14 @@ data class HomeState(
                 ),
             ),
             selectedSlideGroupId: Long = 1,
+            isEnableSourceTypes: Boolean = true,
         ): HomeState {
             return HomeState(
                 sourceTypes = sourceTypes,
                 slideshowGroups = slideGroups,
                 selectedSlideGroupId = selectedSlideGroupId,
                 deleteTargetSlideGroup = null,
-                isEnableSourceTypes = true,
+                isEnableSourceTypes = isEnableSourceTypes,
             )
         }
     }
