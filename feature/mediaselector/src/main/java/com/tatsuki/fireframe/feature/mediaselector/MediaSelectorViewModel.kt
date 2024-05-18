@@ -54,7 +54,7 @@ class MediaSelectorViewModel @Inject constructor(
     }
 
     fun onSelect(selectableMediaImage: SelectableLocalMediaImage) {
-        if (isLimitSelectedImages()) return
+        if (isMaxSelectedImages()) return
         mutableImageDirectories.value
             .flatMap { directory -> directory.selectableMediaImages }
             .find { image -> image.id == selectableMediaImage.id }
@@ -65,7 +65,7 @@ class MediaSelectorViewModel @Inject constructor(
         mutableIsEnableSaveButton.value = isEnableSaveButton()
     }
 
-    private fun isLimitSelectedImages(): Boolean {
+    private fun isMaxSelectedImages(): Boolean {
         val isSelectedImages = mutableImageDirectories.value
             .flatMap { directory -> directory.selectableMediaImages }
             .filter { image -> image.isSelected.value }
