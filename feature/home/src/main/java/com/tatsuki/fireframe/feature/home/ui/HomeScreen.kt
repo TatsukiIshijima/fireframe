@@ -107,7 +107,7 @@ internal fun HomeScreen(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(vertical = 32.dp),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.displaySmall,
                 fontFamily = FontFamily.Serif,
             )
