@@ -38,6 +38,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/mediaselector" />
+            <option value="$PROJECT_DIR$/feature/setting" />
             <option value="$PROJECT_DIR$/feature/slideshow" />
           </set>
         </option>
