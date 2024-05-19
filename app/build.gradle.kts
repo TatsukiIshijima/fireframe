@@ -94,6 +94,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":feature:home"))
     implementation(project(":feature:mediaselector"))
+    implementation(project(":feature:setting"))
     implementation(project(":feature:slideshow"))
 
     implementation(libs.androidx.activity.compose)

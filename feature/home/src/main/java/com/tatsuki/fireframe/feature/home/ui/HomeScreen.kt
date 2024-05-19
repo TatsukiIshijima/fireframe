@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +45,7 @@ import com.tatsuki.fireframe.feature.home.model.SourceType
 
 @Composable
 internal fun HomeRoute(
+    onClickSetting: () -> Unit,
     onClickSource: (SourceType) -> Unit,
     onOpenSlideGroup: (SlideGroup) -> Unit,
     onClickSlideStart: () -> Unit,
@@ -56,6 +59,7 @@ internal fun HomeRoute(
     HomeScreen(
         homeState = homeState,
         modifier = modifier,
+        onClickSetting = onClickSetting,
         onClickSource = { sourceType ->
             onClickSource(sourceType)
         },
@@ -90,6 +94,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
     homeState: HomeState,
     modifier: Modifier = Modifier,
+    onClickSetting: () -> Unit = {},
     onClickSource: (SourceType) -> Unit = {},
     onSelectSlideGroup: (SlideGroup) -> Unit = {},
     onOpenSlideGroup: (SlideGroup) -> Unit = {},
@@ -100,6 +105,16 @@ internal fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
+            IconButton(
+                onClick = onClickSetting,
+                modifier = Modifier.align(Alignment.End),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "setting",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
+            }
             Text(
                 text = stringResource(id = R.string.app_name),
                 modifier = Modifier

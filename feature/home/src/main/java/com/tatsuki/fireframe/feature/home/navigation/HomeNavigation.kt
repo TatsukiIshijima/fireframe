@@ -15,12 +15,14 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.homeScreen(
+    onClickSetting: () -> Unit,
     onClickSource: (SourceType) -> Unit,
     onOpenSlideGroup: (SlideGroup) -> Unit,
     onClickSlideStart: () -> Unit,
 ) {
     composable(route = HOME_ROUTE) {
         HomeRoute(
+            onClickSetting = onClickSetting,
             onClickSource = onClickSource,
             onOpenSlideGroup = onOpenSlideGroup,
             onClickSlideStart = onClickSlideStart,
