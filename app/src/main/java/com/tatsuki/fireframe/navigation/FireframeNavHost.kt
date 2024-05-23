@@ -9,6 +9,8 @@ import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaGalleryScreen
 import com.tatsuki.fireframe.feature.mediaselector.navigation.mediaSelectorScreen
 import com.tatsuki.fireframe.feature.mediaselector.navigation.navigateToMediaGallery
 import com.tatsuki.fireframe.feature.mediaselector.navigation.navigateToMediaSelector
+import com.tatsuki.fireframe.feature.setting.navigation.navigateToSetting
+import com.tatsuki.fireframe.feature.setting.navigation.settingScreen
 import com.tatsuki.fireframe.feature.slideshow.navigation.navigateToSlideshow
 import com.tatsuki.fireframe.feature.slideshow.navigation.slideshowScreen
 import com.tatsuki.fireframe.ui.FireframeAppState
@@ -27,26 +29,22 @@ fun FireframeNavHost(
         modifier = modifier,
     ) {
         homeScreen(
+            onClickSetting = navController::navigateToSetting,
             onClickSource = { sourceType ->
                 // TODO : Handle source type click
                 navController.navigateToMediaSelector()
             },
-            onOpenSlideGroup = { slideGroup ->
-                navController.navigateToMediaGallery(
-                    slideGroup = slideGroup,
-                )
-            },
+            onOpenSlideGroup = navController::navigateToMediaGallery,
             onClickSlideStart = navController::navigateToSlideshow,
         )
         mediaGalleryScreen(
-            onBack = {
-                navController.popBackStack()
-            },
+            onBack = navController::popBackStack,
         )
         mediaSelectorScreen(
-            onBack = {
-                navController.popBackStack()
-            },
+            onBack = navController::popBackStack,
+        )
+        settingScreen(
+            onBack = navController::popBackStack,
         )
         slideshowScreen(
             isEnableWeather = remoteConfig.isEnableWeather(),
