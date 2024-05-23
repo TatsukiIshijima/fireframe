@@ -1,6 +1,7 @@
 package com.tatsuki.fireframe.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ fun RadioButtonsDialog(
     positiveButtonText: String,
     negativeButtonText: String,
     onDismissRequest: () -> Unit,
+    onSelectItem: (SelectableItem) -> Unit,
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,6 +45,7 @@ fun RadioButtonsDialog(
             positiveButtonText = positiveButtonText,
             negativeButtonText = negativeButtonText,
             onDismissRequest = onDismissRequest,
+            onSelectItem = onSelectItem,
             onDone = onDone,
             modifier = modifier,
         )
@@ -56,6 +59,7 @@ private fun RadioButtonsDialogContent(
     positiveButtonText: String,
     negativeButtonText: String,
     onDismissRequest: () -> Unit,
+    onSelectItem: (SelectableItem) -> Unit,
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,9 +86,9 @@ private fun RadioButtonsDialogContent(
                     items(items.size) {
                         val item = items[it]
                         RadioButtonRow(
-                            text = item.name,
+                            selectableItem = item,
                             selected = false,
-                            onClick = { /*TODO*/ },
+                            onClick = onSelectItem,
                         )
                     }
                 }
@@ -120,28 +124,37 @@ private fun RadioButtonsDialogContent(
 
 @Composable
 private fun RadioButtonRow(
-    text: String,
+    selectableItem: SelectableItem,
     selected: Boolean,
-    onClick: () -> Unit,
+    onClick: (SelectableItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        RadioButton(
-            selected = selected,
-            onClick = onClick,
-            modifier = Modifier
-                .weight(1f),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text,
+        Box(
             modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+        ) {
+            RadioButton(
+                selected = selected,
+                onClick = {
+                    onClick(selectableItem)
+                },
+                modifier = Modifier.align(Alignment.BottomEnd),
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Box(
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(
+                text = selectableItem.name,
+                modifier = Modifier.align(Alignment.CenterStart),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
     }
 }
 
@@ -175,6 +188,7 @@ private fun RadioButtonsDialogContentPreview() {
         positiveButtonText = "決定",
         negativeButtonText = "キャンセル",
         onDismissRequest = {},
+        onSelectItem = {},
         onDone = {},
     )
 }
