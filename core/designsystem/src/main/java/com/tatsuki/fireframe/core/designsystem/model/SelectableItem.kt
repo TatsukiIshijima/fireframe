@@ -1,6 +1,6 @@
 package com.tatsuki.fireframe.core.designsystem.model
 
-sealed interface SelectableItem {
+interface SelectableItem {
     val name: String
 }
 
