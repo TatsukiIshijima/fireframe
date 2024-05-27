@@ -24,4 +24,15 @@ sealed interface ContentScaleType : SelectableItem {
         override val name: String = "インサイド",
     ) : ContentScaleType
 
+    companion object {
+        fun all(): List<ContentScaleType> {
+            return listOf(
+                Crop(),
+                Fit(),
+                FillHeight(),
+                FillWidth(),
+                Inside(),
+            )
+        }
+    }
 }

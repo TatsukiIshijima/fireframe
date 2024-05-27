@@ -27,4 +27,17 @@ sealed interface SlideshowInterval : SelectableItem {
     data class OneHour(
         override val name: String = "1時間",
     ) : SlideshowInterval
+
+    companion object {
+        fun all(): List<SlideshowInterval> {
+            return listOf(
+                OneMinute(),
+                FiveMinute(),
+                TenMinute(),
+                FifteenMinute(),
+                ThirtyMinute(),
+                OneHour(),
+            )
+        }
+    }
 }
