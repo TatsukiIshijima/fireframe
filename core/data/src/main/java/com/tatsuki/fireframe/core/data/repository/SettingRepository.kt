@@ -9,7 +9,13 @@ interface SettingRepository {
 
     val selectedSlideGroupIdFlow: Flow<Long>
 
+    val selectedSlideshowInterval: Flow<Int>
+
+    val selectedContentScaleType: Flow<Int>
+
     suspend fun updateLocation(location: Location)
 
     suspend fun updateSelectedSlideGroupId(groupId: Long)
+
+
 }

@@ -11,9 +11,9 @@ interface SettingPreferences {
 
     val selectedSlideGroupIdFlow: Flow<Long>
 
-    val selectedSlideshowInterval: Flow<Int>
+    val selectedSlideshowInterval: Flow<SlideshowInterval>
 
-    val selectedContentScaleType: Flow<Int>
+    val selectedContentScaleType: Flow<ContentScaleType>
 
     suspend fun updateLocation(location: Location)
 
