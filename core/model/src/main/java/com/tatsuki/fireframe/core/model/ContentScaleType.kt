@@ -5,7 +5,7 @@ enum class ContentScaleType(val value: Int) {
     FIT(1),
     FILL_HEIGHT(2),
     FILL_WIDTH(3),
-    INSIDE(4)
+    INSIDE(4),
     ;
 
     companion object {

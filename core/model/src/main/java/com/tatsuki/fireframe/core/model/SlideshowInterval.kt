@@ -6,7 +6,8 @@ enum class SlideshowInterval(val value: Int) {
     TEN_MINUTE(10),
     FIFTEEN_MINUTE(15),
     THIRTY_MINUTE(30),
-    ONE_HOUR(60);
+    ONE_HOUR(60),
+    ;
 
     companion object {
         fun from(value: Int): SlideshowInterval {
