@@ -25,7 +25,7 @@ class SettingPreferencesImpl @Inject constructor(
     private val locationPreferencesKey = stringPreferencesKey(KEY_LOCATION)
     private val selectedSlideGroupIdPreferencesKey = longPreferencesKey(KEY_SELECTED_SLIDE_GROUP_ID)
     private val selectedSlideshowIntervalPreferencesKey =
-        intPreferencesKey(KEY_SELECTED_SLIDESHOW_INTERVAL)
+        longPreferencesKey(KEY_SELECTED_SLIDESHOW_INTERVAL)
     private val selectedContentScaleTypePreferencesKey =
         intPreferencesKey(KEY_SELECTED_CONTENT_SCALE_TYPE)
 

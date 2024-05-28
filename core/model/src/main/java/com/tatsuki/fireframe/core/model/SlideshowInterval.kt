@@ -1,16 +1,17 @@
 package com.tatsuki.fireframe.core.model
 
-enum class SlideshowInterval(val value: Int) {
-    ONE_MINUTE(1),
-    FIVE_MINUTE(5),
-    TEN_MINUTE(10),
-    FIFTEEN_MINUTE(15),
-    THIRTY_MINUTE(30),
-    ONE_HOUR(60),
+enum class SlideshowInterval(val value: Long) {
+    // value's unit is milliseconds.
+    ONE_MINUTE(60000L),
+    FIVE_MINUTE(300000L),
+    TEN_MINUTE(600000L),
+    FIFTEEN_MINUTE(900000L),
+    THIRTY_MINUTE(1800000L),
+    ONE_HOUR(3600000L),
     ;
 
     companion object {
-        fun from(value: Int): SlideshowInterval {
+        fun from(value: Long): SlideshowInterval {
             val slideshowIntervalMap =
                 SlideshowInterval.entries.associateBy(SlideshowInterval::value)
             return slideshowIntervalMap[value]
