@@ -1,7 +1,6 @@
 package com.tatsuki.fireframe.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -79,7 +78,6 @@ private fun RadioButtonsDialogContent(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyColumn(
-                    modifier = modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -133,28 +131,18 @@ private fun RadioButtonRow(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(
-            modifier = Modifier.weight(1f),
-        ) {
-            RadioButton(
-                selected = selected,
-                onClick = {
-                    onClick(selectableItem)
-                },
-                modifier = Modifier.align(Alignment.BottomEnd),
-            )
-        }
+        RadioButton(
+            selected = selected,
+            onClick = {
+                onClick(selectableItem)
+            },
+        )
         Spacer(modifier = Modifier.width(8.dp))
-        Box(
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(
-                text = selectableItem.name,
-                modifier = Modifier.align(Alignment.CenterStart),
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+        Text(
+            text = selectableItem.name,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 

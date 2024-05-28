@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.tatsuki.fireframe.feature.setting.model.SettingState
 import com.tatsuki.fireframe.feature.setting.ui.SettingScreen
 import org.junit.Rule
 import org.junit.Test
@@ -25,6 +26,9 @@ class SettingScreenshotTest {
     fun capture_setting_screen() {
         composeTestRule.setContent {
             SettingScreen(
+                settingState = SettingState.create(),
+                onClickSlideshowSetting = {},
+                onClickContentScaleTypeSetting = {},
                 onBack = { },
             )
         }
