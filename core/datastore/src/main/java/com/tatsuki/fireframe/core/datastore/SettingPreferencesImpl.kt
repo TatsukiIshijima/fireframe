@@ -41,14 +41,18 @@ class SettingPreferencesImpl @Inject constructor(
             preference[selectedSlideGroupIdPreferencesKey] ?: -1L
         }
 
-    override val selectedSlideshowInterval: Flow<Int> =
+    override val selectedSlideshowInterval: Flow<SlideshowInterval> =
         context.dataStore.data.map { preference ->
-            preference[selectedSlideshowIntervalPreferencesKey] ?: 0
+            preference[selectedSlideshowIntervalPreferencesKey]?.let {
+                return@let SlideshowInterval.from(it)
+            } ?: SlideshowInterval.ONE_HOUR
         }
 
-    override val selectedContentScaleType: Flow<Int> =
+    override val selectedContentScaleType: Flow<ContentScaleType> =
         context.dataStore.data.map { preference ->
-            preference[selectedContentScaleTypePreferencesKey] ?: 0
+            preference[selectedContentScaleTypePreferencesKey]?.let {
+                return@let ContentScaleType.from(it)
+            } ?: ContentScaleType.CROP
         }
 
     override suspend fun updateLocation(location: Location) {
