@@ -49,7 +49,7 @@ internal fun SettingRoute(
 
     if (settingState.shouldShowSlideshowIntervalSettingDialog) {
         RadioButtonsDialog(
-            title = "スライドショー間隔",
+            title = stringResource(id = R.string.slideshow_interval),
             items = SlideshowInterval.all(),
             selectedItem = settingState.slideshowInterval,
             positiveButtonText = "決定",
@@ -66,7 +66,7 @@ internal fun SettingRoute(
 
     if (settingState.shouldShowContentScaleTypeSettingDialog) {
         RadioButtonsDialog(
-            title = "コンテンツ表示方法",
+            title = stringResource(id = R.string.content_scale_type),
             items = ContentScaleType.all(),
             selectedItem = settingState.contentScaleType,
             positiveButtonText = "決定",
@@ -75,7 +75,7 @@ internal fun SettingRoute(
             onSelectItem = { selectableItem ->
                 if (selectableItem !is ContentScaleType) return@RadioButtonsDialog
                 settingViewModel.onSelectContentScaleType(selectableItem)
-                settingViewModel.onDismissSlideshowIntervalSettingDialog()
+                settingViewModel.onDismissContentScaleTypeSettingDialog()
             },
             onDone = settingViewModel::onUpdateContentScaleType,
         )
@@ -108,12 +108,12 @@ internal fun SettingScreen(
         )
         SettingItem(
             title = stringResource(id = R.string.slideshow_interval),
-            value = "1分",
+            value = settingState.slideshowInterval.name,
             onClick = onClickSlideshowSetting,
         )
         SettingItem(
             title = stringResource(id = R.string.content_scale_type),
-            value = "中央",
+            value = settingState.contentScaleType.name,
             onClick = onClickContentScaleTypeSetting,
         )
         SettingItem(

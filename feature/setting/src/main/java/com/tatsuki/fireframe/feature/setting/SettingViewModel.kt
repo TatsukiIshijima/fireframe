@@ -20,14 +20,15 @@ class SettingViewModel @Inject constructor(
     private val settingRepository: SettingRepository,
 ) : ViewModel() {
 
-    private val mutableSlideshowInterval = MutableStateFlow<SlideshowInterval>(OneMinute())
-    private val mutableContentScaleType = MutableStateFlow<ContentScaleType>(Crop())
+    private val mutableSelectSlideshowInterval = MutableStateFlow<SlideshowInterval>(OneMinute())
+    private val mutableSlideshowIntervalSetting = MutableStateFlow<SlideshowInterval>(OneMinute())
+    private val mutableContentScaleTypeSetting = MutableStateFlow<ContentScaleType>(Crop())
     private val mutableShouldShowSlideshowIntervalSettingDialog = MutableStateFlow(false)
     private val mutableShouldShowContentScaleTypeSettingDialog = MutableStateFlow(false)
 
     val settingState = combine(
-        mutableSlideshowInterval,
-        mutableContentScaleType,
+        mutableSlideshowIntervalSetting,
+        mutableContentScaleTypeSetting,
         mutableShouldShowSlideshowIntervalSettingDialog,
         mutableShouldShowContentScaleTypeSettingDialog,
     ) { slideshowInterval, contentScaleType, shouldShowSlideshowIntervalSettingDialog, shouldShowContentScaleTypeSettingDialog ->
@@ -46,29 +47,29 @@ class SettingViewModel @Inject constructor(
     }
 
     private suspend fun loadSettings() {
-        mutableSlideshowInterval.value =
+        mutableSlideshowIntervalSetting.value =
             SlideshowInterval.from(settingRepository.selectedSlideshowInterval.first())
-        mutableContentScaleType.value =
+        mutableContentScaleTypeSetting.value =
             ContentScaleType.from(settingRepository.selectedContentScaleType.first())
     }
 
     fun onSelectSlideshowInterval(slideshowInterval: SlideshowInterval) {
-        mutableSlideshowInterval.value = slideshowInterval
+        mutableSlideshowIntervalSetting.value = slideshowInterval
     }
 
     fun onUpdateSlideshowInterval() {
         viewModelScope.launch {
-            settingRepository.updateSelectedSlideshowInterval(mutableSlideshowInterval.value.toDomain())
+            settingRepository.updateSelectedSlideshowInterval(mutableSlideshowIntervalSetting.value.toDomain())
         }
     }
 
     fun onSelectContentScaleType(contentScaleType: ContentScaleType) {
-        mutableContentScaleType.value = contentScaleType
+        mutableContentScaleTypeSetting.value = contentScaleType
     }
 
     fun onUpdateContentScaleType() {
         viewModelScope.launch {
-            settingRepository.updateSelectedContentScaleType(mutableContentScaleType.value.toDomain())
+            settingRepository.updateSelectedContentScaleType(mutableContentScaleTypeSetting.value.toDomain())
         }
     }
 
