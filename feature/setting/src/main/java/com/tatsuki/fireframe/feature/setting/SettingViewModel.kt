@@ -53,14 +53,22 @@ class SettingViewModel @Inject constructor(
     }
 
     fun onSelectSlideshowInterval(slideshowInterval: SlideshowInterval) {
+        mutableSlideshowInterval.value = slideshowInterval
+    }
+
+    fun onUpdateSlideshowInterval() {
         viewModelScope.launch {
-            settingRepository.updateSelectedSlideshowInterval(slideshowInterval.toDomain())
+            settingRepository.updateSelectedSlideshowInterval(mutableSlideshowInterval.value.toDomain())
         }
     }
 
     fun onSelectContentScaleType(contentScaleType: ContentScaleType) {
+        mutableContentScaleType.value = contentScaleType
+    }
+
+    fun onUpdateContentScaleType() {
         viewModelScope.launch {
-            settingRepository.updateSelectedContentScaleType(contentScaleType.toDomain())
+            settingRepository.updateSelectedContentScaleType(mutableContentScaleType.value.toDomain())
         }
     }
 

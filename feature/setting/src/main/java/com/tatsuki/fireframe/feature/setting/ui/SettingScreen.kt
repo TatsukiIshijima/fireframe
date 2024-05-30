@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,11 +51,16 @@ internal fun SettingRoute(
         RadioButtonsDialog(
             title = "スライドショー間隔",
             items = SlideshowInterval.all(),
+            selectedItem = settingState.slideshowInterval,
             positiveButtonText = "決定",
             negativeButtonText = "キャンセル",
             onDismissRequest = settingViewModel::onDismissSlideshowIntervalSettingDialog,
-            onSelectItem = { /*TODO*/ },
-            onDone = { /*TODO*/ },
+            onSelectItem = { selectableItem ->
+                if (selectableItem !is SlideshowInterval) return@RadioButtonsDialog
+                settingViewModel.onSelectSlideshowInterval(selectableItem)
+                settingViewModel.onDismissSlideshowIntervalSettingDialog()
+            },
+            onDone = settingViewModel::onUpdateSlideshowInterval,
         )
     }
 
@@ -62,12 +68,21 @@ internal fun SettingRoute(
         RadioButtonsDialog(
             title = "コンテンツ表示方法",
             items = ContentScaleType.all(),
+            selectedItem = settingState.contentScaleType,
             positiveButtonText = "決定",
             negativeButtonText = "キャンセル",
             onDismissRequest = settingViewModel::onDismissContentScaleTypeSettingDialog,
-            onSelectItem = { /*TODO*/ },
-            onDone = { /*TODO*/ },
+            onSelectItem = { selectableItem ->
+                if (selectableItem !is ContentScaleType) return@RadioButtonsDialog
+                settingViewModel.onSelectContentScaleType(selectableItem)
+                settingViewModel.onDismissSlideshowIntervalSettingDialog()
+            },
+            onDone = settingViewModel::onUpdateContentScaleType,
         )
+    }
+
+    LaunchedEffect(Unit) {
+        settingViewModel.onCreate()
     }
 }
 

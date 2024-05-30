@@ -28,6 +28,7 @@ import com.tatsuki.fireframe.core.designsystem.model.SelectableItem
 fun RadioButtonsDialog(
     title: String,
     items: List<SelectableItem>,
+    selectedItem: SelectableItem,
     positiveButtonText: String,
     negativeButtonText: String,
     onDismissRequest: () -> Unit,
@@ -41,6 +42,7 @@ fun RadioButtonsDialog(
         RadioButtonsDialogContent(
             title = title,
             items = items,
+            selectedItem = selectedItem,
             positiveButtonText = positiveButtonText,
             negativeButtonText = negativeButtonText,
             onDismissRequest = onDismissRequest,
@@ -55,6 +57,7 @@ fun RadioButtonsDialog(
 private fun RadioButtonsDialogContent(
     title: String,
     items: List<SelectableItem>,
+    selectedItem: SelectableItem,
     positiveButtonText: String,
     negativeButtonText: String,
     onDismissRequest: () -> Unit,
@@ -85,7 +88,8 @@ private fun RadioButtonsDialogContent(
                         val item = items[it]
                         RadioButtonRow(
                             selectableItem = item,
-                            selected = false,
+                            // FIXME: use id
+                            selected = selectedItem.name == item.name,
                             onClick = onSelectItem,
                         )
                     }
@@ -173,6 +177,7 @@ private fun RadioButtonsDialogContentPreview() {
             FakeSelectableItem("項目19"),
             FakeSelectableItem("項目20"),
         ),
+        selectedItem = FakeSelectableItem("項目1"),
         positiveButtonText = "決定",
         negativeButtonText = "キャンセル",
         onDismissRequest = {},
