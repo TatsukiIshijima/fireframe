@@ -51,15 +51,13 @@ internal fun SettingRoute(
             title = stringResource(id = R.string.slideshow_interval),
             items = SlideshowInterval.all(),
             selectedItem = settingState.slideshowInterval,
-            positiveButtonText = "決定",
-            negativeButtonText = "キャンセル",
-            onDismissRequest = settingViewModel::onDismissSlideshowIntervalSettingDialog,
             onSelectItem = { selectableItem ->
                 if (selectableItem !is SlideshowInterval) return@RadioButtonsDialog
                 settingViewModel.onUpdateSlideshowInterval(selectableItem)
                 settingViewModel.onDismissSlideshowIntervalSettingDialog()
             },
-            onDone = { /*TODO:remove*/ },
+            cancelButtonText = stringResource(id = R.string.cancel),
+            onDismissRequest = settingViewModel::onDismissSlideshowIntervalSettingDialog,
         )
     }
 
@@ -68,15 +66,13 @@ internal fun SettingRoute(
             title = stringResource(id = R.string.content_scale_type),
             items = ContentScaleType.all(),
             selectedItem = settingState.contentScaleType,
-            positiveButtonText = "決定",
-            negativeButtonText = "キャンセル",
-            onDismissRequest = settingViewModel::onDismissContentScaleTypeSettingDialog,
             onSelectItem = { selectableItem ->
                 if (selectableItem !is ContentScaleType) return@RadioButtonsDialog
                 settingViewModel.onUpdateContentScaleType(selectableItem)
                 settingViewModel.onDismissContentScaleTypeSettingDialog()
             },
-            onDone = { /*TODO:remove*/ },
+            cancelButtonText = stringResource(id = R.string.cancel),
+            onDismissRequest = settingViewModel::onDismissContentScaleTypeSettingDialog,
         )
     }
 }

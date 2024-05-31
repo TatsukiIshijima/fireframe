@@ -1,6 +1,8 @@
 package com.tatsuki.fireframe.core.designsystem.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -29,11 +29,9 @@ fun RadioButtonsDialog(
     title: String,
     items: List<SelectableItem>,
     selectedItem: SelectableItem,
-    positiveButtonText: String,
-    negativeButtonText: String,
-    onDismissRequest: () -> Unit,
     onSelectItem: (SelectableItem) -> Unit,
-    onDone: () -> Unit,
+    cancelButtonText: String,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Dialog(
@@ -43,11 +41,9 @@ fun RadioButtonsDialog(
             title = title,
             items = items,
             selectedItem = selectedItem,
-            positiveButtonText = positiveButtonText,
-            negativeButtonText = negativeButtonText,
-            onDismissRequest = onDismissRequest,
             onSelectItem = onSelectItem,
-            onDone = onDone,
+            cancelButtonText = cancelButtonText,
+            onDismissRequest = onDismissRequest,
             modifier = modifier,
         )
     }
@@ -58,11 +54,9 @@ private fun RadioButtonsDialogContent(
     title: String,
     items: List<SelectableItem>,
     selectedItem: SelectableItem,
-    positiveButtonText: String,
-    negativeButtonText: String,
-    onDismissRequest: () -> Unit,
     onSelectItem: (SelectableItem) -> Unit,
-    onDone: () -> Unit,
+    cancelButtonText: String,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DialogBackground(
@@ -95,29 +89,20 @@ private fun RadioButtonsDialogContent(
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
+                Box(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = onDismissRequest,
-                    ) {
-                        Text(
-                            text = negativeButtonText,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
-                    Spacer(modifier = Modifier.widthIn(16.dp))
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = onDone,
-                    ) {
-                        Text(
-                            text = positiveButtonText,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
+                    Text(
+                        text = cancelButtonText,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .clickable {
+                                onDismissRequest()
+                            }
+                            .padding(8.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
                 }
             }
         },
@@ -144,6 +129,11 @@ private fun RadioButtonRow(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = selectableItem.name,
+            modifier = Modifier
+                .clickable {
+                    onClick(selectableItem)
+                }
+                .padding(4.dp),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -166,22 +156,10 @@ private fun RadioButtonsDialogContentPreview() {
             FakeSelectableItem("項目8"),
             FakeSelectableItem("項目9"),
             FakeSelectableItem("項目10"),
-            FakeSelectableItem("項目11"),
-            FakeSelectableItem("項目12"),
-            FakeSelectableItem("項目13"),
-            FakeSelectableItem("項目14"),
-            FakeSelectableItem("項目15"),
-            FakeSelectableItem("項目16"),
-            FakeSelectableItem("項目17"),
-            FakeSelectableItem("項目18"),
-            FakeSelectableItem("項目19"),
-            FakeSelectableItem("項目20"),
         ),
         selectedItem = FakeSelectableItem("項目1"),
-        positiveButtonText = "決定",
-        negativeButtonText = "キャンセル",
-        onDismissRequest = {},
         onSelectItem = {},
-        onDone = {},
+        cancelButtonText = "キャンセル",
+        onDismissRequest = {},
     )
 }

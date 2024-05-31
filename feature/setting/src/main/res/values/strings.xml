@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="setting_title">設定</string>
+    <string name="cancel">キャンセル</string>
     <string name="slideshow_interval">スライド表示間隔</string>
     <string name="content_scale_type">画像表示形式</string>
     <string name="app_version">アプリバージョン</string>
