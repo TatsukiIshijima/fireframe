@@ -7,32 +7,33 @@ import com.tatsuki.fireframe.core.model.SlideshowInterval.ONE_HOUR
 import com.tatsuki.fireframe.core.model.SlideshowInterval.ONE_MINUTE
 import com.tatsuki.fireframe.core.model.SlideshowInterval.TEN_MINUTE
 import com.tatsuki.fireframe.core.model.SlideshowInterval.THIRTY_MINUTE
+import com.tatsuki.fireframe.feature.setting.R
 import com.tatsuki.fireframe.core.model.SlideshowInterval as Interval
 
 sealed interface SlideshowInterval : SelectableItem {
 
     data class OneMinute(
-        override val name: String = "1分",
+        override val nameResource: Int = R.string.one_minute,
     ) : SlideshowInterval
 
     data class FiveMinute(
-        override val name: String = "5分",
+        override val nameResource: Int = R.string.five_minutes,
     ) : SlideshowInterval
 
     data class TenMinute(
-        override val name: String = "10分",
+        override val nameResource: Int = R.string.ten_minutes,
     ) : SlideshowInterval
 
     data class FifteenMinute(
-        override val name: String = "15分",
+        override val nameResource: Int = R.string.fifteen_minutes,
     ) : SlideshowInterval
 
     data class ThirtyMinute(
-        override val name: String = "30分",
+        override val nameResource: Int = R.string.thirty_minutes,
     ) : SlideshowInterval
 
     data class OneHour(
-        override val name: String = "1時間",
+        override val nameResource: Int = R.string.one_hour,
     ) : SlideshowInterval
 
     fun toDomain(): Interval {

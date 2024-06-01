@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,8 +83,7 @@ private fun RadioButtonsDialogContent(
                         val item = items[it]
                         RadioButtonRow(
                             selectableItem = item,
-                            // FIXME: use id
-                            selected = selectedItem.name == item.name,
+                            selected = selectedItem == item,
                             onClick = onSelectItem,
                         )
                     }
@@ -128,7 +128,7 @@ private fun RadioButtonRow(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = selectableItem.name,
+            text = stringResource(id = selectableItem.nameResource),
             modifier = Modifier
                 .clickable {
                     onClick(selectableItem)
@@ -143,21 +143,15 @@ private fun RadioButtonRow(
 @Preview
 @Composable
 private fun RadioButtonsDialogContentPreview() {
+    val items = (0..10).map {
+        FakeSelectableItem(
+            nameResource = android.R.string.ok,
+        )
+    }
     RadioButtonsDialogContent(
         title = "タイトル",
-        items = listOf(
-            FakeSelectableItem("項目1"),
-            FakeSelectableItem("項目2"),
-            FakeSelectableItem("項目3"),
-            FakeSelectableItem("項目4"),
-            FakeSelectableItem("項目5"),
-            FakeSelectableItem("項目6"),
-            FakeSelectableItem("項目7"),
-            FakeSelectableItem("項目8"),
-            FakeSelectableItem("項目9"),
-            FakeSelectableItem("項目10"),
-        ),
-        selectedItem = FakeSelectableItem("項目1"),
+        items = items,
+        selectedItem = items.first(),
         onSelectItem = {},
         cancelButtonText = "キャンセル",
         onDismissRequest = {},

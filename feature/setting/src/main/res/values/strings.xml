@@ -5,4 +5,15 @@
     <string name="slideshow_interval">スライド表示間隔</string>
     <string name="content_scale_type">画像表示形式</string>
     <string name="app_version">アプリバージョン</string>
+    <string name="one_minute">1分</string>
+    <string name="five_minutes">5分</string>
+    <string name="ten_minutes">10分</string>
+    <string name="fifteen_minutes">15分</string>
+    <string name="thirty_minutes">30分</string>
+    <string name="one_hour">1時間</string>
+    <string name="crop">クロップ</string>
+    <string name="fit">フィット</string>
+    <string name="fill_height">フィル（高さ）</string>
+    <string name="fill_width">フィル（幅）</string>
+    <string name="inside">インサイド</string>
 </resources>

@@ -99,12 +99,12 @@ internal fun SettingScreen(
         )
         SettingItem(
             title = stringResource(id = R.string.slideshow_interval),
-            value = settingState.slideshowInterval.name,
+            value = stringResource(id = settingState.slideshowInterval.nameResource),
             onClick = onClickSlideshowSetting,
         )
         SettingItem(
             title = stringResource(id = R.string.content_scale_type),
-            value = settingState.contentScaleType.name,
+            value = stringResource(id = settingState.contentScaleType.nameResource),
             onClick = onClickContentScaleTypeSetting,
         )
         SettingItem(

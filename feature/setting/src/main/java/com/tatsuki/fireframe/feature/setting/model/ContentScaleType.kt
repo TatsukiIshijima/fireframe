@@ -6,28 +6,29 @@ import com.tatsuki.fireframe.core.model.ContentScaleType.FILL_HEIGHT
 import com.tatsuki.fireframe.core.model.ContentScaleType.FILL_WIDTH
 import com.tatsuki.fireframe.core.model.ContentScaleType.FIT
 import com.tatsuki.fireframe.core.model.ContentScaleType.INSIDE
+import com.tatsuki.fireframe.feature.setting.R
 import com.tatsuki.fireframe.core.model.ContentScaleType as ScaleType
 
 sealed interface ContentScaleType : SelectableItem {
 
     data class Crop(
-        override val name: String = "クロップ",
+        override val nameResource: Int = R.string.crop,
     ) : ContentScaleType
 
     data class Fit(
-        override val name: String = "フィット",
+        override val nameResource: Int = R.string.fit,
     ) : ContentScaleType
 
     data class FillHeight(
-        override val name: String = "フィル（高さ）",
+        override val nameResource: Int = R.string.fill_height,
     ) : ContentScaleType
 
     data class FillWidth(
-        override val name: String = "フィル（幅）",
+        override val nameResource: Int = R.string.fill_width,
     ) : ContentScaleType
 
     data class Inside(
-        override val name: String = "インサイド",
+        override val nameResource: Int = R.string.inside,
     ) : ContentScaleType
 
     fun toDomain(): ScaleType {
