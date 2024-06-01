@@ -1,6 +1,7 @@
 package com.tatsuki.fireframe.feature.setting.ui
 
 import android.content.Context
+import android.content.pm.PackageManager.NameNotFoundException
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -117,9 +118,13 @@ internal fun SettingScreen(
 }
 
 private fun getAppVersion(context: Context): String {
-    val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-    val versionName = packageInfo?.versionName ?: "-"
-    return versionName
+    return try {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        val versionName = packageInfo?.versionName ?: "-"
+        versionName
+    } catch (e: NameNotFoundException) {
+        "-"
+    }
 }
 
 @Composable
