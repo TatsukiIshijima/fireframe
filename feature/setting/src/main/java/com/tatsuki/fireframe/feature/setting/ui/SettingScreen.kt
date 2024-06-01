@@ -1,5 +1,7 @@
 package com.tatsuki.fireframe.feature.setting.ui
 
+import android.content.Context
+import android.content.pm.PackageManager.NameNotFoundException
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,8 +112,18 @@ internal fun SettingScreen(
         )
         SettingItem(
             title = stringResource(id = R.string.app_version),
-            value = "1.0.2",
+            value = getAppVersion(context = LocalContext.current),
         )
+    }
+}
+
+private fun getAppVersion(context: Context): String {
+    return try {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        val versionName = packageInfo?.versionName ?: "-"
+        versionName
+    } catch (e: NameNotFoundException) {
+        "-"
     }
 }
 
