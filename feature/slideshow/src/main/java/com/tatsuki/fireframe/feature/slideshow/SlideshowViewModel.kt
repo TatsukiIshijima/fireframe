@@ -24,15 +24,21 @@ class SlideshowViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
 ) : ViewModel() {
 
+    private val selectedSlideshowInterval = settingRepository.selectedSlideshowInterval
+    private val selectedContentScaleType = settingRepository.selectedContentScaleType
     private val mutableSlideImages = MutableStateFlow<List<SlideImage>>(emptyList())
     private val mutableCurrentAndForecastWeather =
         MutableStateFlow<CurrentAndForecastWeather?>(null)
 
     val slideshowState = combine(
+        selectedSlideshowInterval,
+        selectedContentScaleType,
         mutableSlideImages,
         mutableCurrentAndForecastWeather,
-    ) { slideImages, currentAndForecastWeather ->
+    ) { slideshowInterval, contentScaleType, slideImages, currentAndForecastWeather ->
         SlideshowState(
+            slideshowInterval = slideshowInterval,
+            contentScaleType = contentScaleType,
             slideImages = slideImages,
             currentAndForecastWeather = currentAndForecastWeather,
         )
