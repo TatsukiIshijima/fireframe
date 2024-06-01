@@ -4,14 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tatsuki.fireframe.core.data.repository.SettingRepository
 import com.tatsuki.fireframe.feature.setting.model.ContentScaleType
-import com.tatsuki.fireframe.feature.setting.model.ContentScaleType.Crop
 import com.tatsuki.fireframe.feature.setting.model.SettingState
 import com.tatsuki.fireframe.feature.setting.model.SlideshowInterval
-import com.tatsuki.fireframe.feature.setting.model.SlideshowInterval.OneMinute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,45 +17,32 @@ class SettingViewModel @Inject constructor(
     private val settingRepository: SettingRepository,
 ) : ViewModel() {
 
-    private val mutableSlideshowInterval = MutableStateFlow<SlideshowInterval>(OneMinute())
-    private val mutableContentScaleType = MutableStateFlow<ContentScaleType>(Crop())
+    private val selectedSlideshowInterval = settingRepository.selectedSlideshowInterval
+    private val selectedContentScaleType = settingRepository.selectedContentScaleType
     private val mutableShouldShowSlideshowIntervalSettingDialog = MutableStateFlow(false)
     private val mutableShouldShowContentScaleTypeSettingDialog = MutableStateFlow(false)
 
     val settingState = combine(
-        mutableSlideshowInterval,
-        mutableContentScaleType,
+        selectedSlideshowInterval,
+        selectedContentScaleType,
         mutableShouldShowSlideshowIntervalSettingDialog,
         mutableShouldShowContentScaleTypeSettingDialog,
     ) { slideshowInterval, contentScaleType, shouldShowSlideshowIntervalSettingDialog, shouldShowContentScaleTypeSettingDialog ->
         SettingState(
-            slideshowInterval = slideshowInterval,
-            contentScaleType = contentScaleType,
+            slideshowInterval = SlideshowInterval.from(slideshowInterval),
+            contentScaleType = ContentScaleType.from(contentScaleType),
             shouldShowSlideshowIntervalSettingDialog = shouldShowSlideshowIntervalSettingDialog,
             shouldShowContentScaleTypeSettingDialog = shouldShowContentScaleTypeSettingDialog,
         )
     }
 
-    fun onCreate() {
-        viewModelScope.launch {
-            loadSettings()
-        }
-    }
-
-    private suspend fun loadSettings() {
-        mutableSlideshowInterval.value =
-            SlideshowInterval.from(settingRepository.selectedSlideshowInterval.first())
-        mutableContentScaleType.value =
-            ContentScaleType.from(settingRepository.selectedContentScaleType.first())
-    }
-
-    fun onSelectSlideshowInterval(slideshowInterval: SlideshowInterval) {
+    fun onUpdateSlideshowInterval(slideshowInterval: SlideshowInterval) {
         viewModelScope.launch {
             settingRepository.updateSelectedSlideshowInterval(slideshowInterval.toDomain())
         }
     }
 
-    fun onSelectContentScaleType(contentScaleType: ContentScaleType) {
+    fun onUpdateContentScaleType(contentScaleType: ContentScaleType) {
         viewModelScope.launch {
             settingRepository.updateSelectedContentScaleType(contentScaleType.toDomain())
         }

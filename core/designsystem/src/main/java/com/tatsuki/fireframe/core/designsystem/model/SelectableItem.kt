@@ -1,9 +1,9 @@
 package com.tatsuki.fireframe.core.designsystem.model
 
 interface SelectableItem {
-    val name: String
+    val nameResource: Int
 }
 
 data class FakeSelectableItem(
-    override val name: String,
+    override val nameResource: Int,
 ) : SelectableItem

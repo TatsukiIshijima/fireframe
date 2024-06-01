@@ -31,6 +31,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tatsuki.fireframe.core.designsystem.component.FireframeAsyncImage
 import com.tatsuki.fireframe.core.designsystem.component.Placeholder
 import com.tatsuki.fireframe.core.designsystem.theme.FireframeTheme
+import com.tatsuki.fireframe.core.model.ContentScaleType
+import com.tatsuki.fireframe.core.model.ContentScaleType.CROP
+import com.tatsuki.fireframe.core.model.ContentScaleType.FILL_HEIGHT
+import com.tatsuki.fireframe.core.model.ContentScaleType.FILL_WIDTH
+import com.tatsuki.fireframe.core.model.ContentScaleType.FIT
+import com.tatsuki.fireframe.core.model.ContentScaleType.INSIDE
 import com.tatsuki.fireframe.core.model.CurrentAndForecastWeather
 import com.tatsuki.fireframe.core.ui.DateText
 import com.tatsuki.fireframe.core.ui.HorizontalAutoLoopPager
@@ -88,7 +94,7 @@ internal fun SlideshowScreen(
                 pageCount = slideshowState.slideImages.size,
                 modifier = Modifier.fillMaxSize(),
                 beyondBoundsPageCount = 1,
-                delayMills = 5000,
+                delayMills = slideshowState.slideshowInterval.value,
             ) { page ->
                 if (isLocalInspection) {
                     Placeholder(
@@ -100,7 +106,7 @@ internal fun SlideshowScreen(
                         model = slideshowState.slideImages[page].uri,
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
+                        contentScale = slideshowState.contentScaleType.toContentScale(),
                     )
                 }
             }
@@ -114,6 +120,16 @@ internal fun SlideshowScreen(
                 currentAndForecastWeather = slideshowState.currentAndForecastWeather,
             )
         }
+    }
+}
+
+private fun ContentScaleType.toContentScale(): ContentScale {
+    return when (this) {
+        CROP -> ContentScale.Crop
+        FIT -> ContentScale.Fit
+        FILL_HEIGHT -> ContentScale.FillHeight
+        FILL_WIDTH -> ContentScale.FillWidth
+        INSIDE -> ContentScale.Inside
     }
 }
 

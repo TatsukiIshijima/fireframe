@@ -48,25 +48,31 @@ internal fun SettingRoute(
 
     if (settingState.shouldShowSlideshowIntervalSettingDialog) {
         RadioButtonsDialog(
-            title = "スライドショー間隔",
+            title = stringResource(id = R.string.slideshow_interval),
             items = SlideshowInterval.all(),
-            positiveButtonText = "決定",
-            negativeButtonText = "キャンセル",
+            selectedItem = settingState.slideshowInterval,
+            onSelectItem = { selectableItem ->
+                if (selectableItem !is SlideshowInterval) return@RadioButtonsDialog
+                settingViewModel.onUpdateSlideshowInterval(selectableItem)
+                settingViewModel.onDismissSlideshowIntervalSettingDialog()
+            },
+            cancelButtonText = stringResource(id = R.string.cancel),
             onDismissRequest = settingViewModel::onDismissSlideshowIntervalSettingDialog,
-            onSelectItem = { /*TODO*/ },
-            onDone = { /*TODO*/ },
         )
     }
 
     if (settingState.shouldShowContentScaleTypeSettingDialog) {
         RadioButtonsDialog(
-            title = "コンテンツ表示方法",
+            title = stringResource(id = R.string.content_scale_type),
             items = ContentScaleType.all(),
-            positiveButtonText = "決定",
-            negativeButtonText = "キャンセル",
+            selectedItem = settingState.contentScaleType,
+            onSelectItem = { selectableItem ->
+                if (selectableItem !is ContentScaleType) return@RadioButtonsDialog
+                settingViewModel.onUpdateContentScaleType(selectableItem)
+                settingViewModel.onDismissContentScaleTypeSettingDialog()
+            },
+            cancelButtonText = stringResource(id = R.string.cancel),
             onDismissRequest = settingViewModel::onDismissContentScaleTypeSettingDialog,
-            onSelectItem = { /*TODO*/ },
-            onDone = { /*TODO*/ },
         )
     }
 }
@@ -93,12 +99,12 @@ internal fun SettingScreen(
         )
         SettingItem(
             title = stringResource(id = R.string.slideshow_interval),
-            value = "1分",
+            value = stringResource(id = settingState.slideshowInterval.nameResource),
             onClick = onClickSlideshowSetting,
         )
         SettingItem(
             title = stringResource(id = R.string.content_scale_type),
-            value = "中央",
+            value = stringResource(id = settingState.contentScaleType.nameResource),
             onClick = onClickContentScaleTypeSetting,
         )
         SettingItem(
