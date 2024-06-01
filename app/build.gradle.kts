@@ -24,8 +24,8 @@ android {
 
     defaultConfig {
         applicationId = "com.tatsuki.fireframe"
-        versionCode = 5
-        versionName = "1.0.3"
+        versionCode = 6
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
