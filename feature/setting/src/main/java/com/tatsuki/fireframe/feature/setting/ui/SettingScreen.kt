@@ -118,7 +118,7 @@ internal fun SettingScreen(
 
 private fun getAppVersion(context: Context): String {
     val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-    val versionName = packageInfo.versionName
+    val versionName = packageInfo?.versionName ?: "-"
     return versionName
 }
 
