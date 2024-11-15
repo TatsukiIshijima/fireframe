@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus.IN_PROGRESS
 import java.io.FileInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -24,8 +25,8 @@ android {
 
     defaultConfig {
         applicationId = "com.tatsuki.fireframe"
-        versionCode = 6
-        versionName = "1.0.4"
+        versionCode = 7
+        versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -83,6 +84,10 @@ android {
 }
 
 play {
+    track.set("production")
+    userFraction.set(0.001)
+    releaseName.set("${android.defaultConfig.versionName}(${android.defaultConfig.versionCode})")
+    releaseStatus.set(IN_PROGRESS)
     serviceAccountCredentials.set(rootProject.file("fireframe-service-account-key.json"))
 }
 
