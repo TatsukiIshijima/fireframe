@@ -31,7 +31,7 @@ jobs:
 
       steps:
         - name: Download PullRequest
-          uses: dawidd6/action-download-artifact@v3
+          uses: dawidd6/action-download-artifact@v7
           with:
             name: pr
             run_id: ${{ github.event.workflow_run.id }}
@@ -58,7 +58,7 @@ jobs:
             git rm -rf .
 
         - name: Download screenshot diff
-          uses: dawidd6/action-download-artifact@v3
+          uses: dawidd6/action-download-artifact@v7
           with:
             run_id: ${{ github.event.workflow_run.id }}
             name: screenshot-diff
