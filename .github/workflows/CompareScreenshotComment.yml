@@ -31,7 +31,7 @@ jobs:
 
       steps:
         - name: Download PullRequest
-          uses: dawidd6/action-download-artifact@v3
+          uses: dawidd6/action-download-artifact@v18
           with:
             name: pr
             run_id: ${{ github.event.workflow_run.id }}
@@ -44,7 +44,7 @@ jobs:
 
         - name: checkout main
           id: checkout-main
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             ref: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.event.pull_request.base.ref || github.event.repository.default_branch }}
 
@@ -58,7 +58,7 @@ jobs:
             git rm -rf .
 
         - name: Download screenshot diff
-          uses: dawidd6/action-download-artifact@v3
+          uses: dawidd6/action-download-artifact@v18
           with:
             run_id: ${{ github.event.workflow_run.id }}
             name: screenshot-diff
@@ -131,7 +131,7 @@ jobs:
 
         - name: Find comment
           id: fc
-          uses: peter-evans/find-comment@v3
+          uses: peter-evans/find-comment@v4
           if: steps.generate-diff-reports.outputs.reports != ''
           with:
             issue-number: ${{ steps.get-pull-request-number.outputs.pull_request_number }}
@@ -139,7 +139,7 @@ jobs:
             body-includes: Snapshot diff report
 
         - name: Add or update comment on PR
-          uses: peter-evans/create-or-update-comment@v4
+          uses: peter-evans/create-or-update-comment@v5
           if: steps.generate-diff-reports.outputs.reports != ''
           with:
             comment-id: ${{ steps.fc.outputs.comment-id }}
